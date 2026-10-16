@@ -3,14 +3,14 @@
 <section class="error-404">
   <div class="video-wrap">
     <!-- Video corto en bucle, sin sonido: se ve como un GIF pero pesa mucho menos -->
-    <video src="assets/gato-banana.mp4" poster="assets/gato-banana.jpg" autoplay muted loop playsinline
+    <video #video src="assets/gato-banana.mp4" poster="assets/gato-banana.jpg" [muted]="true" autoplay loop playsinline
            aria-label="Gato negro comiendo una banana"></video>
   </div>
 
   <div class="texto">
     <span class="codigo">Error 404</span>
-    <h1>¡Ups! Esta página se fue por una banana</h1>
-    <p>La ruta que buscas no existe o cambió de lugar. Mientras nuestro amigo termina su merienda, puedes volver a donde estabas.</p>
+    <h1>Página no encontrada</h1>
+    <p>La dirección que intentas abrir no existe o fue movida. Verifica el enlace o regresa al inicio para seguir navegando en Dogtor.</p>
     <div class="acciones">
       <a routerLink="/home" class="dt-btn">
         <ion-icon name="home-outline"></ion-icon> Ir al inicio

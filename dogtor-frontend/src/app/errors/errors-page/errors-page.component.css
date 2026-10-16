@@ -1,5 +1,5 @@
 .error-404 {
-  max-width: 1000px;
+  max-width: 1100px;
   min-height: calc(100vh - 72px);
   margin: 0 auto;
   padding: 3rem 1.25rem;
@@ -12,23 +12,19 @@
 
 .video-wrap {
   flex-shrink: 0;
-  width: 260px;
-  border-radius: 28px;
+  width: 380px;
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 18px 45px rgba(42, 78, 104, 0.28);
   background: #12293a;
-  transform: rotate(-3deg);
-  transition: transform 0.3s ease;
-}
-
-.video-wrap:hover {
-  transform: rotate(0deg) scale(1.02);
 }
 
 .video-wrap video {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 
 .codigo {
@@ -70,7 +66,7 @@
   }
 
   .video-wrap {
-    width: 220px;
+    width: min(300px, 100%);
   }
 
   .texto p {
