@@ -165,6 +165,7 @@ Las tablas se crean solas la primera vez. Si prefieres crearlas manualmente, usa
 | `DB_NAME` | `dogtor` |
 | `DB_USER` | `root` |
 | `DB_PASSWORD` | *(vacía)* |
+| `JWT_SECRET` | Clave de desarrollo incluida en `application.properties`; cámbiala en producción (mínimo 64 caracteres) |
 
 ---
 
