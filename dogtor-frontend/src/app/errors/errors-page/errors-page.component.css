@@ -1,41 +1,84 @@
-:host {
+.error-404 {
+  max-width: 1000px;
+  min-height: calc(100vh - 72px);
+  margin: 0 auto;
+  padding: 3rem 1.25rem;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  text-align: center;
-  background-color: rgb(248, 250, 252);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  gap: 3rem;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #007acc; /* azul */
-  margin-bottom: 0.5rem;
+.video-wrap {
+  flex-shrink: 0;
+  width: 260px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 18px 45px rgba(42, 78, 104, 0.28);
+  background: #12293a;
+  transform: rotate(-3deg);
+  transition: transform 0.3s ease;
 }
 
-p {
-  font-size: 1.2rem;
-  color: #333;
-  margin-bottom: 2rem;
+.video-wrap:hover {
+  transform: rotate(0deg) scale(1.02);
 }
 
-img {
-  width: 320px;
+.video-wrap video {
+  display: block;
+  width: 100%;
   height: auto;
-  margin-bottom: 2rem;
 }
 
-.home-link {
-  padding: 0.7rem 1.5rem;
-  background-color: #007acc;
-  color: white;
-  text-decoration: none;
-  border-radius: 0.5rem;
-  transition: background-color 0.3s;
+.codigo {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: var(--dt-gold-100);
+  color: var(--dt-gold-700);
+  font-family: var(--dt-font-head);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
 }
 
-.home-link:hover {
-  background-color: #005f99;
+.texto h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--dt-ink);
+  margin-bottom: 0.75rem;
+}
+
+.texto p {
+  color: var(--dt-muted);
+  font-size: 1.08rem;
+  max-width: 460px;
+  margin: 0 0 1.5rem;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+@media (max-width: 760px) {
+  .error-404 {
+    flex-direction: column;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .video-wrap {
+    width: 220px;
+  }
+
+  .texto p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .acciones {
+    justify-content: center;
+  }
 }

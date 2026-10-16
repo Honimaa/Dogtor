@@ -1,4 +1,25 @@
-<h1>404 - Página no encontrada</h1>
-<p>¡Uy! Parece que esta ruta no existe...</p>
-<img src="https://cdn.pixabay.com/animation/2023/07/07/13/34/13-34-17-270_512.gif" alt="Perrito corriendo">
-<a routerLink="/" class="home-link">Volver al inicio</a>
+<app-header></app-header>
+
+<section class="error-404">
+  <div class="video-wrap">
+    <!-- Video corto en bucle, sin sonido: se ve como un GIF pero pesa mucho menos -->
+    <video src="assets/gato-banana.mp4" poster="assets/gato-banana.jpg" autoplay muted loop playsinline
+           aria-label="Gato negro comiendo una banana"></video>
+  </div>
+
+  <div class="texto">
+    <span class="codigo">Error 404</span>
+    <h1>¡Ups! Esta página se fue por una banana</h1>
+    <p>La ruta que buscas no existe o cambió de lugar. Mientras nuestro amigo termina su merienda, puedes volver a donde estabas.</p>
+    <div class="acciones">
+      <a routerLink="/home" class="dt-btn">
+        <ion-icon name="home-outline"></ion-icon> Ir al inicio
+      </a>
+      <a routerLink="/adopcion" class="dt-btn dt-btn-outline">
+        <ion-icon name="heart-outline"></ion-icon> Ver mascotas en adopción
+      </a>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

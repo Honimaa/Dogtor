@@ -114,11 +114,8 @@
   }
 }
 
-/* Logo beagle (PNG con fondo blanco) sobre fondo oscuro */
+/* Logo beagle: mismo color en todo el sitio, sin círculo de fondo */
 .footer-logo img {
-  background: #fff;
-  border-radius: 50%;
-  padding: 4px;
   object-fit: contain;
 }
 
