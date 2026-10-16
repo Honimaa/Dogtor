@@ -1399,7 +1399,7 @@ public class DataBaseInit implements ApplicationRunner {
 
         // Creación de testimonios
         Calendar calendar1 = Calendar.getInstance();
-        calendar1.set(2025, Calendar.FEBRUARY, 1);
+        calendar1.set(2026, Calendar.JULY, 18);
         Date fecha1 = calendar1.getTime();
 
         Testimonio testimonio1 = new Testimonio(
@@ -1413,7 +1413,7 @@ public class DataBaseInit implements ApplicationRunner {
         testimonioRepository.save(testimonio1);
 
         Calendar calendar2 = Calendar.getInstance();
-        calendar2.set(2025, Calendar.MARCH, 15);
+        calendar2.set(2026, Calendar.AUGUST, 29);
         Date fecha2 = calendar2.getTime();
 
         Testimonio testimonio2 = new Testimonio(
@@ -1427,7 +1427,7 @@ public class DataBaseInit implements ApplicationRunner {
         testimonioRepository.save(testimonio2);
 
         Calendar calendar3 = Calendar.getInstance();
-        calendar3.set(2025, Calendar.APRIL, 10);
+        calendar3.set(2026, Calendar.SEPTEMBER, 22);
         Date fecha3 = calendar3.getTime();
 
         Testimonio testimonio3 = new Testimonio(

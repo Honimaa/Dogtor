@@ -16,16 +16,24 @@
   justify-content: center;
 }
 
+.brand-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
 .brand-logo {
-  width: 88px;
-  height: 88px;
-  margin-bottom: 1.5rem;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
 }
 
 .login-brand h1 {
   color: #fff;
-  font-size: clamp(2rem, 3.5vw, 2.8rem);
-  margin-bottom: 0.75rem;
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+  line-height: 1.15;
+  margin: 0;
 }
 
 .login-brand h1 span {

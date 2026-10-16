@@ -126,12 +126,30 @@ Abre `http://localhost:4200`.
 
 Por defecto el backend usa H2 en memoria, así que los datos se reinician en cada arranque. Para usar MySQL:
 
-1. Ejecuta [`00-crear-base-de-datos.sql`](dogtor-backend/database/00-crear-base-de-datos.sql) como `root`.
-   Crea la base `dogtor` y el usuario `dogtor_app`.
+1. Crea la base `dogtor` y el usuario `dogtor_app`. Ejecuta este script como `root`, por ejemplo en
+   MySQL Workbench. Es el mismo de [`00-crear-base-de-datos.sql`](dogtor-backend/database/00-crear-base-de-datos.sql):
+
+   ```sql
+   CREATE DATABASE IF NOT EXISTS dogtor
+     CHARACTER SET utf8mb4
+     COLLATE utf8mb4_unicode_ci;
+
+   CREATE USER IF NOT EXISTS 'dogtor_app'@'localhost' IDENTIFIED BY 'CambiaEstaClave';
+   GRANT ALL PRIVILEGES ON dogtor.* TO 'dogtor_app'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
+
+   También puedes ejecutarlo desde la terminal:
+
+   ```powershell
+   & "C:\Program Files\MySQL\MySQL Server 9.4\bin\mysql.exe" -u root -p -e "source dogtor-backend/database/00-crear-base-de-datos.sql"
+   ```
+
 2. Arranca el backend con el perfil `mysql` e indica las credenciales:
 
    ```powershell
-   $env:DB_USER="dogtor_app"; $env:DB_PASSWORD="tu_clave"
+   cd dogtor-backend
+   $env:DB_USER="dogtor_app"; $env:DB_PASSWORD="CambiaEstaClave"
    java -jar target/dogtor-0.0.1-SNAPSHOT.jar --spring.profiles.active=mysql
    ```
 

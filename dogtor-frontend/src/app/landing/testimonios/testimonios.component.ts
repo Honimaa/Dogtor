@@ -60,6 +60,7 @@ export class TestimoniosComponent implements OnInit {
 
   formatDate(fecha: Date | string): string {
     const date = new Date(fecha);
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 }

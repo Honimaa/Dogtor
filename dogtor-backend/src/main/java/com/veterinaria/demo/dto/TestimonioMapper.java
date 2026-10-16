@@ -11,5 +11,6 @@ public interface TestimonioMapper {
     @Mapping(target = "cliente", source = "cliente.nombre")
     @Mapping(target = "imagenCliente", source = "cliente.foto")
     @Mapping(target = "servicio", source = "servicio.nombre")
+    @Mapping(target = "fecha", source = "fecha", dateFormat = "yyyy-MM-dd'T'HH:mm:ss")
     TestimonioDTO convert(Testimonio testimonio);
 }
