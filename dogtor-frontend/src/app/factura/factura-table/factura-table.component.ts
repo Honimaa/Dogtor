@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { FacturaService } from 'src/app/service/factura.service';
 import { FacturaCL } from 'src/app/model/factura-cl';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-factura-table',
@@ -13,14 +14,18 @@ facturas: FacturaCL[] = [];
   seleccionadas: Set<number> = new Set();
   idCliente: number = 0;
   mensaje: string = '';
+  // Solo el propietario paga o compra; doctores y administradores consultan
+  esPropietario = false;
 
   constructor(
+    private authService: AuthService,
     private route: ActivatedRoute,
     private facturaService: FacturaService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.esPropietario = this.authService.getUserType() === 'Cliente';
     this.route.params.subscribe(params => {
       this.idCliente = +params['id'];
       this.cargarFacturas();

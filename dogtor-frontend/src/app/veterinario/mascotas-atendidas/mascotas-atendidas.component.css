@@ -282,3 +282,9 @@ h1::after {
   background: var(--dt-gold-500) !important;
   color: var(--dt-brand-950) !important;
 }
+
+.btn-tratamiento {
+  display: inline-block;
+  margin-left: 0.35rem;
+  text-decoration: none;
+}

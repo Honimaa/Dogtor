@@ -1,5 +1,6 @@
 <div class="container">
-  <h1>Crear Nuevo Tratamiento</h1>
+  <h1>Registrar tratamiento</h1>
+  <p class="ayuda-form">El tratamiento queda ligado al paciente y aparece en su historia clínica.</p>
 
   <div *ngIf="successMessage" class="alert alert-success">
     {{ successMessage }}
@@ -52,6 +53,14 @@
       </div>
     </div>
 
+    <div class="form-group" *ngIf="esAdmin">
+      <label for="idVeterinario">Doctor responsable:</label>
+      <select id="idVeterinario" formControlName="idVeterinario" required>
+        <option value="">Seleccione un doctor</option>
+        <option *ngFor="let vet of veterinarios" [value]="vet.idVeterinario">{{ vet.nombre }} · {{ vet.especialidad }}</option>
+      </select>
+    </div>
+
     <div class="form-group">
       <label for="detalles">Detalles del Tratamiento:</label>
       <textarea id="detalles" formControlName="detalles" required placeholder="Describa los síntomas, diagnóstico y tratamiento recomendado..."></textarea>
@@ -78,7 +87,7 @@
     </div>
 
     <div class="form-footer">
-      <button type="button" class="btn" (click)="resetForm()">Cancelar</button>
+      <button type="button" class="btn" (click)="volver()">Cancelar</button>
       <button type="submit" class="btn btn-guardar" [disabled]="loading || tratamientoForm.invalid">
         {{ loading ? 'Guardando...' : 'Guardar Tratamiento' }}
       </button>

@@ -91,7 +91,7 @@ const routes: Routes = [
   {path: 'mascotas-atendidas/:id', component:MascotasAtendidasComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario'] }},
   {path: 'tratamiento', component: TratamientoTableComponent,canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }}, 
   {path: 'tratamiento/mascota/:id', component: TratamientoTableComponent},
-  {path: 'detalles-tratamiento/:id', component:TratamientoDetailComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
+  {path: 'detalles-tratamiento/:id', component:TratamientoDetailComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},
   {path: 'crear-veterinario', component:VeterinarioFormComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
   {path: 'editar-veterinario/:id', component:VeterinarioFormComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
   {path: 'agendar-cita',component:CitaFormComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},

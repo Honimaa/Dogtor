@@ -354,3 +354,9 @@ select.ng-invalid.ng-touched {
   width: 100%;
   padding: 14px 18px;
 }
+
+.ayuda-form {
+  text-align: center;
+  color: #5a667a;
+  margin-top: -0.5rem;
+}

@@ -14,6 +14,9 @@
         <button type="button" class="dt-btn dt-btn-outline dt-btn-sm" (click)="descargarPdf()">
           <ion-icon name="download-outline"></ion-icon> Descargar PDF
         </button>
+        <a *ngIf="puedeEditar" class="dt-btn dt-btn-sm dt-btn-gold" routerLink="/crear-tratamiento" [state]="{ idMascota: idMascota }">
+          <ion-icon name="bandage-outline"></ion-icon> Nuevo tratamiento
+        </a>
         <button *ngIf="puedeEditar" type="button" class="dt-btn dt-btn-sm" (click)="abrirFormulario()">
           <ion-icon name="add-outline"></ion-icon> Registrar evento
         </button>

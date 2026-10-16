@@ -9,6 +9,10 @@ import { MedicamentoService } from 'src/app/service/medicamento.service';
 import { ServicioService } from 'src/app/service/servicio.service';
 import { TratamientoService } from 'src/app/service/tratamiento.service';
 import { ActivatedRoute,Router } from '@angular/router';
+import { AuthService } from 'src/app/service/auth.service';
+import { VeterinarioService } from 'src/app/service/veterinario.service';
+import { VeterinarioCL } from 'src/app/model/veterinario-cl';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 @Component({
   selector: 'app-tratamiento-form',
   templateUrl: './tratamiento-form.component.html',
@@ -25,7 +29,15 @@ export class TratamientoFormComponent implements OnInit{
   medicamentosDisponibles: MedicamentoCL[] = []; 
 
   idVeterinario: number=0;
+  // Dogtor: el admin elige al doctor; el doctor queda asignado con su sesión
+  esAdmin = false;
+  veterinarios: VeterinarioCL[] = [];
+  idMascotaPreseleccionada: number | null = null;
   constructor(
+    private authService: AuthService,
+    private veterinarioService: VeterinarioService,
+    private notificacion: NotificacionService,
+    private route: ActivatedRoute,
     private fb: FormBuilder,
     private tratamientoService: TratamientoService,
     private servicioService: ServicioService,
@@ -35,21 +47,27 @@ export class TratamientoFormComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    const id = history.state?.id || 0;
-    console.log('idVeterinario recibido:', id); 
-    this.idVeterinario = id;
+    this.esAdmin = this.authService.getUserType() === 'Admin';
+    const idSesion = this.authService.getUserType() === 'Veterinario' ? this.authService.getUserId() : null;
+    this.idVeterinario = Number(history.state?.id || idSesion || 0);
+    const idMascota = history.state?.idMascota || this.route.snapshot.queryParamMap.get('mascota');
+    this.idMascotaPreseleccionada = idMascota ? Number(idMascota) : null;
 
     this.tratamientoForm = this.fb.group({
-      codigo: ['', Validators.required],
+      codigo: [this.codigoAutomatico(), Validators.required],
       fecha: [new Date().toISOString().substring(0, 10), Validators.required],
       idServicio: ['', Validators.required],
-      idMascota: ['', Validators.required],
-      idVeterinario: [this.idVeterinario],
+      idMascota: [this.idMascotaPreseleccionada ?? '', Validators.required],
+      idVeterinario: [this.idVeterinario || '', this.esAdmin ? Validators.required : []],
       detalles: ['', Validators.required],
       medicamentos: this.fb.array([this.createMedicamentoGroup()])
     });
 
-    console.log(this.idVeterinario);
+    if (this.esAdmin) {
+      this.veterinarioService.obtenerTodosVeterinarios().subscribe({
+        next: (vets) => this.veterinarios = vets.filter(v => v.estado === 1)
+      });
+    }
 
       this.servicioService.findAll().subscribe({
         next: (serviciodata) => {
@@ -130,8 +148,16 @@ export class TratamientoFormComponent implements OnInit{
       idsMedicamentos
     ).subscribe({
       next: () => {
+        this.notificacion.exito('Tratamiento registrado y ligado al paciente.');
+        const idMascota = Number(formValue.idMascota);
         this.resetForm();
-        this.router.navigate(['/historial-tratamientos', this.idVeterinario]);
+        if (this.idMascotaPreseleccionada) {
+          this.router.navigate(['/historia-clinica', idMascota]);
+        } else if (this.esAdmin) {
+          this.router.navigate(['/tratamiento']);
+        } else {
+          this.router.navigate(['/historial-tratamientos', this.idVeterinario]);
+        }
       },
       error: (err) => {
         this.showError('Error al crear el tratamiento: ' + err.message);
@@ -143,11 +169,11 @@ export class TratamientoFormComponent implements OnInit{
 
   resetForm(): void {
     this.tratamientoForm.reset({
-      codigo: '',
+      codigo: this.codigoAutomatico(),
       fecha: new Date().toISOString().substring(0, 10),
       idServicio: '',
-      idMascota: '',
-      idVeterinario: this.idVeterinario,
+      idMascota: this.idMascotaPreseleccionada ?? '',
+      idVeterinario: this.idVeterinario || '',
       detalles: '',
     });
   }
@@ -161,4 +187,15 @@ export class TratamientoFormComponent implements OnInit{
     this.errorMessage = message;
     this.loading = false;
   }
+
+  // Código legible y único para el tratamiento, p. ej. TRAT-261016-4821
+  private codigoAutomatico(): string {
+    const hoy = new Date();
+    const fecha = `${String(hoy.getFullYear()).slice(2)}${String(hoy.getMonth() + 1).padStart(2, '0')}${String(hoy.getDate()).padStart(2, '0')}`;
+    return `TRAT-${fecha}-${Math.floor(1000 + Math.random() * 9000)}`;
+  }
+
+  volver(): void {
+    window.history.back();
+  }
 }

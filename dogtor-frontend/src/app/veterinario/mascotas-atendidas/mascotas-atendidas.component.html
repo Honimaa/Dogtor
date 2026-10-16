@@ -48,6 +48,7 @@
               <td class="action-buttons">
                 <button class="btn-detalles" (click)="mostrarMascota(mascota.idMascota); $event.stopPropagation()">Ver Detalles</button>
                 <a class="btn-detalles btn-historia" [routerLink]="['/historia-clinica', mascota.idMascota]" (click)="$event.stopPropagation()">Historia clínica</a>
+                <a class="btn-detalles btn-tratamiento" routerLink="/crear-tratamiento" [state]="{ idMascota: mascota.idMascota }" (click)="$event.stopPropagation()">Nuevo tratamiento</a>
               </td>
             </tr>
           </tbody>
