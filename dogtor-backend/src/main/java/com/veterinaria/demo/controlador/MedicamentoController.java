@@ -65,6 +65,28 @@ public class MedicamentoController {
         return ResponseEntity.ok(medicamentos);
     }
 
+    // Dogtor: registrar un producto nuevo en el inventario (solo ADMIN, ver SecurityConfig)
+    @PostMapping
+    public ResponseEntity<MedicamentoDTO> crearProducto(@RequestBody MedicamentoDTO datos) {
+        if (datos.getNombre() == null || datos.getNombre().isBlank()
+                || datos.getPrecioVenta() == null || datos.getPrecioVenta() < 0
+                || datos.getPrecioCompra() == null || datos.getPrecioCompra() < 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        Medicamento nuevo = Medicamento.builder()
+                .nombre(datos.getNombre().trim())
+                .precioCompra(datos.getPrecioCompra())
+                .precioVenta(datos.getPrecioVenta())
+                .unidadesDisponibles(datos.getUnidadesDisponibles() != null ? Math.max(0, datos.getUnidadesDisponibles()) : 0)
+                .unidadesVendidas(0)
+                .stockMinimo(datos.getStockMinimo() != null ? datos.getStockMinimo() : 5)
+                .fechaVencimiento(datos.getFechaVencimiento())
+                .lote(datos.getLote())
+                .categoria(datos.getCategoria() != null ? datos.getCategoria() : "MEDICAMENTO")
+                .build();
+        return ResponseEntity.ok(MedicamentoMapper.INSTANCE.convert(medicamentoService.guardarMedicamento(nuevo)));
+    }
+
     // Dogtor: alertas de bajo stock y vencimiento (REQ-INV-01, 02, 07)
     @GetMapping("/alertas")
     public ResponseEntity<Map<String, List<MedicamentoDTO>>> alertasInventario(
@@ -86,6 +108,15 @@ public class MedicamentoController {
         }
         if (entrada < 0) {
             return ResponseEntity.badRequest().build();
+        }
+        if (datos.getNombre() != null && !datos.getNombre().isBlank()) {
+            medicamento.setNombre(datos.getNombre().trim());
+        }
+        if (datos.getPrecioCompra() != null && datos.getPrecioCompra() >= 0) {
+            medicamento.setPrecioCompra(datos.getPrecioCompra());
+        }
+        if (datos.getPrecioVenta() != null && datos.getPrecioVenta() >= 0) {
+            medicamento.setPrecioVenta(datos.getPrecioVenta());
         }
         medicamento.setUnidadesDisponibles(medicamento.getUnidadesDisponibles() + entrada);
         if (datos.getStockMinimo() != null) {

@@ -4,7 +4,12 @@
  
 
   <main class="container-principal">
-    <h1>Inventario</h1>
+    <div class="titulo-inventario">
+      <h1>Inventario</h1>
+      <button type="button" class="dt-btn" (click)="abrirNuevo()">
+        <ion-icon name="add-outline"></ion-icon> Nuevo producto
+      </button>
+    </div>
 
     <app-inventario-alertas #alertas (seleccionar)="abrirEntrada($event)" class="alertas-inventario"></app-inventario-alertas>
 
@@ -69,8 +74,8 @@
           <tr *ngFor="let medicamento of medicamentos" class="medicamento-fila">
             <td class="medicamento-id">{{ medicamento.idMedicamento }}</td>
             <td class="medicamento-nombre">{{ medicamento.nombre }}</td>
-            <td class="medicamento-precio-compra">{{ medicamento.precioCompra | currency:'$' }}</td>
-            <td class="medicamento-precio-venta">{{ medicamento.precioVenta | currency:'$' }}</td>
+            <td class="medicamento-precio-compra">{{ medicamento.precioCompra | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            <td class="medicamento-precio-venta">{{ medicamento.precioVenta | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
             <td class="medicamento-disponibles">
               {{ medicamento.unidadesDisponibles }}
               <span class="dt-badge dt-badge-warning" *ngIf="bajoStock(medicamento)">Bajo stock</span>
@@ -89,7 +94,7 @@
               <ng-template #sinFecha>—</ng-template>
             </td>
             <td>
-              <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="abrirEntrada(medicamento)">Entrada</button>
+              <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="abrirEntrada(medicamento)">Editar</button>
             </td>
           </tr>
         </tbody>
@@ -101,11 +106,23 @@
 <!-- Entrada de inventario (REQ-INV-04) -->
 <div class="dt-modal-backdrop" *ngIf="entrada" (click)="entrada = null">
   <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarEntrada()">
-    <h3>Entrada de inventario</h3>
-    <p class="dt-lead">{{ entrada.nombre }} · {{ entrada.unidadesDisponibles }} unidades disponibles</p>
+    <h3>{{ esNuevo ? 'Nuevo producto' : 'Editar producto' }}</h3>
+    <p class="dt-lead" *ngIf="!esNuevo">{{ entrada.unidadesDisponibles }} unidades disponibles actualmente</p>
+    <div class="dt-field">
+      <label for="nombreProducto">Nombre</label>
+      <input id="nombreProducto" name="nombreProducto" [(ngModel)]="formEntrada.nombre" required />
+    </div>
     <div class="grid-2">
       <div class="dt-field">
-        <label for="cantidad">Unidades que ingresan</label>
+        <label for="precioCompra">Precio de compra (COP)</label>
+        <input id="precioCompra" name="precioCompra" type="number" min="0" step="100" [(ngModel)]="formEntrada.precioCompra" />
+      </div>
+      <div class="dt-field">
+        <label for="precioVenta">Precio de venta (COP)</label>
+        <input id="precioVenta" name="precioVenta" type="number" min="0" step="100" [(ngModel)]="formEntrada.precioVenta" />
+      </div>
+      <div class="dt-field">
+        <label for="cantidad">{{ esNuevo ? 'Unidades iniciales' : 'Unidades que ingresan' }}</label>
         <input id="cantidad" name="cantidad" type="number" min="0" [(ngModel)]="formEntrada.cantidad" />
       </div>
       <div class="dt-field">

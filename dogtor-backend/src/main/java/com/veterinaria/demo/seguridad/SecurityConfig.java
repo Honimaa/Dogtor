@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/historia-clinica/**").hasAnyAuthority("VETERINARIO", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/historia-clinica/**").hasAnyAuthority("VETERINARIO", "ADMIN")
                         .requestMatchers("/medicamento/*/inventario").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/medicamento").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint));
 

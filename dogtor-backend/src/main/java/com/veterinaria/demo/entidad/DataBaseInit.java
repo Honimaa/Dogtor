@@ -627,7 +627,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Consulta General", 
                 "Realizamos chequeos completos para garantizar la salud de tu mascota.", 
-                35f,
+                65000f,
                 "https://i.postimg.cc/WbXq7Lwq/consulta.png",
                 "https://i.postimg.cc/WbXq7Lwq/consulta.png",
                 null, null, null
@@ -638,7 +638,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Cirugía", 
                 "Contamos con quirófanos equipados para procedimientos seguros.", 
-                250f,
+                850000f,
                 "https://i.postimg.cc/Fs9Jcs3Q/cirugia.png",
                 "https://i.postimg.cc/Fs9Jcs3Q/cirugia.png",
                 null, null, null
@@ -649,7 +649,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Estética y peluquería", 
                 "Ofrecemos servicios de baño, cortes de pelo y cuidado estético.", 
-                30f,
+                60000f,
                 "https://i.postimg.cc/J0dmGqj0/estetica.png",
                 "https://i.postimg.cc/J0dmGqj0/estetica.png",
                 null, null, null
@@ -660,7 +660,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Hospitalización", 
                 "Brindamos hospitalización para garantizar la recuperación de tu mascota.", 
-                80f,
+                180000f,
                 "https://i.postimg.cc/mgkzXXmX/hospital.png",
                 "https://i.postimg.cc/mgkzXXmX/hospital.png",
                 null, null, null
@@ -671,7 +671,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Monitoreo", 
                 "Seguimiento continuo para supervisar el estado de salud de tu mascota.", 
-                45f,
+                90000f,
                 "https://i.postimg.cc/sDvsbkRh/monitoreo.png",
                 "https://i.postimg.cc/sDvsbkRh/monitoreo.png",
                 null, null, null
@@ -682,7 +682,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Vacunación", 
                 "Ofrecemos una amplia gama de vacunas para mantener a tu mascota protegida y saludable.", 
-                20f,
+                45000f,
                 "https://i.postimg.cc/L4ymCHGS/vacunacion.png",
                 "https://i.postimg.cc/L4ymCHGS/vacunacion.png",
                 null, null, null
@@ -693,7 +693,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Laboratorio clínico", 
                 "Realizamos pruebas de laboratorio para diagnosticar y prevenir enfermedades.", 
-                40f,
+                80000f,
                 "https://i.postimg.cc/rw4cw5sy/lab.png",
                 "https://i.postimg.cc/rw4cw5sy/lab.png",
                 null, null, null
@@ -704,7 +704,7 @@ public class DataBaseInit implements ApplicationRunner {
                 null, 
                 "Rehabilitación", 
                 "Ofrecemos terapias físicas y rehabilitación para mejorar la movilidad y calidad de vida de tu mascota.", 
-                35f,
+                70000f,
                 "https://i.postimg.cc/WbXq7Lwq/consulta.png", // Imagen por defecto
                 "https://i.postimg.cc/WbXq7Lwq/consulta.png", // Imagen por defecto
                 null, null, null
@@ -1248,80 +1248,80 @@ public class DataBaseInit implements ApplicationRunner {
         List<Medicamento> medicamentos = Arrays.asList(
                 Medicamento.builder()
                 .nombre("Advantix")
-                .precioCompra(18.99f)
-                .precioVenta(24.99f)
+                .precioCompra(75900f)
+                .precioVenta(99900f)
                 .unidadesDisponibles(50)
                 .unidadesVendidas(10)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Drontal")
-                .precioCompra(12.49f)
-                .precioVenta(15.99f)
+                .precioCompra(49900f)
+                .precioVenta(63900f)
                 .unidadesDisponibles(60)
                 .unidadesVendidas(15)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Vetoquinol")
-                .precioCompra(9.99f)
-                .precioVenta(13.99f)
+                .precioCompra(39900f)
+                .precioVenta(55900f)
                 .unidadesDisponibles(40)
                 .unidadesVendidas(20)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Cortaf")
-                .precioCompra(9.49f)
-                .precioVenta(12.49f)
+                .precioCompra(37900f)
+                .precioVenta(49900f)
                 .unidadesDisponibles(45)
                 .unidadesVendidas(12)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Milbemax")
-                .precioCompra(14.99f)
-                .precioVenta(18.99f)
+                .precioCompra(59900f)
+                .precioVenta(75900f)
                 .unidadesDisponibles(70)
                 .unidadesVendidas(8)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Metronidazol")
-                .precioCompra(10.99f)
-                .precioVenta(14.99f)
+                .precioCompra(43900f)
+                .precioVenta(59900f)
                 .unidadesDisponibles(55)
                 .unidadesVendidas(16)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Rimadyl")
-                .precioCompra(24.99f)
-                .precioVenta(30.99f)
+                .precioCompra(99900f)
+                .precioVenta(123900f)
                 .unidadesDisponibles(30)
                 .unidadesVendidas(5)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Panacur")
-                .precioCompra(10.49f)
-                .precioVenta(13.99f)
+                .precioCompra(41900f)
+                .precioVenta(55900f)
                 .unidadesDisponibles(50)
                 .unidadesVendidas(18)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Zylkene")
-                .precioCompra(18.99f)
-                .precioVenta(22.49f)
+                .precioCompra(75900f)
+                .precioVenta(89900f)
                 .unidadesDisponibles(35)
                 .unidadesVendidas(6)
                 .build(),
                 
                 Medicamento.builder()
                 .nombre("Bexacat")
-                .precioCompra(13.99f)
-                .precioVenta(17.49f)
+                .precioCompra(55900f)
+                .precioVenta(69900f)
                 .unidadesDisponibles(40)
                 .unidadesVendidas(7)
                 .build()
@@ -1330,10 +1330,10 @@ public class DataBaseInit implements ApplicationRunner {
         medicamentoRepository.saveAll(medicamentos);
 
         // Creación de una factura
-        Factura factura = new Factura(null, new Date(), 45f, false, "Efectivo", cliente1 , tratamientos.get(1), null,null );
+        Factura factura = new Factura(null, new Date(), 95000f, false, "Efectivo", cliente1 , tratamientos.get(1), null,null );
         facturaRepository.save(factura);
 
-        Factura factura2 = new Factura(null, new Date(), 45f, false, "Efectivo", cliente2 , tratamientos.get(2), null,null );
+        Factura factura2 = new Factura(null, new Date(), 95000f, false, "Efectivo", cliente2 , tratamientos.get(2), null,null );
         facturaRepository.save(factura2);
 
         // Asociar tratamientos con múltiples medicamentos distintos

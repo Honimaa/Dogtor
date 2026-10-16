@@ -38,7 +38,7 @@
           </td>
           <td>{{ factura.idFactura }}</td>
           <td>{{ factura.fechaHora | date:'dd/MM/yyyy HH:mm' }}</td>
-          <td>{{ factura.total | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td>{{ factura.total | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
           <td>
             <span class="badge" [ngClass]="{
               'badge-success': factura.pagada,

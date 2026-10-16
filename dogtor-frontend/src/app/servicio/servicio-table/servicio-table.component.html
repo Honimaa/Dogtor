@@ -29,7 +29,7 @@
           <td class="servicio-id">{{ servicio.idServicio }}</td>
           <td class="servicio-nombre">{{ servicio.nombre }}</td>
           <td class="servicio-descripcion">{{ servicio.descripcion }}</td>
-          <td class="servicio-precio">{{ servicio.precioBase | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="servicio-precio">{{ servicio.precioBase | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
         </tr>
         <tr *ngIf="servicios.length === 0">
           <td colspan="4" class="no-results">No hay servicios registrados</td>

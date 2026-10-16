@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import { InventarioAlertasComponent } from '../inventario-alertas/inventario-alertas.component';
 import { MedicamentoInventario, mensajeError } from 'src/app/model/dogtor';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 
 @Component({
@@ -21,12 +22,14 @@ export class MedicamentoTableComponent implements OnInit {
   // Dogtor: entradas de inventario
   @ViewChild('alertas') alertas?: InventarioAlertasComponent;
   entrada: MedicamentoInventario | MedicamentoCL | null = null;
-  formEntrada = { cantidad: 0, lote: '', fechaVencimiento: '', stockMinimo: 10, categoria: 'MEDICAMENTO' };
+  esNuevo = false;
+  formEntrada = { nombre: '', precioCompra: 0, precioVenta: 0, cantidad: 0, lote: '', fechaVencimiento: '', stockMinimo: 10, categoria: 'MEDICAMENTO' };
   guardandoEntrada = false;
   errorEntrada = '';
 
   constructor(
     private medicamentoService: MedicamentoService,
+    private notificacion: NotificacionService,
     private router: Router
   ) { }
 
@@ -109,10 +112,21 @@ export class MedicamentoTableComponent implements OnInit {
     return dias < 0 ? 'vencido' : dias <= 60 ? 'porVencer' : 'ok';
   }
 
+  abrirNuevo(): void {
+    this.esNuevo = true;
+    this.errorEntrada = '';
+    this.entrada = { idMedicamento: 0, nombre: '', precioCompra: 0, precioVenta: 0, unidadesDisponibles: 0, unidadesVendidas: 0 };
+    this.formEntrada = { nombre: '', precioCompra: 0, precioVenta: 0, cantidad: 0, lote: '', fechaVencimiento: '', stockMinimo: 5, categoria: 'MEDICAMENTO' };
+  }
+
   abrirEntrada(m: MedicamentoInventario | MedicamentoCL): void {
+    this.esNuevo = false;
     this.entrada = m;
     this.errorEntrada = '';
     this.formEntrada = {
+      nombre: m.nombre,
+      precioCompra: m.precioCompra,
+      precioVenta: m.precioVenta,
       cantidad: 0,
       lote: m.lote || '',
       fechaVencimiento: m.fechaVencimiento ? m.fechaVencimiento.slice(0, 10) : '',
@@ -125,19 +139,31 @@ export class MedicamentoTableComponent implements OnInit {
     if (!this.entrada) {
       return;
     }
-    if (this.formEntrada.cantidad < 0 || this.formEntrada.stockMinimo < 0) {
-      this.errorEntrada = 'Las cantidades no pueden ser negativas.';
+    if (this.formEntrada.cantidad < 0 || this.formEntrada.stockMinimo < 0
+        || this.formEntrada.precioCompra < 0 || this.formEntrada.precioVenta < 0) {
+      this.errorEntrada = 'Las cantidades y los precios no pueden ser negativos.';
+      return;
+    }
+    if (!this.formEntrada.nombre?.trim()) {
+      this.errorEntrada = 'El nombre del producto es obligatorio.';
       return;
     }
     this.guardandoEntrada = true;
     const datos: Partial<MedicamentoInventario> = {
+      nombre: this.formEntrada.nombre.trim(),
+      precioCompra: this.formEntrada.precioCompra,
+      precioVenta: this.formEntrada.precioVenta,
       lote: this.formEntrada.lote,
       stockMinimo: this.formEntrada.stockMinimo,
       categoria: this.formEntrada.categoria,
       fechaVencimiento: this.formEntrada.fechaVencimiento || null
     };
-    this.medicamentoService.actualizarInventario(this.entrada.idMedicamento, datos, this.formEntrada.cantidad || 0).subscribe({
+    const peticion = this.esNuevo
+      ? this.medicamentoService.crearProducto({ ...datos, unidadesDisponibles: this.formEntrada.cantidad || 0 })
+      : this.medicamentoService.actualizarInventario(this.entrada.idMedicamento, datos, this.formEntrada.cantidad || 0);
+    peticion.subscribe({
       next: () => {
+        this.notificacion.exito(this.esNuevo ? `"${datos.nombre}" se agregó al inventario.` : `"${datos.nombre}" se actualizó.`);
         this.guardandoEntrada = false;
         this.entrada = null;
         this.cargarMedicamentos();

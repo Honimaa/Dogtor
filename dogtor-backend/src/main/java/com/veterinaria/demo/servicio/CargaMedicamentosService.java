@@ -52,13 +52,8 @@ public class CargaMedicamentosService {
         }
     }
 
-    // Tasa de referencia para convertir los precios del CSV (en pesos colombianos) a dólares
-    private static final float COP_POR_USD = 4000f;
-
+    // Los precios del CSV están en pesos colombianos (p. ej. "$151,300")
     private Float parsePrecio(String texto) {
-        float pesos = Float.parseFloat(texto.replace("$", "").replace(",", "").replace("\"", "").trim());
-        // Precio en dólares redondeado a valores comerciales (terminados en .49 o .99)
-        float dolares = Math.max(0.99f, Math.round(pesos / COP_POR_USD * 2) / 2f - 0.01f);
-        return Math.round(dolares * 100) / 100f;
+        return Float.parseFloat(texto.replace("$", "").replace(",", "").replace("\"", "").trim());
     }
 }

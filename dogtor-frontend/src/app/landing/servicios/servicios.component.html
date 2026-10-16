@@ -12,7 +12,7 @@
         <!-- Reverso -->
         <div class="back">
           <p>{{ servicio.descripcion }}</p>
-          <div class="precio">Precio base: {{ servicio.precioBase | currency }}</div>
+          <div class="precio">Precio base: {{ servicio.precioBase | currency:'COP':'symbol-narrow':'1.0-0' }}</div>
         </div>
       </div>
     </div>

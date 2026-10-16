@@ -38,6 +38,10 @@ export class MedicamentoService {
     return this.http.get<AlertasInventario>(`${this.baseUrl}/alertas`, { params: { dias } });
   }
 
+  crearProducto(datos: Partial<MedicamentoInventario>): Observable<MedicamentoInventario> {
+    return this.http.post<MedicamentoInventario>(`${this.baseUrl}`, datos);
+  }
+
   actualizarInventario(id: number, datos: Partial<MedicamentoInventario>, entrada: number = 0): Observable<MedicamentoInventario> {
     return this.http.put<MedicamentoInventario>(`${this.baseUrl}/${id}/inventario`, datos, { params: { entrada } });
   }
