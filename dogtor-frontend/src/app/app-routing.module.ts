@@ -35,8 +35,6 @@ import { ServiciosComponent } from './landing/servicios/servicios.component';
 import { FacturaTableComponent } from './factura/factura-table/factura-table.component';
 import { QuienesSomosComponent } from './landing/quienes-somos/quienes-somos.component';
 import { ClientesDestacadosComponent } from './landing/clientes-destacados/clientes-destacados.component';
-import { LoginClienteComponent } from './login/login-cliente/login-cliente.component';
-import { LoginVeterinarioComponent } from './login/login-veterinario/login-veterinario.component';
 import { AdopcionCatalogoComponent } from './adopcion/adopcion-catalogo/adopcion-catalogo.component';
 import { AdopcionAdminComponent } from './adopcion/adopcion-admin/adopcion-admin.component';
 import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-page.component';

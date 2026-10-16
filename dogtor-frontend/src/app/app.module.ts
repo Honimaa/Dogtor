@@ -59,8 +59,6 @@ import { PreguntasComponent } from './landing/preguntas/preguntas.component';
 import { QuienesSomosComponent } from './landing/quienes-somos/quienes-somos.component';
 import { ClientesDestacadosComponent } from './landing/clientes-destacados/clientes-destacados.component';
 import { ContactanosComponent } from './landing/contactanos/contactanos.component';
-import { LoginClienteComponent } from './login/login-cliente/login-cliente.component';
-import { LoginVeterinarioComponent } from './login/login-veterinario/login-veterinario.component';
 import { AdopcionCatalogoComponent } from './adopcion/adopcion-catalogo/adopcion-catalogo.component';
 import { AdopcionAdminComponent } from './adopcion/adopcion-admin/adopcion-admin.component';
 import { AdopcionDestacadaComponent } from './landing/adopcion-destacada/adopcion-destacada.component';
@@ -147,8 +145,6 @@ registerLocaleData(localeEsCO, 'es-CO');
     QuienesSomosComponent,
     ClientesDestacadosComponent,
     ContactanosComponent,
-    LoginClienteComponent,
-    LoginVeterinarioComponent,
     AdopcionCatalogoComponent,
     AdopcionAdminComponent,
     AdopcionDestacadaComponent,

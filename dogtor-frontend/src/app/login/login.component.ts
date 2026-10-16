@@ -31,11 +31,7 @@ export class LoginComponent implements OnInit {
     private veterinarioService:VeterinarioService
   ) {}
 
-  ngOnInit(): void {
-    // Datos de prueba
-    this.username = 'carlosg';
-    this.password = 'pass2';
-  }
+  ngOnInit(): void {}
 
    onSubmit() {
     this.errorMessage = '';

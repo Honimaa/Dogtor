@@ -1,6 +1,7 @@
 package com.veterinaria.demo.entidad;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,8 @@ public class UserEntity {
 
     private String username;
 
+    // Se recibe al iniciar sesión pero nunca se envía en las respuestas (ni siquiera el hash)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     
     @Builder.Default
