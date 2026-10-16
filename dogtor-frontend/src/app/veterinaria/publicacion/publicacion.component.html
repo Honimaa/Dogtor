@@ -114,6 +114,12 @@
               {{ pub.tipo === 'PERDIDA' ? 'Ya apareció' : 'Ya volvió con su dueño' }}
             </button>
           </div>
+
+          <div class="acciones" *ngIf="pub.resuelta && puedeResolver(pub)">
+            <button type="button" class="reabrir" (click)="reabrir(pub)">
+              <ion-icon name="arrow-undo-outline"></ion-icon> Reabrir aviso
+            </button>
+          </div>
         </div>
       </div>
     </div>

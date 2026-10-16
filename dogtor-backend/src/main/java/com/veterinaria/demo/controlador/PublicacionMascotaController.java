@@ -56,14 +56,24 @@ public class PublicacionMascotaController {
 
     @PutMapping("/{id}/resuelta")
     public ResponseEntity<PublicacionMascota> marcarResuelta(@PathVariable Integer id) {
+        return cambiarEstado(id, true);
+    }
+
+    // Por si el autor marcó "Ya apareció" por error: el aviso vuelve a quedar activo
+    @PutMapping("/{id}/reabrir")
+    public ResponseEntity<PublicacionMascota> reabrir(@PathVariable Integer id) {
+        return cambiarEstado(id, false);
+    }
+
+    private ResponseEntity<PublicacionMascota> cambiarEstado(Integer id, boolean resuelta) {
         PublicacionMascota publicacion = publicacionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publicación no encontrada"));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean esAdmin = auth.getAuthorities().stream().anyMatch(a -> "ADMIN".equals(a.getAuthority()));
         if (!esAdmin && !auth.getName().equals(publicacion.getAutorUsuario())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo quien publicó el aviso puede marcarlo como resuelto");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo quien publicó el aviso puede cambiar su estado");
         }
-        publicacion.setResuelta(true);
+        publicacion.setResuelta(resuelta);
         return ResponseEntity.ok(publicacionRepository.save(publicacion));
     }
 

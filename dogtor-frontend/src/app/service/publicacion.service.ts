@@ -22,4 +22,8 @@ export class PublicacionService {
   marcarResuelta(id: number): Observable<Publicacion> {
     return this.http.put<Publicacion>(`${this.baseUrl}/${id}/resuelta`, null);
   }
+
+  reabrir(id: number): Observable<Publicacion> {
+    return this.http.put<Publicacion>(`${this.baseUrl}/${id}/reabrir`, null);
+  }
 }

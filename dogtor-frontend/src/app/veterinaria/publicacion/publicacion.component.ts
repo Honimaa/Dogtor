@@ -119,6 +119,20 @@ export class PublicacionComponent implements OnInit {
     });
   }
 
+  reabrir(pub: Publicacion): void {
+    const id = pub.idPublicacion;
+    if (!id) {
+      return;
+    }
+    this.publicacionService.reabrir(id).subscribe({
+      next: () => {
+        pub.resuelta = false;
+        this.notificacion.exito('El aviso volvió a estar activo.');
+      },
+      error: (err) => this.notificacion.error(mensajeError(err, 'No se pudo reabrir el aviso.'))
+    });
+  }
+
   // Comprime la foto a máximo 700 px para que la publicación cargue rápido
   convertirImagen(event: Event): void {
     const archivo = (event.target as HTMLInputElement).files?.[0];

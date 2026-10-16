@@ -364,3 +364,25 @@ button[type="submit"]:hover {
 .resolver:hover {
   transform: translateY(-2px) scale(1.03);
 }
+
+/* Deshacer "Ya apareció" */
+.tarjeta .reabrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 2px solid #1d95db;
+  background: #fff;
+  color: #1d95db;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tarjeta .reabrir:hover {
+  background: #e0f2fe;
+}
+
+.tarjeta.resuelta:has(.reabrir) {
+  opacity: 1;
+}
