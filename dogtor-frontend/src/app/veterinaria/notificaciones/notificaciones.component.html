@@ -1,0 +1,27 @@
+<!-- Avisos -->
+<div class="avisos" aria-live="polite">
+  <div class="aviso" *ngFor="let a of notificacion.avisos$ | async" [ngClass]="a.tipo" role="status">
+    <ion-icon [name]="icono(a.tipo)"></ion-icon>
+    <span>{{ a.mensaje }}</span>
+    <button type="button" (click)="notificacion.cerrar(a.id)" aria-label="Cerrar">
+      <ion-icon name="close-outline"></ion-icon>
+    </button>
+  </div>
+</div>
+
+<!-- Confirmación -->
+<div class="fondo" *ngIf="notificacion.confirmacion$ | async as c" (click)="c.resolver(false)">
+  <div class="dialogo" role="alertdialog" aria-modal="true" [attr.aria-label]="c.titulo" (click)="$event.stopPropagation()">
+    <div class="dialogo-icono" [class.peligro]="c.peligro">
+      <ion-icon [name]="c.peligro ? 'alert-circle-outline' : 'help-circle-outline'"></ion-icon>
+    </div>
+    <h3>{{ c.titulo }}</h3>
+    <p>{{ c.mensaje }}</p>
+    <div class="acciones">
+      <button type="button" class="cancelar" (click)="c.resolver(false)">{{ c.textoCancelar }}</button>
+      <button type="button" class="confirmar" [class.peligro]="c.peligro" (click)="c.resolver(true)">
+        {{ c.textoConfirmar }}
+      </button>
+    </div>
+  </div>
+</div>

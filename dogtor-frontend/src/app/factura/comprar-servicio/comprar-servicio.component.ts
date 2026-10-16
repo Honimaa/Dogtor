@@ -6,6 +6,7 @@ import { FacturaService } from 'src/app/service/factura.service';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClienteCL } from 'src/app/model/cliente-cl';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 @Component({
   selector: 'app-comprar-servicio',
   templateUrl: './comprar-servicio.component.html',
@@ -17,7 +18,8 @@ export class ComprarServicioComponent implements OnInit {
   metodoPagoSeleccionado: string | null = null;
   Cliente!: ClienteCL;
   Servicio!: ServicioCL;
-  constructor(private facturaService: FacturaService,
+  constructor(
+    private notificacion: NotificacionService,private facturaService: FacturaService,
               private servicioService: ServicioService,
               private clienteService: ClienteService,
               private route: ActivatedRoute,
@@ -58,7 +60,7 @@ export class ComprarServicioComponent implements OnInit {
 
   generarFactura() {
     if (!this.servicioSeleccionadoId || !this.metodoPagoSeleccionado) {
-      alert('Debe seleccionar un servicio y un método de pago');
+      this.notificacion.advertencia('Debe seleccionar un servicio y un método de pago');
       this.servicioService.obtenerServicioPorId(this.servicioSeleccionadoId!).subscribe({
         next: (serviciodata) => {
           this.Servicio = serviciodata;
@@ -88,12 +90,12 @@ export class ComprarServicioComponent implements OnInit {
       .crearFacturaPorServicio(this.Cliente.idCliente, this.servicioSeleccionadoId, factura)
       .subscribe({
         next: (res) => {
-          alert('Factura creada con éxito')
+          this.notificacion.exito('Factura creada con éxito')
           console.log('Factura creada:', res);
           this.router.navigate(['/facturas/cliente', this.Cliente.idCliente]);
         },
         error: (err) => {
-          alert('Error al crear factura')
+          this.notificacion.error('Error al crear factura')
           console.error('Error al crear la factura', err);},
       });
   }

@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { ClienteCL } from 'src/app/model/cliente-cl';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-cliente-form',
@@ -24,6 +25,7 @@ export class ClienteFormComponent implements OnInit {
   confirmPassword: string = '';
 
   constructor(
+    private notificacion: NotificacionService,
     private clienteService: ClienteService,
     private route: ActivatedRoute,
     private router: Router
@@ -50,7 +52,7 @@ export class ClienteFormComponent implements OnInit {
 
     if (this.clienteForm.valid) {
       if (this.Formcliente.contrasena !== this.confirmPassword) {
-        alert('Las contraseñas no coinciden');
+        this.notificacion.advertencia('Las contraseñas no coinciden');
         return;
       }
 
@@ -68,7 +70,7 @@ export class ClienteFormComponent implements OnInit {
           },
           (error) => {
             console.error('Error al crear cliente', error);
-            alert('Error: ' + error.error);
+            this.notificacion.error('Error: ' + error.error);
           }
         );
       }

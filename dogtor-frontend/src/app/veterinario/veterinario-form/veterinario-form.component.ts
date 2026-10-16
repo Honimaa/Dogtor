@@ -4,6 +4,7 @@ import { VeterinarioCL } from 'src/app/model/veterinario-cl';
 import { VeterinarioService } from 'src/app/service/veterinario.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { NotificacionService } from 'src/app/service/notificacion.service';
 @Component({
   selector: 'app-veterinario-form',
   templateUrl: './veterinario-form.component.html',
@@ -17,6 +18,7 @@ export class VeterinarioFormComponent implements OnInit {
   sedes = ['Los Pinos', 'Patitas Felices', 'Huellas'];
 
   constructor(
+    private notificacion: NotificacionService,
     private veterinarioService: VeterinarioService,
     private route: ActivatedRoute,
     private router: Router
@@ -40,7 +42,7 @@ export class VeterinarioFormComponent implements OnInit {
 
     if (this.veterinarioForm.valid) {
       if (this.FormVeterinario.contrasena !== this.confirmPassword) {
-        alert('Las contraseñas no coinciden');
+        this.notificacion.advertencia('Las contraseñas no coinciden');
         return;
       }
 

@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { ServicioService } from 'src/app/service/servicio.service';
 import { ServicioCL } from 'src/app/model/servicio-cl';
 import { ClienteService } from 'src/app/service/cliente.service';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-testimonio',
@@ -23,6 +24,7 @@ export class TestimonioFormComponent implements OnInit {
   idCliente: number = 0;
 
   constructor(
+    private notificacion: NotificacionService,
     private testimonioService: TestimonioService,
     private clienteService:ClienteService,
     private authService: AuthService,
@@ -93,7 +95,7 @@ export class TestimonioFormComponent implements OnInit {
     // Enviar testimonio
     this.testimonioService.crearTestimonio(this.testimonio).subscribe({
       next: () => {
-        alert('¡Gracias por tu testimonio!');
+        this.notificacion.exito('¡Gracias por tu testimonio!');
         this.testimonioForm.resetForm(); // Resetea el formulario y su estado de validación
         this.testimonio = new TestimonioCreateCL(); // Resetea el modelo también
         this.hoverValue = 0; // Resetea las estrellas (calificación)

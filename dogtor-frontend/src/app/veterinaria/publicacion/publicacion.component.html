@@ -10,12 +10,24 @@
   <!-- 1. Publicar -->
   <section class="bloque">
     <h3>1. Publica un aviso</h3>
-    <div class="selector-modo">
+    <div class="selector-modo" *ngIf="sesionIniciada">
       <button type="button" [class.activo]="modoPublicacion === 'PERDIDA'" (click)="cambiarModo('PERDIDA')">Perdí a mi mascota</button>
       <button type="button" [class.activo]="modoPublicacion === 'ENCONTRADA'" (click)="cambiarModo('ENCONTRADA')">Encontré una mascota</button>
     </div>
 
-    <form (ngSubmit)="guardarPublicacion()" class="formulario">
+    <div class="requiere-sesion" *ngIf="!sesionIniciada">
+      <ion-icon name="lock-closed-outline"></ion-icon>
+      <div>
+        <strong>Inicia sesión para publicar un aviso</strong>
+        <p>Así sabemos quién publicó cada aviso y solo esa persona puede marcarlo como resuelto. Consultar los avisos no requiere cuenta.</p>
+        <div class="botones-sesion">
+          <a routerLink="/inicio-sesion" class="boton-sesion">Iniciar sesión</a>
+          <a routerLink="/registro" class="boton-sesion secundario">Crear cuenta</a>
+        </div>
+      </div>
+    </div>
+
+    <form *ngIf="sesionIniciada" (ngSubmit)="guardarPublicacion()" class="formulario">
       <div class="fila">
         <input type="text" [placeholder]="modoPublicacion === 'PERDIDA' ? 'Nombre de tu mascota' : 'Nombre (si tiene placa)'"
                [(ngModel)]="nueva.nombreMascota" name="nombre">
@@ -74,7 +86,13 @@
     <p class="vacio" *ngIf="!cargando && !publicacionesFiltradas.length">No hay avisos en esta categoría por ahora.</p>
 
     <div class="tarjetas">
-      <div class="tarjeta" *ngFor="let pub of publicacionesFiltradas" [class.resuelta]="pub.resuelta">
+      <div class="tarjeta" *ngFor="let pub of publicacionesFiltradas" [class.resuelta]="pub.resuelta"
+           [class.celebrando]="celebrando.has(pub.idPublicacion!)">
+        <div class="celebracion" *ngIf="celebrando.has(pub.idPublicacion!)" aria-live="polite">
+          <span class="huella h1">🐾</span><span class="huella h2">💙</span><span class="huella h3">🐾</span>
+          <span class="huella h4">💛</span><span class="huella h5">🐾</span><span class="huella h6">💙</span>
+          <strong>¡Reencuentro!</strong>
+        </div>
         <img [src]="pub.foto || 'assets/mascota-placeholder.svg'" alt="Foto de la mascota" />
         <div class="info">
           <span class="badge" [ngClass]="pub.tipo === 'PERDIDA' ? 'badge-busqueda' : 'badge-hallazgo'">
@@ -92,7 +110,7 @@
 
           <div class="acciones" *ngIf="!pub.resuelta">
             <a class="contactar" [href]="enlaceWhatsapp(pub)" target="_blank" rel="noopener">Contactar por WhatsApp</a>
-            <button type="button" (click)="marcarResuelta(pub)">
+            <button type="button" class="resolver" *ngIf="puedeResolver(pub)" (click)="marcarResuelta(pub)">
               {{ pub.tipo === 'PERDIDA' ? 'Ya apareció' : 'Ya volvió con su dueño' }}
             </button>
           </div>

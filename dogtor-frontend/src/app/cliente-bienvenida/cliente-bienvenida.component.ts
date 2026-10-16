@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 import { AuthService } from 'src/app/service/auth.service'; // Ajusta la ruta si es diferente
 
 @Component({
@@ -20,7 +21,8 @@ export class ClienteBienvenidaComponent implements OnInit {
     'https://images.unsplash.com/photo-1623387641168-d9803ddd3f35?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVycm9zJTIweSUyMGdhdG9zfGVufDB8fDB8fHww'
   ];
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private notificacion: NotificacionService,private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.nombreCliente = this.authService.getUserName();
@@ -64,7 +66,7 @@ export class ClienteBienvenidaComponent implements OnInit {
   }
 
   toggleGaleria(): void {
-    alert('¡Abrir galería completa!'); // Aquí podrías mostrar un modal, por ejemplo
+    this.notificacion.advertencia('¡Abrir galería completa!'); // Aquí podrías mostrar un modal, por ejemplo
   }
 
 

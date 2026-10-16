@@ -3,6 +3,7 @@ import { AdopcionService } from 'src/app/service/adopcion.service';
 import {
   EstadoSolicitud, MascotaAdopcion, Refugio, SolicitudAdopcion, edadLegible, mensajeError
 } from 'src/app/model/dogtor';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 type Pestana = 'solicitudes' | 'mascotas' | 'refugios';
 
@@ -40,7 +41,8 @@ export class AdopcionAdminComponent implements OnInit {
     { valor: 'RECHAZADA', etiqueta: 'Rechazada' }
   ];
 
-  constructor(private adopcionService: AdopcionService) {}
+  constructor(
+    private notificacion: NotificacionService,private adopcionService: AdopcionService) {}
 
   ngOnInit(): void {
     this.cargarTodo();
@@ -75,10 +77,13 @@ export class AdopcionAdminComponent implements OnInit {
 
   // ---------- Solicitudes ----------
 
-  cambiarEstado(solicitud: SolicitudAdopcion, estado: EstadoSolicitud): void {
-    if (estado === 'APROBADA' &&
-        !confirm(`¿Confirmas la adopción de ${solicitud.mascotaAdopcion?.nombre} por ${solicitud.nombreSolicitante}? ` +
-                 'La mascota saldrá del catálogo y las demás solicitudes se rechazarán.')) {
+  async cambiarEstado(solicitud: SolicitudAdopcion, estado: EstadoSolicitud): Promise<void> {
+    if (estado === 'APROBADA' && !(await this.notificacion.confirmar({
+      titulo: 'Confirmar adopción',
+      mensaje: `¿Confirmas la adopción de ${solicitud.mascotaAdopcion?.nombre} por ${solicitud.nombreSolicitante}? ` +
+               'La mascota saldrá del catálogo y las demás solicitudes se rechazarán.',
+      textoConfirmar: 'Sí, aprobar'
+    }))) {
       return;
     }
     this.limpiarMensajes();

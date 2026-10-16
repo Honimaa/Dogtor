@@ -1,0 +1,157 @@
+.avisos {
+  position: fixed;
+  top: 88px;
+  right: 20px;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(380px, calc(100vw - 40px));
+}
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border-left: 5px solid var(--dt-brand-700);
+  box-shadow: 0 12px 30px rgba(42, 78, 104, 0.18);
+  color: var(--dt-ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: entrar 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.aviso > ion-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  color: var(--dt-brand-700);
+}
+
+.aviso span {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.aviso button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--dt-muted);
+  font-size: 1.1rem;
+  padding: 0;
+}
+
+.aviso.exito { border-left-color: var(--dt-success); }
+.aviso.exito > ion-icon { color: var(--dt-success); }
+.aviso.error { border-left-color: var(--dt-danger); }
+.aviso.error > ion-icon { color: var(--dt-danger); }
+.aviso.advertencia { border-left-color: var(--dt-gold-500); }
+.aviso.advertencia > ion-icon { color: var(--dt-gold-600); }
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateX(40px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 3100;
+  background: rgba(18, 41, 58, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: aparecer 0.2s ease both;
+}
+
+.dialogo {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 22px;
+  padding: 1.75rem 1.5rem 1.4rem;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(18, 41, 58, 0.3);
+  animation: subir 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.dialogo-icono {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--dt-brand-50);
+  color: var(--dt-brand-700);
+  font-size: 2.2rem;
+}
+
+.dialogo-icono.peligro {
+  background: var(--dt-danger-bg);
+  color: var(--dt-danger);
+}
+
+.dialogo h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.3rem;
+}
+
+.dialogo p {
+  margin: 0 0 1.4rem;
+  color: var(--dt-muted);
+}
+
+.acciones {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+.acciones button {
+  flex: 1;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  font-family: var(--dt-font-head);
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid var(--dt-brand-700);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.cancelar {
+  background: #fff;
+  color: var(--dt-brand-700);
+}
+
+.cancelar:hover {
+  background: var(--dt-brand-50);
+}
+
+.confirmar {
+  background: var(--dt-brand-700);
+  color: #fff;
+}
+
+.confirmar:hover {
+  transform: translateY(-1px);
+}
+
+.confirmar.peligro {
+  background: var(--dt-danger);
+  border-color: var(--dt-danger);
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes subir {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: none; }
+}

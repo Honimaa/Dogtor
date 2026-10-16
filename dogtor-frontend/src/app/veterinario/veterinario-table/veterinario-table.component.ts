@@ -4,6 +4,7 @@ import { VeterinarioService } from 'src/app/service/veterinario.service';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class VeterinarioTableComponent implements OnInit {
 
 
   constructor(
+    private notificacion: NotificacionService,
     private veterinarioService: VeterinarioService,
     private router: Router
   ) {}
@@ -41,8 +43,8 @@ export class VeterinarioTableComponent implements OnInit {
     this.router.navigate(['/detalles-veterinario', id]);
   }
 
-  eliminarVeterinario(id: number): void {
-    if (confirm('¿Está seguro de desactivar este veterinario?')) {
+  async eliminarVeterinario(id: number): Promise<void> {
+    if (await this.notificacion.confirmar({ titulo: 'Cambiar estado del doctor', mensaje: '¿Está seguro de cambiar el estado de este doctor?', textoConfirmar: 'Sí, continuar' })) {
       this.veterinarioService.cambiarEstadoVeterinario(id).subscribe({
         next: (response: any) => {
           console.log('Respuesta del servidor:', response);

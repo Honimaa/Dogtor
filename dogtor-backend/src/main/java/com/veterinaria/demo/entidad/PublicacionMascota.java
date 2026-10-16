@@ -44,6 +44,9 @@ public class PublicacionMascota {
     @Column(length = 1000000)
     private String foto;
 
+    // Usuario que publicó el aviso: solo él (o un administrador) puede marcarlo como resuelto
+    private String autorUsuario;
+
     @Column(nullable = false)
     private String contactoNombre;
 

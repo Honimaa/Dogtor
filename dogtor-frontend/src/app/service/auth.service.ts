@@ -54,6 +54,20 @@ export class AuthService {
     return !!this.getUser();
   }
 
+  /** Nombre de usuario de la sesión, leído del token JWT (campo "sub"). */
+  getUsername(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return null;
+    }
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      return payload.sub || null;
+    } catch {
+      return null;
+    }
+  }
+
   /** Nuevo método para buscar el id del cliente por nombre de usuario */
   obtenerIdClientePorNombreUsuario(nombreUsuario: string): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/idClientePorNombreUsuario/${nombreUsuario}`);

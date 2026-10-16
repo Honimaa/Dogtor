@@ -7,6 +7,7 @@ import { HistoriaClinicaService } from 'src/app/service/historia-clinica.service
 import { AuthService } from 'src/app/service/auth.service';
 import { MascotaCL } from 'src/app/model/mascota-cl';
 import { EventoClinico, TIPOS_EVENTO, TipoEventoClinico, mensajeError } from 'src/app/model/dogtor';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -34,6 +35,7 @@ export class HistoriaClinicaComponent implements OnInit {
   tipos = TIPOS_EVENTO;
 
   constructor(
+    private notificacion: NotificacionService,
     private route: ActivatedRoute,
     private mascotaService: MascotaService,
     private historiaService: HistoriaClinicaService,
@@ -117,8 +119,13 @@ export class HistoriaClinicaComponent implements OnInit {
     });
   }
 
-  eliminar(evento: EventoClinico): void {
-    if (!evento.idEvento || !confirm(`¿Eliminar "${evento.titulo}" de la historia clínica?`)) {
+  async eliminar(evento: EventoClinico): Promise<void> {
+    if (!evento.idEvento || !(await this.notificacion.confirmar({
+      titulo: 'Eliminar evento',
+      mensaje: `¿Eliminar "${evento.titulo}" de la historia clínica? Esta acción no se puede deshacer.`,
+      textoConfirmar: 'Eliminar',
+      peligro: true
+    }))) {
       return;
     }
     this.historiaService.eliminarEvento(evento.idEvento).subscribe({
@@ -126,7 +133,7 @@ export class HistoriaClinicaComponent implements OnInit {
         this.cargar();
         this.cargarAlergias();
       },
-      error: (err) => alert(mensajeError(err, 'No se pudo eliminar el evento.'))
+      error: (err) => this.notificacion.error(mensajeError(err, 'No se pudo eliminar el evento.'))
     });
   }
 

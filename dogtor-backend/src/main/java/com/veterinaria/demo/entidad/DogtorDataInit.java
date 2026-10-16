@@ -260,19 +260,19 @@ public class DogtorDataInit implements ApplicationRunner {
                         .descripcion("Beagle macho de 3 años, collar rojo con placa. Responde a su nombre y es muy amigable.")
                         .lugar("Parque El Virrey, cerca a la carrera 15").ciudad("Bogotá").fechaSuceso(dias(-2))
                         .foto("https://images.dog.ceo/breeds/beagle/n02088364_959.jpg")
-                        .contactoNombre("Natalia Ochoa").contactoTelefono("3104458812")
+                        .autorUsuario("carlosg").contactoNombre("Carlos Gómez").contactoTelefono("3104458812")
                         .fechaPublicacion(dias(-2)).resuelta(false).build(),
                 PublicacionMascota.builder().tipo("ENCONTRADA").nombreMascota("").especie("Gato")
                         .descripcion("Gata atigrada joven, muy dócil. Tiene collar azul sin placa. La tengo en casa a salvo.")
                         .lugar("Barrio Chapinero Alto, calle 57").ciudad("Bogotá").fechaSuceso(dias(-1))
                         .foto("https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600")
-                        .contactoNombre("Julián Prieto").contactoTelefono("3157720190")
+                        .autorUsuario("juanp").contactoNombre("Julián Prieto").contactoTelefono("3157720190")
                         .fechaPublicacion(dias(-1)).resuelta(false).build(),
                 PublicacionMascota.builder().tipo("PERDIDA").nombreMascota("Nieve").especie("Perro")
                         .descripcion("Husky hembra de ojos azules, se asustó con pólvora y salió corriendo.")
                         .lugar("Conjunto Los Almendros, Envigado").ciudad("Medellín").fechaSuceso(dias(-6))
                         .foto("https://images.dog.ceo/breeds/husky/n02110185_4294.jpg")
-                        .contactoNombre("Camila Restrepo").contactoTelefono("3006612094")
+                        .autorUsuario("luciam").contactoNombre("Camila Restrepo").contactoTelefono("3006612094")
                         .fechaPublicacion(dias(-6)).resuelta(true).build()
         ));
     }

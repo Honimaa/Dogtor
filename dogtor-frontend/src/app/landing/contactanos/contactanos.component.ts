@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, Renderer2 } from '@angular/core';
 import emailjs from 'emailjs-com';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-contactanos',
@@ -12,7 +13,8 @@ export class ContactanosComponent implements AfterViewInit {
   templateID = 'template_2025';
   userID = 'qOciVGceMq0WS14pD';
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private notificacion: NotificacionService,private renderer: Renderer2) {}
 
   sendEmail(formValues: { name: string; email: string; title: string; message: string }, form: any) {
     emailjs.send(this.serviceID, this.templateID, {
@@ -23,11 +25,11 @@ export class ContactanosComponent implements AfterViewInit {
     }, this.userID)
     .then((response) => {
       console.log('SUCCESS!', response.status, response.text);
-      alert('Mensaje enviado correctamente, pronto nos pondremos en contacto contigo.');
+      this.notificacion.exito('Mensaje enviado correctamente, pronto nos pondremos en contacto contigo.');
       form.reset();
     }, (error) => {
       console.log('FAILED...', error);
-      alert('Error al enviar el mensaje, intenta de nuevo.');
+      this.notificacion.error('Error al enviar el mensaje, intenta de nuevo.');
     });
   }
 

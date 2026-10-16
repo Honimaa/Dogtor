@@ -7,6 +7,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,7 +17,7 @@ import com.veterinaria.demo.repositorio.PublicacionMascotaRepository;
 
 /**
  * "Dogtor Encuentra": publicaciones públicas de mascotas perdidas y encontradas.
- * No requieren cuenta, para que cualquier persona pueda reportar o buscar.
+ * Cualquiera puede consultar los avisos; publicar y marcarlos como resueltos requiere iniciar sesión.
  */
 @RestController
 @RequestMapping("/publicaciones")
@@ -45,6 +47,7 @@ public class PublicacionMascotaController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El lugar y los datos de contacto son obligatorios");
         }
         publicacion.setIdPublicacion(null);
+        publicacion.setAutorUsuario(SecurityContextHolder.getContext().getAuthentication().getName());
         publicacion.setTipo(tipo);
         publicacion.setResuelta(false);
         publicacion.setFechaPublicacion(new Date());
@@ -55,6 +58,11 @@ public class PublicacionMascotaController {
     public ResponseEntity<PublicacionMascota> marcarResuelta(@PathVariable Integer id) {
         PublicacionMascota publicacion = publicacionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publicación no encontrada"));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean esAdmin = auth.getAuthorities().stream().anyMatch(a -> "ADMIN".equals(a.getAuthority()));
+        if (!esAdmin && !auth.getName().equals(publicacion.getAutorUsuario())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Solo quien publicó el aviso puede marcarlo como resuelto");
+        }
         publicacion.setResuelta(true);
         return ResponseEntity.ok(publicacionRepository.save(publicacion));
     }

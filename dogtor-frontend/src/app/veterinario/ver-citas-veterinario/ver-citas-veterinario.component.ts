@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { CitaService } from 'src/app/service/cita.service';
 import { VeterinarioService } from 'src/app/service/veterinario.service';
 
+import { NotificacionService } from 'src/app/service/notificacion.service';
 @Component({
   selector: 'app-ver-citas-veterinario',
   templateUrl: './ver-citas-veterinario.component.html',
@@ -16,6 +17,7 @@ export class VerCitasVeterinarioComponent implements OnInit {
   isSidebarCollapsed = false;
 
   constructor(
+    private notificacion: NotificacionService,
     private route: ActivatedRoute,
     private router: Router,
     private veterinarioService: VeterinarioService,
@@ -96,13 +98,13 @@ export class VerCitasVeterinarioComponent implements OnInit {
     this.router.navigate(['/editar-cita', idCita]);
   }
 
-  cancelarCita(idCita: number): void {
-    if (confirm('¿Estás seguro de cancelar esta cita?')) {
+  async cancelarCita(idCita: number): Promise<void> {
+    if (await this.notificacion.confirmar({ titulo: 'Cancelar cita', mensaje: '¿Estás seguro de cancelar esta cita?', textoConfirmar: 'Sí, cancelar', textoCancelar: 'Volver', peligro: true })) {
       this.citaService.cancelarCita(idCita).subscribe({
         next: () => this.loadAllCitas(),
         error: (error) => {
           console.error('Error al cancelar cita:', error);
-          alert('Error al cancelar la cita');
+          this.notificacion.error('Error al cancelar la cita');
         }
       });
     }

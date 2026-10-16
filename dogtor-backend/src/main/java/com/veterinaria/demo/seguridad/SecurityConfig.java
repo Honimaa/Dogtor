@@ -39,8 +39,8 @@ public class SecurityConfig {
                         .requestMatchers("/adopcion/admin/**").hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/adopcion", "/adopcion/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/adopcion/*/solicitudes").permitAll()
-                        // Dogtor: "Dogtor Encuentra" (mascotas perdidas y encontradas) es público
-                        .requestMatchers("/publicaciones", "/publicaciones/**").permitAll()
+                        // Dogtor: "Dogtor Encuentra" se consulta sin cuenta; publicar y resolver requiere sesión
+                        .requestMatchers(HttpMethod.GET, "/publicaciones").permitAll()
                         // Dogtor: sedes con urgencias 24h visibles para cualquier propietario
                         .requestMatchers(HttpMethod.GET, "/veterinario/urgencias").permitAll()
                         // Dogtor: solo doctores autorizados modifican la historia clínica (REQ-HCL-07)

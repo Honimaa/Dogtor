@@ -8,6 +8,7 @@
   import { ClienteCL } from 'src/app/model/cliente-cl';
   import { AuthService } from 'src/app/service/auth.service';
   import { forkJoin } from 'rxjs';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 
   @Component({
@@ -26,6 +27,7 @@
     facturasMap: Map<number, FacturaCL | null> = new Map();
     userType: string = '';
     constructor(
+    private notificacion: NotificacionService,
       private facturaService:FacturaService, 
       private clienteService:ClienteService,
       private tratamientoService: TratamientoService,
@@ -122,7 +124,7 @@
 
   facturar(){
     if (!this.metodoDePago) {
-      alert('Seleccione un método de pago.');
+      this.notificacion.advertencia('Seleccione un método de pago.');
       return;
     }
 
@@ -146,7 +148,7 @@
 
         this.facturaService.crearFacturaPorTratamientos(this.idCliente, idsTratamientos, factura).subscribe({
           next: () => {
-            alert('Factura creada con éxito.');
+            this.notificacion.exito('Factura creada con éxito.');
             this.tratamientosSeleccionados = [];
             this.metodoDePago = '';
             window.location.reload();

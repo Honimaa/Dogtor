@@ -7,6 +7,7 @@ import { MedicamentoCL } from 'src/app/model/medicamento-cl';
 import { ClienteService } from 'src/app/service/cliente.service';
 import { FacturaService } from 'src/app/service/factura.service';
 import { MedicamentoService } from 'src/app/service/medicamento.service';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-comprar-medicamentos',
@@ -21,7 +22,8 @@ export class ComprarMedicamentosComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   totalCalculado: number = 0;
-  constructor(private facturaService:FacturaService, 
+  constructor(
+    private notificacion: NotificacionService,private facturaService:FacturaService, 
               private clienteService:ClienteService,
               private medicamentoService:MedicamentoService, 
               private router:Router, 
@@ -106,16 +108,16 @@ medicamentosValidosSeleccionados(): boolean {
 Onsubmit(): void {
   if (this.FacturaForm.invalid) {
     if (!this.FacturaForm.value.metodoPago) {
-      alert('Debe seleccionar un método de pago.');
+      this.notificacion.advertencia('Debe seleccionar un método de pago.');
     } else {
-      alert('Hay campos inválidos en el formulario.');
+      this.notificacion.advertencia('Hay campos inválidos en el formulario.');
     }
     this.showError('Complete todos los campos del formulario.');
     return;
   }
 
   if (!this.canGenerateFactura()) {
-    alert('Debe seleccionar al menos un medicamento y especificar su dosis.');
+    this.notificacion.advertencia('Debe seleccionar al menos un medicamento y especificar su dosis.');
     this.showError('Debe seleccionar al menos un medicamento y especificar su dosis.');
     return;
   }
@@ -151,7 +153,7 @@ Onsubmit(): void {
     },
     error: (err) => {
       console.error('Error al crear la factura', err);
-      alert('Error al crear la factura. ¿Está autenticado? Verifique si ha iniciado sesión.' + err.message);
+      this.notificacion.error('Error al crear la factura. ¿Está autenticado? Verifique si ha iniciado sesión.' + err.message);
       this.showError('Error al crear la factura. Por favor, inténtelo de nuevo.');
     },
     complete: () => this.loading = false

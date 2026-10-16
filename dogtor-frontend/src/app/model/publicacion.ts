@@ -9,6 +9,7 @@ export interface Publicacion {
   ciudad?: string;
   fechaSuceso?: string;
   foto?: string;
+  autorUsuario?: string;
   contactoNombre: string;
   contactoTelefono: string;
   fechaPublicacion?: string;

@@ -1,11 +1,14 @@
 import { Component, OnDestroy } from '@angular/core';
 
+import { NotificacionService } from 'src/app/service/notificacion.service';
 @Component({
   selector: 'app-generador-nombres',
   templateUrl: './generador-nombres.component.html',
   styleUrls: ['./generador-nombres.component.css']
 })
 export class GeneradorNombresComponent implements OnDestroy {
+  constructor(private notificacion: NotificacionService) {}
+
   generoMascota: 'macho' | 'hembra' | null = null;
   nombreGenerado: string | null = null;
 
@@ -45,7 +48,7 @@ export class GeneradorNombresComponent implements OnDestroy {
 
   generarNombre(): void {
     if (!this.generoMascota) {
-      alert('Por favor selecciona si tu mascota es macho o hembra.');
+      this.notificacion.advertencia('Por favor selecciona si tu mascota es macho o hembra.');
       return;
     }
 

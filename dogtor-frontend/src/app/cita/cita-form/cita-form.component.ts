@@ -11,6 +11,7 @@ import { ServicioCL } from 'src/app/model/servicio-cl';
 import { VeterinarioCL } from 'src/app/model/veterinario-cl';
 import { AuthService } from 'src/app/service/auth.service';
 import { mensajeError } from 'src/app/model/dogtor';
+import { NotificacionService } from 'src/app/service/notificacion.service';
 
 @Component({
   selector: 'app-cita-form',
@@ -62,6 +63,7 @@ export class CitaFormComponent implements OnInit {
   estadosCita = ['AGENDADA', 'CONFIRMADA', 'CANCELADA', 'COMPLETADA'];
 
   constructor(
+    private notificacion: NotificacionService,
     private route: ActivatedRoute,
     private router: Router,
     private mascotaService: MascotaService,
@@ -243,7 +245,7 @@ export class CitaFormComponent implements OnInit {
     peticion.subscribe({
       next: () => {
         this.guardando = false;
-        alert(this.modoEdicion ? 'Cita actualizada correctamente' : '¡Cita agendada! Te enviaremos un recordatorio.');
+        this.notificacion.exito(this.modoEdicion ? 'Cita actualizada correctamente' : '¡Cita agendada! Te enviaremos un recordatorio.');
         this.volver();
       },
       error: (err) => {
