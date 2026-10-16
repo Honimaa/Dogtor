@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import jsPDF from 'jspdf';
+import { comprimirImagen } from 'src/app/utils/imagen';
 
 interface Segmento {
   premio: string;
@@ -40,6 +41,14 @@ export class RuletaPremiosComponent {
 
   segmentos: Segmento[] = this.construirSegmentos();
 
+  // Verificación del cumpleaños con el carnet de vacunas (paso previo al giro)
+  carnet: string | null = null;
+  fechaNacimiento = '';
+  verificando = false;
+  verificado = false;
+  errorVerificacion = '';
+  static readonly DIAS_MARGEN = 15;
+
   rotacion = 0;
   girando = false;
   premioGanado: string | null = null;
@@ -50,9 +59,60 @@ export class RuletaPremiosComponent {
   enviado = false;
   codigo = '';
 
+  async subirCarnet(event: Event): Promise<void> {
+    const archivo = (event.target as HTMLInputElement).files?.[0];
+    this.errorVerificacion = '';
+    if (!archivo) {
+      return;
+    }
+    try {
+      this.carnet = await comprimirImagen(archivo, 900, 0.8);
+    } catch {
+      this.errorVerificacion = 'No pudimos leer la imagen del carnet. Intenta con otra foto.';
+    }
+  }
+
+  // El cumpleaños debe estar dentro de los últimos o próximos 15 días
+  verificarCumpleanos(): void {
+    this.errorVerificacion = '';
+    if (!this.carnet) {
+      this.errorVerificacion = 'Sube una foto del carnet de vacunas de tu mascota.';
+      return;
+    }
+    if (!this.fechaNacimiento) {
+      this.errorVerificacion = 'Indica la fecha de nacimiento que aparece en el carnet.';
+      return;
+    }
+    const nacimiento = new Date(this.fechaNacimiento + 'T00:00:00');
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    if (nacimiento > hoy) {
+      this.errorVerificacion = 'La fecha de nacimiento no puede ser futura.';
+      return;
+    }
+    const diferencia = (anio: number) => {
+      const cumple = new Date(anio, nacimiento.getMonth(), nacimiento.getDate());
+      return Math.round((cumple.getTime() - hoy.getTime()) / 86400000);
+    };
+    const dias = [diferencia(hoy.getFullYear() - 1), diferencia(hoy.getFullYear()), diferencia(hoy.getFullYear() + 1)]
+      .reduce((a, b) => Math.abs(a) < Math.abs(b) ? a : b);
+
+    this.verificando = true;
+    setTimeout(() => {
+      this.verificando = false;
+      if (Math.abs(dias) <= RuletaPremiosComponent.DIAS_MARGEN) {
+        this.verificado = true;
+        this.datos.cumpleMascota = this.fechaNacimiento;
+      } else {
+        const cuando = dias > 0 ? `faltan ${dias} días para su cumpleaños` : `su cumpleaños fue hace ${-dias} días`;
+        this.errorVerificacion = `Según el carnet, ${cuando}. La ruleta está disponible 15 días antes o después del cumpleaños.`;
+      }
+    }, 1800);
+  }
+
   girarRuleta(): void {
-    // Un solo giro por mascota
-    if (this.girando || this.premioGanado) {
+    // Un solo giro por mascota y solo con el cumpleaños verificado
+    if (this.girando || this.premioGanado || !this.verificado) {
       return;
     }
     this.girando = true;
@@ -140,8 +200,21 @@ export class RuletaPremiosComponent {
       doc.setFont('helvetica', 'bold');
       doc.text(`${etiqueta}:`, 30, 130 + i * 9);
       doc.setFont('helvetica', 'normal');
-      doc.text(valor, 70, 130 + i * 9, { maxWidth: 115 });
+      doc.text(valor, 70, 130 + i * 9, { maxWidth: 42 });
     });
+
+    // Carnet de vacunas adjunto para la validación del equipo Dogtor
+    if (this.carnet) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor('#2a4e68');
+      doc.text('Carnet de vacunas adjunto:', 140, 118, { align: 'center' });
+      try {
+        doc.addImage(this.carnet, 'JPEG', 118, 122, 44, 44);
+      } catch {
+        // Si la imagen no se puede incrustar, el comprobante sigue siendo válido
+      }
+    }
 
     doc.setDrawColor('#72c0ea');
     doc.setLineWidth(1);

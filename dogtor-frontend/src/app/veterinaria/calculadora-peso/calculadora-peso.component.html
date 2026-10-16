@@ -19,7 +19,7 @@
       <label *ngIf="especie">Raza:
         <select [(ngModel)]="raza">
           <option value="" disabled>Selecciona la raza</option>
-          <option *ngFor="let r of razas" [value]="r.nombre">{{ r.nombre }} ({{ r.min }}–{{ r.max }} kg)</option>
+          <option *ngFor="let r of razas" [value]="r.nombre">{{ r.nombre }}</option>
         </select>
       </label>
 

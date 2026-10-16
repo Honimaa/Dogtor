@@ -3,7 +3,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import localeEs from '@angular/common/locales/es';
+import localeEsCO from '@angular/common/locales/es-CO';
 
 import { NgChartsModule } from 'ng2-charts';
 import { AppRoutingModule } from './app-routing.module';
@@ -90,7 +90,8 @@ import { TestimonioFormComponent } from './cliente/testimonio-form/testimonio-fo
 import { ComprarServicioComponent } from './factura/comprar-servicio/comprar-servicio.component';
 import { ComprarMedicamentosComponent } from './factura/comprar-medicamentos/comprar-medicamentos.component';
 
-registerLocaleData(localeEs);
+// Español de Colombia: fechas en español y precios como "$ 95.000"
+registerLocaleData(localeEsCO, 'es-CO');
 
 
 @NgModule({
@@ -186,7 +187,7 @@ registerLocaleData(localeEs);
     NgChartsModule
   ],
     providers: [
-    { provide: LOCALE_ID, useValue: 'es'},
+    { provide: LOCALE_ID, useValue: 'es-CO'},
     { provide: HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi: true}   
   ],
   bootstrap: [AppComponent],

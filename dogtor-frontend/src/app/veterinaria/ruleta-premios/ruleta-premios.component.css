@@ -156,3 +156,91 @@
   cursor: pointer;
   padding: 0;
 }
+
+/* Paso 1: carnet de vacunas */
+.verificacion {
+  margin-bottom: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f0f9ff;
+  text-align: left;
+}
+
+.verificacion h4 {
+  margin: 0 0 4px;
+  color: #2a4e68;
+}
+
+.subir-carnet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 70px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px dashed #72c0ea;
+  border-radius: 12px;
+  background: #fff;
+  color: #1d95db;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.subir-carnet img {
+  width: 90px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.subir-carnet .cambiar {
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.verificacion .cumple {
+  margin-bottom: 8px;
+}
+
+.verificacion .cumple input {
+  padding: 8px 10px;
+  border: 1.5px solid #cfe3f2;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.revisando {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.revisando span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #1d95db;
+  animation: rebote 0.9s ease-in-out infinite;
+}
+
+.revisando span:nth-child(2) { animation-delay: 0.15s; }
+.revisando span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-8px); opacity: 1; }
+}
+
+.verificado-ok {
+  margin: 0 0 6px;
+  font-weight: 700;
+  color: #10b981;
+  animation: aparecer-ok 0.5s ease both;
+}
+
+@keyframes aparecer-ok {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: none; }
+}

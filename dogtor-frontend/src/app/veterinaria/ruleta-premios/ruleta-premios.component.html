@@ -1,4 +1,26 @@
 <div class="contenedor">
+  <!-- Paso 1: verificación del cumpleaños con el carnet de vacunas -->
+  <div class="verificacion" *ngIf="!verificado">
+    <h4>1. Verifica el cumpleaños de tu mascota</h4>
+    <p class="nota">Sube una foto de su carnet de vacunas donde se vea la fecha de nacimiento.</p>
+    <label class="subir-carnet" [class.con-foto]="carnet">
+      <input type="file" accept="image/*" (change)="subirCarnet($event)" hidden />
+      <img *ngIf="carnet" [src]="carnet" alt="Carnet de vacunas" />
+      <span *ngIf="!carnet">📄 Subir foto del carnet</span>
+      <span *ngIf="carnet" class="cambiar">Cambiar foto</span>
+    </label>
+    <label class="cumple">Fecha de nacimiento (según el carnet)
+      <input type="date" [(ngModel)]="fechaNacimiento" name="nacimiento" />
+    </label>
+    <p class="error" *ngIf="errorVerificacion">{{ errorVerificacion }}</p>
+    <button type="button" class="boton-girar" (click)="verificarCumpleanos()" [disabled]="verificando">
+      {{ verificando ? 'Revisando el carnet…' : 'Verificar cumpleaños' }}
+    </button>
+    <div class="revisando" *ngIf="verificando" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+
+  <p class="verificado-ok" *ngIf="verificado && !premioGanado">🎂 ¡Cumpleaños verificado! Ya puedes girar la ruleta.</p>
+
   <div class="rueda-wrap">
     <div class="indicador" aria-hidden="true"></div>
     <svg class="ruleta" viewBox="-105 -105 210 210" [style.transform]="'rotate(' + rotacion + 'deg)'"
@@ -15,7 +37,7 @@
     </svg>
   </div>
 
-  <button (click)="girarRuleta()" [disabled]="girando || !!premioGanado" class="boton-girar">
+  <button (click)="girarRuleta()" [disabled]="girando || !!premioGanado || !verificado" class="boton-girar">
     {{ girando ? 'Girando...' : (premioGanado ? '¡Ya tienes tu premio!' : 'Girar ruleta 🎉') }}
   </button>
 
@@ -34,9 +56,6 @@
       <input name="correo" type="email" [(ngModel)]="datos.correo" placeholder="Correo electrónico *" autocomplete="email" />
       <input name="direccion" [(ngModel)]="datos.direccion" placeholder="Dirección de entrega *" autocomplete="street-address" />
       <input name="ciudad" [(ngModel)]="datos.ciudad" placeholder="Ciudad *" autocomplete="address-level2" />
-      <label class="cumple">Cumpleaños de tu mascota
-        <input name="cumple" type="date" [(ngModel)]="datos.cumpleMascota" />
-      </label>
       <p class="error" *ngIf="errorEnvio">{{ errorEnvio }}</p>
       <button type="submit" class="boton-girar">Enviar mi premio</button>
     </form>
