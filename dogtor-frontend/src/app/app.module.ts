@@ -67,6 +67,7 @@ import { AdopcionDestacadaComponent } from './landing/adopcion-destacada/adopcio
 import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-page.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica/historia-clinica.component';
 import { RecordatoriosPanelComponent } from './recordatorios/recordatorios-panel/recordatorios-panel.component';
+import { MiPerfilComponent } from './perfil/mi-perfil/mi-perfil.component';
 import { NotificacionesComponent } from './veterinaria/notificaciones/notificaciones.component';
 import { InventarioAlertasComponent } from './medicamento/inventario-alertas/inventario-alertas.component';
 import { BlogComponent } from './veterinaria/blog/blog.component';
@@ -154,6 +155,7 @@ registerLocaleData(localeEs);
     RecordatoriosPanelComponent,
     InventarioAlertasComponent,
     NotificacionesComponent,
+    MiPerfilComponent,
     BlogComponent,
     MostrarArticuloComponent,
     PlaylistComponent,

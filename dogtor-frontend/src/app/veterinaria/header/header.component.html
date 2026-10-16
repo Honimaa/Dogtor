@@ -38,6 +38,7 @@
             <a [routerLink]="['/mascotas-cliente', userId]">Mis mascotas</a>
             <a routerLink="/agendar-cita">Agendar cita</a>
             <a [routerLink]="['/citas', userId]">Mis citas</a>
+            <a routerLink="/mi-perfil">Mi perfil</a>
             <a (click)="logout()">Cerrar sesión</a>
           </div>
         </div>
@@ -51,19 +52,21 @@
           <div class="dropdown-menu" *ngIf="isMenuOpen">
             <a [routerLink]="['/detalles-veterinario', userId]">Mi panel</a>
             <a [routerLink]="['/mascotas-atendidas', userId]">Pacientes atendidos</a>
+            <a routerLink="/mi-perfil">Mi perfil</a>
             <a (click)="logout()">Cerrar sesión</a>
           </div>
         </div>
 
         <div *ngSwitchCase="'Admin'" class="dropdown">
           <button class="user-btn" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
-            <span class="user-initial">A</span>
-            <span class="user-name">Administrador</span>
+            <img [src]="userPhoto" alt="" class="user-img" />
+            <span class="user-name">{{ userName || 'Administrador' }}</span>
             <ion-icon name="chevron-down-outline"></ion-icon>
           </button>
           <div class="dropdown-menu" *ngIf="isMenuOpen">
             <a routerLink="/admin">Panel de control</a>
             <a routerLink="/admin/adopciones">Gestión de adopciones</a>
+            <a routerLink="/mi-perfil">Mi perfil</a>
             <a (click)="logout()">Cerrar sesión</a>
           </div>
         </div>

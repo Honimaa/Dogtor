@@ -7,13 +7,14 @@
     <!-- Icono para cerrar sesión -->
     <header class="top-bar">
       <div class="user">
-        <a [routerLink]="['/detalles-admin', 1]">
-          <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Usuario">
+        <a routerLink="/mi-perfil" title="Mi perfil">
+          <img [src]="userPhoto" alt="Foto del administrador">
         </a>
+        <span class="admin-nombre">{{ userName }}</span>
       </div>
 
-      <a (click)="logout()" title="Cerrar sesión">
-        <img class="logout-icon" src="https://static.vecteezy.com/system/resources/previews/006/693/054/non_2x/logout-icon-template-black-color-editable-log-out-icon-symbol-flat-illustration-for-graphic-and-web-design-free-vector.jpg" alt="Cerrar sesión">
+      <a (click)="logout()" class="logout-link" title="Cerrar sesión">
+        <ion-icon name="log-out-outline"></ion-icon> Cerrar sesión
       </a>
     </header>
 

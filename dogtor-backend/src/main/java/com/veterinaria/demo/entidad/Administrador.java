@@ -18,7 +18,7 @@ public class    Administrador {
     private String nombre;
     @Column(nullable = false)
     private String correo;
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1000000)
     private String foto;
 
     @Column(unique = true, nullable = false)

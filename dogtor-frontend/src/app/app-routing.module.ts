@@ -40,6 +40,7 @@ import { LoginVeterinarioComponent } from './login/login-veterinario/login-veter
 import { AdopcionCatalogoComponent } from './adopcion/adopcion-catalogo/adopcion-catalogo.component';
 import { AdopcionAdminComponent } from './adopcion/adopcion-admin/adopcion-admin.component';
 import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-page.component';
+import { MiPerfilComponent } from './perfil/mi-perfil/mi-perfil.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica/historia-clinica.component';
 import { CalcularEdadComponent } from './cliente/calcular-edad/calcular-edad.component';
 import { BlogComponent } from './veterinaria/blog/blog.component';
@@ -105,6 +106,7 @@ const routes: Routes = [
   {path: 'adopcion', component: AdopcionCatalogoComponent},
   {path: 'admin/adopciones', component: AdopcionAdminComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
   {path: 'urgencias', component: UrgenciasPageComponent},
+  {path: 'mi-perfil', component: MiPerfilComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},
   {path: 'historia-clinica/:id', component: HistoriaClinicaComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},
   {path : 'calcular-edad', component: CalcularEdadComponent},
   {path: 'test-salud-mascota', component: TestSaludMascotaComponent},

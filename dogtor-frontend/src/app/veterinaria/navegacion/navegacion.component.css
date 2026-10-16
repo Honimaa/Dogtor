@@ -367,13 +367,12 @@ body {
 }
 
 .navigation .nav-logo {
-  border-radius: 50%;
+  border-radius: 0;
 }
 
 .navigation .nav-logo {
   width: 40px;
   height: 40px;
-  background: #fff;
-  padding: 3px;
+  background: transparent;
   object-fit: contain;
 }

@@ -185,3 +185,24 @@ h1 {
 .dogtor-paneles h3 {
   text-align: left;
 }
+
+/* Dogtor: foto del administrador y salida */
+.top-bar .user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.admin-nombre {
+  font-weight: 700;
+  color: var(--dt-ink);
+}
+
+.logout-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--dt-danger);
+}

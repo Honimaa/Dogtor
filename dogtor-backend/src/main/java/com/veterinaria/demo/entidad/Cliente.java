@@ -23,7 +23,7 @@ public class Cliente {
     private String correo;
     @Column(nullable = false)
     private String celular;
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1000000)
     private String foto;
 
     @Column(unique = true, nullable = false)

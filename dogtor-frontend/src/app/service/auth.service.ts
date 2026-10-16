@@ -46,6 +46,15 @@ export class AuthService {
     return this.getUser()?.nombre || '';
   }
 
+  /** Actualiza el nombre y la foto guardados en la sesión (p. ej. tras editar el perfil). */
+  actualizarDatosSesion(nombre: string, foto: string): void {
+    const user = this.getUser();
+    if (!user) {
+      return;
+    }
+    this.login({ ...user, nombre, foto });
+  }
+
   getUserPhoto(): string {
     return this.getUser()?.foto || 'assets/avatar-placeholder.svg';
   }

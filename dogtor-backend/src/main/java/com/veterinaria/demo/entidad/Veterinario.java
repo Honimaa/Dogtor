@@ -23,7 +23,7 @@ public class Veterinario {
     private String cedula;
     @Column(nullable = false)
     private String especialidad;
-    @Column(nullable = false, length = 1000)
+    @Column(nullable = false, length = 1000000)
     private String foto;
     @Column(nullable = false)
     private String sede;
