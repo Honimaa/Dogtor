@@ -1,0 +1,73 @@
+<app-header></app-header>
+
+<section class="login-page">
+  <div class="login-brand">
+    <img src="assets/logo-beagle-blanco.png" alt="" class="brand-logo" />
+    <h1>Crea tu cuenta en Dog<span>tor</span></h1>
+    <p>Registra a tus mascotas, agenda citas en línea y recibe recordatorios de vacunas y controles.</p>
+    <ul>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Historia clínica de tus mascotas siempre a mano.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Citas con horarios disponibles en tiempo real.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Publica en Dogtor Encuentra si tu mascota se pierde.</li>
+    </ul>
+  </div>
+
+  <div class="login-card registro-card">
+    <h2>Registrarme</h2>
+    <form (ngSubmit)="registrar()">
+      <div class="foto-registro">
+        <img [src]="datos.foto || 'assets/avatar-placeholder.svg'" alt="Tu foto" />
+        <label class="dt-btn dt-btn-outline dt-btn-sm">
+          <ion-icon name="camera-outline"></ion-icon> {{ datos.foto ? 'Cambiar foto' : 'Subir foto (opcional)' }}
+          <input type="file" accept="image/*" (change)="elegirFoto($event)" hidden />
+        </label>
+      </div>
+
+      <div class="dt-field">
+        <label for="nombre">Nombre completo</label>
+        <input id="nombre" name="nombre" [(ngModel)]="datos.nombre" autocomplete="name" required />
+      </div>
+      <div class="fila">
+        <div class="dt-field">
+          <label for="cedula">Cédula</label>
+          <input id="cedula" name="cedula" [(ngModel)]="datos.cedula" inputmode="numeric" required />
+        </div>
+        <div class="dt-field">
+          <label for="celular">Celular</label>
+          <input id="celular" name="celular" type="tel" [(ngModel)]="datos.celular" autocomplete="tel" required />
+        </div>
+      </div>
+      <div class="dt-field">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" [(ngModel)]="datos.correo" autocomplete="email" required />
+      </div>
+      <div class="dt-field">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="usuario" [(ngModel)]="datos.nombreUsuario" autocomplete="username" placeholder="Sin espacios, p. ej. ana.perez" required />
+      </div>
+      <div class="fila">
+        <div class="dt-field">
+          <label for="contrasena">Contraseña</label>
+          <input id="contrasena" name="contrasena" type="password" [(ngModel)]="datos.contrasena" autocomplete="new-password" required />
+        </div>
+        <div class="dt-field">
+          <label for="confirmacion">Confirmar contraseña</label>
+          <input id="confirmacion" name="confirmacion" type="password" [(ngModel)]="confirmacion" autocomplete="new-password" required />
+        </div>
+      </div>
+
+      <label class="acepto">
+        <input type="checkbox" name="acepta" [(ngModel)]="aceptaDatos" />
+        Acepto el tratamiento de mis datos personales conforme a la Ley 1581 de 2012.
+      </label>
+
+      <p *ngIf="error" class="error" role="alert"><ion-icon name="alert-circle-outline"></ion-icon> {{ error }}</p>
+
+      <button type="submit" class="dt-btn submit" [disabled]="enviando">{{ enviando ? 'Creando cuenta…' : 'Crear mi cuenta' }}</button>
+    </form>
+
+    <div class="login-extra">
+      <a routerLink="/inicio-sesion"><ion-icon name="log-in-outline"></ion-icon> ¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+  </div>
+</section>

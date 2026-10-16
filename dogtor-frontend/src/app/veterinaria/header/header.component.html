@@ -18,6 +18,7 @@
         <li><a [routerLink]="['/home']" fragment="conocenos" (click)="closeNav()">Conócenos</a></li>
         <li><a [routerLink]="['/home']" fragment="contactanos" (click)="closeNav()">Contacto</a></li>
         <li><a routerLink="/blog" routerLinkActive="active" (click)="closeNav()">Blog</a></li>
+        <li class="solo-movil" *ngIf="!userType"><a routerLink="/registro" (click)="closeNav()">Registrarse</a></li>
       </ul>
     </nav>
 
@@ -72,10 +73,13 @@
         </div>
 
         <div *ngSwitchDefault>
-          <a routerLink="/inicio-sesion" class="login-btn">
-            <ion-icon name="person-circle-outline"></ion-icon>
-            <span>Iniciar sesión</span>
-          </a>
+          <div class="acceso">
+            <a routerLink="/registro" class="registro-btn">Registrarse</a>
+            <a routerLink="/inicio-sesion" class="login-btn">
+              <ion-icon name="person-circle-outline"></ion-icon>
+              <span>Iniciar sesión</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>

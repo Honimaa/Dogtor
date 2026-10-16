@@ -286,3 +286,42 @@ nav {
 .logo img {
   object-fit: contain;
 }
+
+/* Botón de registro */
+.acceso {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.registro-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 2px solid var(--dt-brand-700);
+  color: var(--dt-brand-700);
+  font-family: var(--dt-font-head);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.registro-btn:hover {
+  background: var(--dt-brand-50);
+  color: var(--dt-brand-800);
+}
+
+@media (max-width: 520px) {
+  .registro-btn {
+    display: none;
+  }
+}
+
+.solo-movil {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  .solo-movil {
+    display: block;
+  }
+}

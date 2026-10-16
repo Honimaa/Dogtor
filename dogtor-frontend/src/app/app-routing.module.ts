@@ -40,6 +40,7 @@ import { LoginVeterinarioComponent } from './login/login-veterinario/login-veter
 import { AdopcionCatalogoComponent } from './adopcion/adopcion-catalogo/adopcion-catalogo.component';
 import { AdopcionAdminComponent } from './adopcion/adopcion-admin/adopcion-admin.component';
 import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-page.component';
+import { RegistroComponent } from './login/registro/registro.component';
 import { MiPerfilComponent } from './perfil/mi-perfil/mi-perfil.component';
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica/historia-clinica.component';
 import { CalcularEdadComponent } from './cliente/calcular-edad/calcular-edad.component';
@@ -81,6 +82,7 @@ const routes: Routes = [
   {path: 'veterinarios', component:VeterinarioTableComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
   {path: 'crear-tratamiento', component:TratamientoFormComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario'] }},
   {path: 'inicio-sesion', component: LoginComponent},
+  {path: 'registro', component: RegistroComponent},
   {path: 'tabla', component: AdminTableComponent },
   {path: 'navigation', component: NavegacionComponent},
   {path: 'veterinario', component: VeterinarioPageComponent, canActivate: [roleGuard], data: { roles: ['Veterinario'] }},

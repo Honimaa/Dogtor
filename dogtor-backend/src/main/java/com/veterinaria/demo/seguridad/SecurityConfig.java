@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/auth/inicio_sesion").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
                         .requestMatchers("/api/testimonios").permitAll()
                         .requestMatchers("/api/servicios").permitAll()
                         .requestMatchers("/factura/crear/medicamentos").permitAll()

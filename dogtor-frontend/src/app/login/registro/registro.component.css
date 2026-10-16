@@ -1,0 +1,48 @@
+.registro-card {
+  max-width: 520px;
+}
+
+.foto-registro {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.foto-registro img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--dt-brand-50);
+}
+
+.foto-registro label {
+  cursor: pointer;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 0.85rem;
+}
+
+.acepto {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: var(--dt-muted);
+  margin: 0.25rem 0 0.75rem;
+  cursor: pointer;
+}
+
+.acepto input {
+  margin-top: 3px;
+}
+
+@media (max-width: 520px) {
+  .fila {
+    grid-template-columns: 1fr;
+  }
+}
