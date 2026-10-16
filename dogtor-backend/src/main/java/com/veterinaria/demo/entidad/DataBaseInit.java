@@ -22,7 +22,7 @@ import jakarta.transaction.Transactional;
 
 @Controller
 @Transactional
-@Profile("default")
+@Profile({"default", "mysql"})
 @Order(1)
 public class DataBaseInit implements ApplicationRunner {
     @Autowired
@@ -71,6 +71,10 @@ public class DataBaseInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        // En MySQL los datos persisten: si ya existen los roles, no se vuelven a crear
+        if (roleRepository.count() > 0) {
+            return;
+        }
 
         // Creación de roles
         Role role1 = new Role("CLIENTE");

@@ -21,7 +21,7 @@ import jakarta.transaction.Transactional;
  */
 @Component
 @Transactional
-@Profile("default")
+@Profile({"default", "mysql"})
 @Order(2)
 public class DogtorDataInit implements ApplicationRunner {
 
@@ -54,6 +54,10 @@ public class DogtorDataInit implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        // Solo la primera vez (en MySQL los datos persisten entre reinicios)
+        if (refugioRepository.count() > 0) {
+            return;
+        }
         inicializarDoctores();
         inicializarMascotas();
         inicializarInventario();

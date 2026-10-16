@@ -17,6 +17,10 @@ public class CargaMedicamentosService {
     private MedicamentoRepository medicamentoRepository;
 
     public void cargarMedicamentosDesdeCSV() {
+        // Evita duplicar el catálogo cuando la base de datos ya tiene medicamentos
+        if (medicamentoRepository.count() > 0) {
+            return;
+        }
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("data/medicamentos.csv");
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 

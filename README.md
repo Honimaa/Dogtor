@@ -16,3 +16,10 @@ ventas, recordatorios y adopción responsable en una sola plataforma.
 3. Abrir `http://localhost:4200`
 
 Usuarios de prueba: `admin` / `123`, `vet1` / `pass1`, `carlosg` / `pass2`.
+
+## Base de datos
+
+Por defecto usa H2 en memoria (los datos se reinician en cada arranque). Para guardarlos en MySQL,
+sigue la guía de [`dogtor-backend/database`](dogtor-backend/database/README.md) y arranca el backend
+con `--spring.profiles.active=mysql`.
+
