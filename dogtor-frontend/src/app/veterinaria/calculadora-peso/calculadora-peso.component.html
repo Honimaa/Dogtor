@@ -1,0 +1,43 @@
+<app-header></app-header>
+
+<section class="peso-natural">
+  <div class="texto-intro">
+    <h2>¿Tu mascota está en su peso ideal?</h2>
+    <p>Elige la especie y la raza de tu peludito: cada raza tiene un rango de peso saludable distinto.</p>
+  </div>
+
+  <div class="contenedor-flex">
+    <div class="formulario">
+      <label>Especie:
+        <select [(ngModel)]="especie" (ngModelChange)="cambiarEspecie()">
+          <option value="" disabled>Selecciona una especie</option>
+          <option value="perro">Perro</option>
+          <option value="gato">Gato</option>
+        </select>
+      </label>
+
+      <label *ngIf="especie">Raza:
+        <select [(ngModel)]="raza">
+          <option value="" disabled>Selecciona la raza</option>
+          <option *ngFor="let r of razas" [value]="r.nombre">{{ r.nombre }} ({{ r.min }}–{{ r.max }} kg)</option>
+        </select>
+      </label>
+
+      <label>Peso actual (kg):
+        <input type="number" min="0" step="0.1" [(ngModel)]="pesoActual" placeholder="Ej.: 12.5" />
+      </label>
+
+      <button (click)="calcularPesoIdeal()">Calcular</button>
+    </div>
+
+    <div *ngIf="mensaje" class="resultado" [ngClass]="resultado">
+      <ion-icon *ngIf="resultado" [name]="icono()" class="icono-resultado"></ion-icon>
+      <p><strong>{{ mensaje }}</strong></p>
+      <p *ngIf="detalle">{{ detalle }}</p>
+      <div *ngIf="rango" class="rango">
+        Rango saludable: <strong>{{ rango.min }} – {{ rango.max }} kg</strong>
+      </div>
+      <small *ngIf="resultado">Rangos orientativos para animales adultos. Para cachorros, gatitos o casos particulares consulta a tu veterinario.</small>
+    </div>
+  </div>
+</section>

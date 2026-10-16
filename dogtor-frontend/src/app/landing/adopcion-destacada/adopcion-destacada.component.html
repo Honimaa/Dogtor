@@ -1,0 +1,32 @@
+<div class="adopcion-section">
+  <div class="inner">
+    <div class="texto">
+      <span class="dt-eyebrow">Adopción responsable</span>
+      <h2>Ellos están buscando hogar</h2>
+      <p>
+        Refugios y fundaciones validados por Dogtor publican aquí a sus rescatados.
+        Envía tu solicitud sin registrarte y el refugio te contactará.
+      </p>
+      <a routerLink="/adopcion" class="dt-btn dt-btn-gold">
+        <ion-icon name="heart-outline"></ion-icon>
+        Ver {{ total > 0 ? 'las ' + total + ' mascotas' : 'el catálogo' }}
+      </a>
+    </div>
+
+    <div class="tarjetas" *ngIf="mascotas.length; else vacio">
+      <a class="tarjeta" *ngFor="let m of mascotas" routerLink="/adopcion">
+        <img [src]="m.foto" [alt]="'Foto de ' + m.nombre" (error)="onImgError($event)" />
+        <div class="tarjeta-info">
+          <strong>{{ m.nombre }}</strong>
+          <span>{{ edadLegible(m.edadMeses) }} · {{ m.ciudad }}</span>
+        </div>
+      </a>
+    </div>
+    <ng-template #vacio>
+      <div class="tarjetas vacio">
+        <ion-icon name="paw-outline"></ion-icon>
+        <p>Pronto verás aquí a las mascotas de nuestros refugios aliados.</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

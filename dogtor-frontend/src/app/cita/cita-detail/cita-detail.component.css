@@ -1,0 +1,181 @@
+/* ================== TARJETA DETALLES ================== */
+.card-detalles {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  animation: fadeIn 0.7s ease;
+  position: relative;
+}
+
+.card-detalles h1 {
+  font-size: 2.5rem;
+  color: #2b2d42;
+  font-weight: 700;
+  margin: 0 auto 2rem;
+  text-align: center;
+  border-bottom: 3px solid #5cadf4;
+  padding-bottom: 0.5rem;
+  width: fit-content;
+}
+
+/* ================== FILAS DE INFORMACIÓN ================== */
+.fila {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #5cadf4, #4098d7);
+  color: white;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.fila:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.etiqueta {
+  font-weight: 600;
+  color: #e0f2ff;
+  width: 45%;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+}
+
+.valor {
+  width: 50%;
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+}
+
+/* ================== CONTENEDOR DE BOTONES ================== */
+.button-container {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-card {
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #205375;
+  color: white;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.btn-card:hover {
+  background: #2e86ab;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 992px) {
+  .card-detalles {
+    padding: 2.5rem;
+  }
+
+  .card-detalles h1 {
+    font-size: 2.2rem;
+  }
+
+  .fila {
+    padding: 1.2rem;
+  }
+
+  .valor {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-detalles {
+    padding: 2rem;
+  }
+
+  .card-detalles h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fila {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .etiqueta,
+  .valor {
+    width: 100%;
+    text-align: center;
+  }
+
+  .etiqueta {
+    font-size: 0.95rem;
+    padding-bottom: 0;
+  }
+
+  .valor {
+    font-size: 1.1rem;
+    padding-top: 0;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .btn-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-detalles {
+    padding: 1.5rem;
+    border-radius: 15px;
+  }
+
+  .card-detalles h1 {
+    font-size: 1.8rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .fila {
+    padding: 1rem;
+  }
+
+  .etiqueta {
+    font-size: 0.9rem;
+  }
+
+  .valor {
+    font-size: 1rem;
+  }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

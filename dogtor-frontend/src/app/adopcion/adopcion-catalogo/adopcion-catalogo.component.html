@@ -1,0 +1,153 @@
+<app-header></app-header>
+
+<section class="adopcion-hero">
+  <div class="dt-page hero-content">
+    <span class="dt-eyebrow">Adopción responsable</span>
+    <h1>Encuentra a tu nuevo mejor amigo</h1>
+    <p class="dt-lead">
+      Todas las mascotas son publicadas por refugios y fundaciones validados por Dogtor.
+      No necesitas registrarte para enviar una solicitud.
+    </p>
+  </div>
+</section>
+
+<div class="dt-page">
+  <!-- Filtros -->
+  <div class="filtros dt-card">
+    <div class="dt-tabs especie-tabs" role="group" aria-label="Especie">
+      <button type="button" class="dt-chip" *ngFor="let e of especies"
+              [class.active]="filtros.especie === e.valor" (click)="setEspecie(e.valor)">
+        {{ e.etiqueta }}
+      </button>
+    </div>
+    <div class="filtros-campos">
+      <select class="dt-input" [(ngModel)]="filtros.tamano" (ngModelChange)="buscar()" aria-label="Tamaño">
+        <option *ngFor="let t of tamanos" [value]="t.valor">{{ t.etiqueta }}</option>
+      </select>
+      <select class="dt-input" [(ngModel)]="filtros.edad" (ngModelChange)="buscar()" aria-label="Edad">
+        <option *ngFor="let e of edades" [value]="e.valor">{{ e.etiqueta }}</option>
+      </select>
+      <input class="dt-input" type="search" placeholder="Ciudad" [(ngModel)]="filtros.ciudad"
+             (keyup.enter)="buscar()" (search)="buscar()" aria-label="Ciudad" />
+      <button type="button" class="dt-btn dt-btn-sm" (click)="buscar()">
+        <ion-icon name="search-outline"></ion-icon> Buscar
+      </button>
+    </div>
+  </div>
+
+  <div class="resultados-header">
+    <span *ngIf="!cargando && !error">{{ mascotas.length }} {{ mascotas.length === 1 ? 'mascota disponible' : 'mascotas disponibles' }}</span>
+    <button *ngIf="hayFiltros()" type="button" class="link-btn" (click)="limpiarFiltros()">Limpiar filtros</button>
+  </div>
+
+  <div class="dt-alert dt-alert-danger" *ngIf="error">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <div><strong>Algo salió mal</strong>{{ error }}</div>
+  </div>
+
+  <div class="dt-empty" *ngIf="cargando">Buscando mascotas…</div>
+
+  <div class="dt-empty" *ngIf="!cargando && !error && !mascotas.length">
+    <ion-icon name="paw-outline"></ion-icon>
+    <p>No hay mascotas que coincidan con tu búsqueda.</p>
+    <button type="button" class="dt-btn dt-btn-outline dt-btn-sm" (click)="limpiarFiltros()">Ver todas</button>
+  </div>
+
+  <div class="dt-grid catalogo" *ngIf="!cargando && mascotas.length">
+    <article class="mascota-card" *ngFor="let m of mascotas" (click)="abrir(m)" tabindex="0" (keyup.enter)="abrir(m)">
+      <div class="foto">
+        <img [src]="m.foto" [alt]="'Foto de ' + m.nombre" loading="lazy" (error)="onImgError($event)" />
+        <span class="dt-badge dt-badge-gold estado" *ngIf="m.estado === 'EN_PROCESO'">En proceso de adopción</span>
+      </div>
+      <div class="info">
+        <div class="titulo">
+          <h3>{{ m.nombre }}</h3>
+          <ion-icon [name]="m.sexo === 'Hembra' ? 'female-outline' : 'male-outline'" [attr.aria-label]="m.sexo"></ion-icon>
+        </div>
+        <p class="raza">{{ m.raza }} · {{ edadLegible(m.edadMeses) }}</p>
+        <div class="tags">
+          <span class="dt-badge">{{ etiquetaTamano(m.tamano) }}</span>
+          <span class="dt-badge dt-badge-muted"><ion-icon name="location-outline"></ion-icon> {{ m.ciudad }}</span>
+        </div>
+        <p class="refugio">{{ m.refugio?.nombre }}</p>
+      </div>
+    </article>
+  </div>
+</div>
+
+<!-- Detalle y solicitud -->
+<div class="dt-modal-backdrop" *ngIf="seleccionada" (click)="cerrar()">
+  <div class="dt-modal detalle" role="dialog" aria-modal="true" [attr.aria-label]="'Adoptar a ' + seleccionada.nombre"
+       (click)="$event.stopPropagation()">
+    <button type="button" class="cerrar" (click)="cerrar()" aria-label="Cerrar"><ion-icon name="close-outline"></ion-icon></button>
+
+    <ng-container *ngIf="!enviada; else exito">
+      <img class="detalle-foto" [src]="seleccionada.foto" [alt]="'Foto de ' + seleccionada.nombre" (error)="onImgError($event)" />
+      <h3>{{ seleccionada.nombre }}</h3>
+      <p class="raza">{{ seleccionada.raza }} · {{ seleccionada.sexo }} · {{ edadLegible(seleccionada.edadMeses) }} · {{ etiquetaTamano(seleccionada.tamano) }}</p>
+
+      <p>{{ seleccionada.descripcion }}</p>
+      <div class="salud" *ngIf="seleccionada.estadoSalud">
+        <ion-icon name="medkit-outline"></ion-icon>
+        <span><strong>Estado de salud:</strong> {{ seleccionada.estadoSalud }}</span>
+      </div>
+      <div class="refugio-box" *ngIf="seleccionada.refugio as r">
+        <strong>{{ r.nombre }}</strong>
+        <span>{{ r.ciudad }}<ng-container *ngIf="r.telefono"> · {{ r.telefono }}</ng-container></span>
+      </div>
+
+      <div class="dt-alert dt-alert-warning" *ngIf="seleccionada.estado === 'EN_PROCESO'">
+        <ion-icon name="hourglass-outline"></ion-icon>
+        <div>El refugio está evaluando una solicitud para {{ seleccionada.nombre }}. Aún puedes enviar la tuya.</div>
+      </div>
+
+      <button *ngIf="!mostrarFormulario" type="button" class="dt-btn dt-btn-gold full" (click)="mostrarFormulario = true">
+        <ion-icon name="heart-outline"></ion-icon> Quiero adoptar a {{ seleccionada.nombre }}
+      </button>
+
+      <form *ngIf="mostrarFormulario" class="solicitud" (ngSubmit)="enviarSolicitud()">
+        <h4>Solicitud de adopción</h4>
+        <div class="grid-2">
+          <div class="dt-field">
+            <label for="nombre">Nombre completo *</label>
+            <input id="nombre" name="nombre" [(ngModel)]="solicitud.nombreSolicitante" required autocomplete="name" />
+          </div>
+          <div class="dt-field">
+            <label for="telefono">Teléfono *</label>
+            <input id="telefono" name="telefono" type="tel" [(ngModel)]="solicitud.telefono" required autocomplete="tel" />
+          </div>
+          <div class="dt-field">
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" name="correo" type="email" [(ngModel)]="solicitud.correo" required autocomplete="email" />
+          </div>
+          <div class="dt-field">
+            <label for="ciudad">Ciudad</label>
+            <input id="ciudad" name="ciudad" [(ngModel)]="solicitud.ciudad" autocomplete="address-level2" />
+          </div>
+        </div>
+        <div class="dt-field">
+          <label for="mensaje">Cuéntale al refugio sobre tu hogar</label>
+          <textarea id="mensaje" name="mensaje" rows="3" [(ngModel)]="solicitud.mensaje"
+                    placeholder="¿Tienes patio? ¿Otras mascotas? ¿Cuánto tiempo pasas en casa?"></textarea>
+        </div>
+        <p class="error" *ngIf="errorSolicitud">{{ errorSolicitud }}</p>
+        <p class="legal">Tus datos se comparten solo con el refugio, conforme a la Ley 1581 de 2012.</p>
+        <div class="dt-modal-actions">
+          <button type="button" class="dt-btn dt-btn-outline" (click)="mostrarFormulario = false">Cancelar</button>
+          <button type="submit" class="dt-btn" [disabled]="enviando">{{ enviando ? 'Enviando…' : 'Enviar solicitud' }}</button>
+        </div>
+      </form>
+    </ng-container>
+
+    <ng-template #exito>
+      <div class="exito">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        <h3>¡Solicitud enviada!</h3>
+        <p>{{ seleccionada.refugio?.nombre }} revisará tu solicitud para adoptar a {{ seleccionada.nombre }} y te contactará pronto.</p>
+        <button type="button" class="dt-btn" (click)="cerrar()">Seguir explorando</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<app-footer></app-footer>

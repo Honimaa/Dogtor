@@ -1,0 +1,31 @@
+<div class="cardBox">
+    <div class="card">
+        <div class="content">
+            <div class="numbers">{{ cantidadMascotas }}</div>
+            <div class="cardName">Mascotas</div>
+        </div>
+        <div class="iconBx pet-icon">
+            <img src="https://i.postimg.cc/jqXGr2MV/mascotas.png" alt="Mascotas">
+        </div>
+    </div>
+
+    <div class="card" (click)="toggleVeterinariosActivosList()" style="cursor: pointer;">
+        <div class="content">
+          <div class="numbers">{{ stats.veterinariosActivos }}</div>
+          <div class="cardName">Veterinarios activos</div>
+        </div>
+        <div class="iconBx vet-icon">
+          <img src="https://i.postimg.cc/QxYwHPL0/veterinario.png" alt="Veterinarios">
+        </div>
+      </div>
+      
+   <!-- <div class="card">
+        <div class="content">
+            <div class="numbers">2</div>
+            <div class="cardName">Citas</div>
+        </div>
+        <div class="iconBx">
+            <img src="https://i.postimg.cc/m2gKZ4nP/revision-medica.png" alt="Citas">
+        </div>
+    </div>-->
+</div>

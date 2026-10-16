@@ -1,0 +1,145 @@
+<app-navegacion></app-navegacion>
+
+<div class="main panel-main">
+  <div class="dt-page">
+    <div class="dt-page-header">
+      <div>
+        <span class="dt-eyebrow">Historia clínica digital</span>
+        <h1>{{ mascota?.nombre || 'Mascota' }}</h1>
+      </div>
+      <div class="header-actions no-print">
+        <button type="button" class="dt-btn dt-btn-outline dt-btn-sm" (click)="imprimir()">
+          <ion-icon name="print-outline"></ion-icon> Imprimir
+        </button>
+        <button type="button" class="dt-btn dt-btn-outline dt-btn-sm" (click)="descargarPdf()">
+          <ion-icon name="download-outline"></ion-icon> Descargar PDF
+        </button>
+        <button *ngIf="puedeEditar" type="button" class="dt-btn dt-btn-sm" (click)="abrirFormulario()">
+          <ion-icon name="add-outline"></ion-icon> Registrar evento
+        </button>
+      </div>
+    </div>
+
+    <div class="dt-alert dt-alert-danger" *ngIf="error">
+      <ion-icon name="alert-circle-outline"></ion-icon><div>{{ error }}</div>
+    </div>
+
+    <div class="layout">
+      <!-- Ficha del paciente -->
+      <aside class="ficha dt-card" *ngIf="mascota">
+        <img [src]="mascota.foto" [alt]="'Foto de ' + mascota.nombre" />
+        <h3>{{ mascota.nombre }}</h3>
+        <dl>
+          <div><dt>Raza</dt><dd>{{ mascota.raza || '—' }}</dd></div>
+          <div><dt>Edad</dt><dd>{{ mascota.edad != null ? mascota.edad + ' años' : '—' }}</dd></div>
+          <div><dt>Peso</dt><dd>{{ mascota.peso ? mascota.peso + ' kg' : '—' }}</dd></div>
+          <div><dt>Propietario</dt><dd>{{ mascota.cliente?.nombre || '—' }}</dd></div>
+          <div *ngIf="mascota.enfermedad"><dt>Condición</dt><dd>{{ mascota.enfermedad }}</dd></div>
+        </dl>
+        <span class="dt-badge dt-badge-muted solo-lectura" *ngIf="!puedeEditar">
+          <ion-icon name="eye-outline"></ion-icon> Modo lectura
+        </span>
+      </aside>
+
+      <section class="contenido">
+        <!-- REQ-HCL-06: alerta visible de alergias -->
+        <div class="dt-alert dt-alert-danger alergias" *ngIf="alergias.length" role="alert">
+          <ion-icon name="warning"></ion-icon>
+          <div>
+            <strong>Alergias registradas</strong>
+            <span *ngFor="let a of alergias; let ultima = last">{{ a.titulo }}<ng-container *ngIf="!ultima"> · </ng-container></span>
+          </div>
+        </div>
+
+        <div class="dt-tabs no-print" role="group" aria-label="Filtrar por tipo de evento">
+          <button type="button" class="dt-chip" [class.active]="filtro === ''" (click)="filtrar('')">Todo</button>
+          <button type="button" class="dt-chip" *ngFor="let t of tipos"
+                  [class.active]="filtro === t.valor" (click)="filtrar(t.valor)">
+            {{ t.etiqueta }}
+          </button>
+        </div>
+
+        <div class="dt-empty" *ngIf="cargando">Cargando historia clínica…</div>
+
+        <div class="dt-empty dt-card" *ngIf="!cargando && !eventos.length">
+          <ion-icon name="document-text-outline"></ion-icon>
+          <p>{{ filtro ? 'No hay eventos de este tipo.' : 'Aún no hay eventos en la historia clínica.' }}</p>
+          <button *ngIf="puedeEditar" type="button" class="dt-btn dt-btn-sm" (click)="abrirFormulario(filtro || 'DIAGNOSTICO')">
+            Registrar el primero
+          </button>
+        </div>
+
+        <!-- REQ-HCL-04: historial cronológico -->
+        <ol class="timeline" *ngIf="!cargando && eventos.length">
+          <li *ngFor="let e of eventos" [attr.data-tipo]="e.tipo">
+            <span class="marcador"><ion-icon [name]="infoTipo(e.tipo).icono"></ion-icon></span>
+            <article class="evento dt-card">
+              <header>
+                <span class="dt-badge tipo">{{ infoTipo(e.tipo).etiqueta }}</span>
+                <time>{{ e.fecha | date:"d 'de' MMMM 'de' y":'UTC' }}</time>
+                <button *ngIf="puedeEditar" type="button" class="eliminar no-print" (click)="eliminar(e)" aria-label="Eliminar evento">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
+              </header>
+              <h4>{{ e.titulo }}</h4>
+              <p *ngIf="e.descripcion">{{ e.descripcion }}</p>
+              <footer>
+                <span *ngIf="e.veterinario"><ion-icon name="person-outline"></ion-icon> {{ e.veterinario.nombre }}</span>
+                <span *ngIf="e.fechaProxima" [class.vencida]="estaVencida(e)">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  {{ estaVencida(e) ? 'Vencida desde' : 'Próxima' }} {{ e.fechaProxima | date:'dd/MM/yyyy':'UTC' }}
+                </span>
+              </footer>
+            </article>
+          </li>
+        </ol>
+      </section>
+    </div>
+  </div>
+</div>
+
+<!-- Registrar evento -->
+<div class="dt-modal-backdrop" *ngIf="mostrarForm" (click)="mostrarForm = false">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardar()">
+    <h3>Registrar evento clínico</h3>
+    <p class="dt-lead">Quedará asociado permanentemente a {{ mascota?.nombre }} con tu nombre y la fecha.</p>
+
+    <div class="dt-alert dt-alert-danger" *ngIf="alergias.length && nuevo.tipo === 'TRATAMIENTO'">
+      <ion-icon name="warning"></ion-icon>
+      <div><strong>Atención: alergias registradas</strong>{{ nombresAlergias() }}</div>
+    </div>
+
+    <div class="dt-field">
+      <label>Tipo</label>
+      <div class="dt-tabs">
+        <button type="button" class="dt-chip" *ngFor="let t of tipos"
+                [class.active]="nuevo.tipo === t.valor" (click)="nuevo.tipo = t.valor">{{ t.etiqueta }}</button>
+      </div>
+    </div>
+    <div class="dt-field">
+      <label for="titulo">Título</label>
+      <input id="titulo" name="titulo" [(ngModel)]="nuevo.titulo" required
+             [placeholder]="nuevo.tipo === 'VACUNA' ? 'Ej.: Vacuna antirrábica' : 'Ej.: Otitis externa'" />
+    </div>
+    <div class="dt-field">
+      <label for="descripcion">Descripción / indicaciones</label>
+      <textarea id="descripcion" name="descripcion" rows="3" [(ngModel)]="nuevo.descripcion"></textarea>
+    </div>
+    <div class="grid-2">
+      <div class="dt-field">
+        <label for="fecha">Fecha</label>
+        <input id="fecha" name="fecha" type="date" [(ngModel)]="nuevo.fecha" required />
+      </div>
+      <div class="dt-field" *ngIf="nuevo.tipo === 'VACUNA' || nuevo.tipo === 'TRATAMIENTO' || nuevo.tipo === 'CIRUGIA'">
+        <label for="proxima">{{ nuevo.tipo === 'VACUNA' ? 'Próxima dosis' : 'Próximo control' }}</label>
+        <input id="proxima" name="proxima" type="date" [(ngModel)]="nuevo.fechaProxima" />
+        <small class="hint">Se enviará un recordatorio al propietario.</small>
+      </div>
+    </div>
+    <p class="error" *ngIf="errorForm">{{ errorForm }}</p>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="mostrarForm = false">Cancelar</button>
+      <button type="submit" class="dt-btn" [disabled]="guardando">{{ guardando ? 'Guardando…' : 'Guardar evento' }}</button>
+    </div>
+  </form>
+</div>

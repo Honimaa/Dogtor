@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Foto no disponible">
+  <rect width="400" height="300" fill="#e0f7ff"/>
+  <g fill="#72c0ea" transform="translate(200 150)">
+    <ellipse cx="0" cy="24" rx="34" ry="28"/>
+    <ellipse cx="-40" cy="-16" rx="14" ry="18"/>
+    <ellipse cx="40" cy="-16" rx="14" ry="18"/>
+    <ellipse cx="-16" cy="-42" rx="13" ry="17"/>
+    <ellipse cx="16" cy="-42" rx="13" ry="17"/>
+  </g>
+</svg>

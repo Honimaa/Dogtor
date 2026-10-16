@@ -1,0 +1,365 @@
+/* ================== CONTENEDOR PRINCIPAL ================== */
+.details {
+  position: relative;
+  width: 100%;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 40px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================== SECCIÓN DE PEDIDOS ================== */
+.details .recentOrders {
+  position: relative;
+  display: grid;
+  background: white;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(35, 163, 237, 0.1);
+  border-radius: 20px;
+  min-height: 200px;
+  border: 1px solid #e0f2fe;
+}
+
+/* ================== CABECERA ================== */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.cardHeader h2 {
+  font-weight: 700;
+  color: #1d95db;
+  font-size: 1.5rem;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.cardHeader h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #72c0ea 0%, #23a3ed 100%);
+  border-radius: 3px;
+}
+
+/* ================== TABLA PREMIUM ================== */
+.details table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+.details table thead {
+  background: linear-gradient(135deg, #72c0ea 0%, #23a3ed 100%);
+
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.details table thead td {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+/* FILAS CON EFECTO 3D */
+.details .recentOrders table tbody tr {
+  background: white;
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.1),
+    0 4px 6px rgba(0,0,0,0.05),
+    0 5px 15px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.details .recentOrders table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.12),
+    0 8px 15px rgba(0,0,0,0.1),
+    0 10px 25px rgba(0,0,0,0.08);
+}
+
+.details .recentOrders table tr td {
+  padding: 14px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.details .recentOrders table tr td:last-child {
+  text-align: right;
+}
+
+.details .recentOrders table tr td:nth-child(2) {
+  text-align: right;
+}
+
+.details .recentOrders table tr td:nth-child(3) {
+  text-align: center;
+}
+
+/* IMAGEN DE MASCOTA */
+.img-mascota {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.details .recentOrders table tr:hover .img-mascota {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* ESTADO MEJORADO */
+.status {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 16px;
+  display: inline-block;
+  text-align: center;
+  min-width: 100px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.status.completed {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.status.inactive {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+/* BOTÓN DE DETALLES */
+.btn-detalles {
+  background: linear-gradient(135deg, #72c0ea 0%, #23a3ed 100%);
+
+  color: white;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-detalles:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ================== SECCIÓN DE RECOMENDACIONES ================== */
+.recomendaciones {
+  padding: 30px;
+  border-radius: 20px;
+  background: #f8fafc;
+  box-shadow: 0 10px 30px rgba(35, 163, 237, 0.08);
+  border: 1px solid #e0f2fe;
+}
+
+.recomendaciones h3 {
+  color: #186ba8;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+.recomendaciones h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(135deg, #72c0ea 0%, #23a3ed 100%);
+
+  border-radius: 3px;
+}
+
+.recomendaciones .tarjetas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.recomendaciones .tarjeta {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid #e0f2fe;
+}
+
+.recomendaciones .tarjeta:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.recomendaciones h4 {
+  color: #186ba8;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.recomendaciones p {
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ================== ESTADO VACÍO ================== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 300px;
+  width: 100%;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state-icon {
+  font-size: 48px;
+  color: #23a3ed;
+  margin-bottom: 15px;
+}
+
+.empty-state-title {
+  font-size: 1.25rem;
+  color: #186ba8;
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.empty-state-message {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-bottom: 25px;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.empty-state-action {
+  background: linear-gradient(135deg, #23a3ed, #1d95db);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(35, 163, 237, 0.3);
+}
+
+.empty-state-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(35, 163, 237, 0.4);
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1200px) {
+  .details {
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .details {
+    padding: 20px;
+  }
+
+  .details .recentOrders,
+  .recomendaciones {
+    padding: 20px;
+  }
+
+  .details table thead td,
+  .details .recentOrders table tr td {
+    padding: 12px 8px;
+    font-size: 0.85rem;
+  }
+
+  .img-mascota {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .details {
+    padding: 15px;
+  }
+
+  .cardHeader h2,
+  .recomendaciones h3 {
+    font-size: 1.2rem;
+  }
+
+  .status {
+    min-width: 80px;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .btn-detalles {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Dogtor: recordatorios e historia clínica */
+.recordatorios {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.agendar {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.btn-historia {
+  margin-left: 0.4rem;
+  background: var(--dt-gold-500) !important;
+  color: var(--dt-brand-950) !important;
+}
+
+.registrar-wrap {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 1rem;
+}

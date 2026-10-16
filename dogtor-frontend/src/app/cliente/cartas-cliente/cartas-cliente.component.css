@@ -1,0 +1,188 @@
+:root {
+  --primary: #1d95db;
+  --primary-light: #e3f4fd;
+  --white: #fff;
+  --gray: #f8fafc;
+  --dark: #1e293b;
+  --light-text: #64748b;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--gray);
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ======================= Tarjetas Mejoradas ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+.cardBox .card {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 1px solid rgba(29, 149, 219, 0.1);
+  overflow: hidden;
+}
+
+.cardBox .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  transition: var(--transition);
+}
+
+.cardBox .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.cardBox .card:hover::before {
+  width: 100%;
+  opacity: 0.1;
+}
+
+.cardBox .card .card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cardBox .card .numbers {
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--dark);
+  margin-bottom: 5px;
+  transition: var(--transition);
+}
+
+.cardBox .card .cardName {
+  color: var(--light-text);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.cardBox .card .iconBx {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  transition: var(--transition);
+}
+
+.cardBox .card .iconBx img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  filter: grayscale(100%) opacity(0.7);
+  transition: var(--transition);
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName {
+  color: var(--white);
+}
+
+.cardBox .card:hover .iconBx img {
+  filter: brightness(0) invert(1);
+  transform: scale(1.1);
+}
+
+/* Efecto de gradiente al hacer hover */
+.cardBox .card:hover {
+  background: linear-gradient(135deg, var(--primary), #1a7fc7);
+}
+
+/* ======================= Diseño Responsive ====================== */
+@media (max-width: 1200px) {
+  .cardBox {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .cardBox {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cardBox {
+    grid-template-columns: 1fr;
+  }
+
+  .cardBox .card {
+    padding: 25px;
+  }
+
+  .cardBox .card .numbers {
+    font-size: 2rem;
+  }
+}
+
+/* ======================= Sección de Clientes ====================== */
+.details {
+  display: flex;
+  justify-content: center;
+  padding: 30px 20px;
+}
+
+.cartas-cliente {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 30px;
+}
+
+/* Animación para las tarjetas */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cardBox .card {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.cardBox .card:nth-child(1) { animation-delay: 0.1s; }
+.cardBox .card:nth-child(2) { animation-delay: 0.2s; }
+.cardBox .card:nth-child(3) { animation-delay: 0.3s; }
+.cardBox .card:nth-child(4) { animation-delay: 0.4s; }

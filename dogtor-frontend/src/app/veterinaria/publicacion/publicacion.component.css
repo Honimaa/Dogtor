@@ -1,0 +1,250 @@
+.contenedor-principal {
+  max-width: 900px;
+  margin: 100px auto 0 auto; /* margen arriba 100px, y auto para centrar horizontalmente */
+  padding: 30px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f7fb;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 80, 0.08);
+}
+
+h2 {
+  color: #003f7f;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.selector-modo {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.selector-modo button {
+  padding: 10px 20px;
+  border: none;
+  background: linear-gradient(90deg, #72c0ea 0%, #5da6db 70%);
+  color: #003f7f;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 4px 8px rgba(114, 192, 234, 0.5);
+}
+
+.selector-modo button.activo {
+  background: linear-gradient(90deg, #0057b8 0%, #003f7f 100%);
+  color: white;
+}
+
+.selector-modo button:hover:not(.activo) {
+  background: linear-gradient(90deg, #5da6db 0%, #4690c8 100%);
+  color: #002f5f;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.formulario input[type="text"],
+.formulario textarea,
+.formulario select {
+  padding: 10px;
+  border: 1px solid #ccdff2;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.formulario textarea {
+  resize: vertical;
+}
+
+button[type="submit"] {
+  background: linear-gradient(90deg, #72c0ea 0%, #4b97d3 100%);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 5px 12px rgba(114, 192, 234, 0.7);
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(90deg, #4b97d3 0%, #0057b8 100%);
+  box-shadow: 0 8px 20px rgba(75, 151, 211, 0.8);
+}
+
+.filtro-visualizacion {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filtro-visualizacion select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+}
+
+.tarjetas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tarjeta {
+  display: flex;
+  gap: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 80, 0.08);
+  padding: 15px;
+}
+
+.tarjeta img {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid #0057b8;
+}
+
+.info {
+  flex: 1;
+}
+
+.estado {
+  font-weight: bold;
+}
+
+.encontrado {
+  color: green;
+}
+
+.perdido {
+  color: red;
+}
+
+.tarjeta button {
+  background-color: #ffb703;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* Dogtor Encuentra: bloques de publicar y buscar */
+.intro {
+  text-align: center;
+  color: #5a667a;
+  max-width: 640px;
+  margin: 0 auto 1.5rem;
+}
+
+.bloque {
+  margin-bottom: 2rem;
+}
+
+.bloque h3 {
+  color: #2a4e68;
+  margin-bottom: 0.75rem;
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.fila > * {
+  flex: 1 1 180px;
+}
+
+.formulario select {
+  padding: 10px 12px;
+  border: 1px solid #cfe3f2;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.foto {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 700;
+  color: #2a4e68;
+}
+
+.preview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.exito {
+  color: #10b981;
+  font-weight: 700;
+}
+
+.ayuda {
+  color: #5a667a;
+  margin: 0.5rem 0;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #5a667a;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.vacio {
+  color: #5a667a;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.tarjeta.resuelta {
+  opacity: 0.7;
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.contactar {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: #25d366;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contactar:hover {
+  color: #fff;
+  background: #1ebe57;
+}

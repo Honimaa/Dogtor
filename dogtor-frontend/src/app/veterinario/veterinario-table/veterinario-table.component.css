@@ -1,0 +1,423 @@
+/* ================== CONTENEDOR PRINCIPAL ================== */
+.vets-list-container {
+  width: 100%;
+  padding: 30px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ================== TÍTULO MEJORADO ================== */
+.vets-list-title {
+  color: #1d95db;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.vets-list-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  border-radius: 4px;
+}
+
+/* ================== BOTÓN AGREGAR PREMIUM ================== */
+.vet-add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.vet-add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* ================== BUSCADOR PREMIUM ================== */
+.buscador {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.input-busqueda {
+  flex: 1;
+  min-width: 250px;
+  max-width: 700px;
+  padding: 14px 20px;
+  border: 2px solid #e0e7ff;
+  border-radius: 30px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.input-busqueda:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.btn-buscar {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-buscar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* ================== CONTENEDOR TABLA PREMIUM ================== */
+.vets-table-wrapper {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);
+  overflow-x: auto;
+  border: 1px solid #e0e7ff;
+}
+
+/* ================== TABLA PREMIUM ================== */
+.vets-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+/* ENCABEZADO MEJORADO */
+.vets-table thead {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+}
+
+.vets-table th {
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.vets-table th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.vets-table th:last-child {
+  border-top-right-radius: 14px;
+}
+
+/* FILAS CON EFECTO 3D */
+.vets-table tbody tr {
+  background: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vets-table tbody tr:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.vets-table td {
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #475569;
+  font-weight: 500;
+  vertical-align: middle;
+  position: relative;
+}
+
+/* BORDES REDONDEADOS PARA CELDAS DE LOS EXTREMOS */
+.vets-table td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.vets-table td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+/* ================== EFECTO DE SOMBRAS ESTRATIFICADAS ================== */
+.vets-table tbody tr {
+  background: white;
+  border-radius: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.1),       /* Capa base sutil */
+    0 4px 6px rgba(0,0,0,0.05),       /* Capa intermedia */
+    0 5px 15px rgba(0,0,0,0.08);      /* Sombra exterior más difuminada */
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px; /* Espacio entre filas */
+}
+
+/* Efecto hover mejorado */
+.vets-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.12),
+    0 8px 15px rgba(0,0,0,0.1),
+    0 10px 25px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+
+/* Ajuste para bordes redondeados */
+.vets-table td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.vets-table td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Eliminar bordes entre celdas */
+.vets-table td {
+  border: none;
+}
+
+/* Asegurar que las sombras no se corten en el contenedor */
+.vets-table-wrapper {
+  padding: 15px;
+  overflow: visible;
+}
+
+/* Ajuste para el encabezado sticky */
+.vets-table thead {
+  position: sticky;
+  top: -1px; /* Compensa el padding del wrapper */
+  z-index: 10;
+}
+
+/* FOTO DE PERFIL MEJORADA */
+.vet-photo {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.vets-table tr:hover .vet-photo {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* ESTADO MEJORADO */
+.vet-status span {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 100px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.vet-status .active {
+  background-color: #ecfdf5;
+  color: #10b981;
+  border: 1px solid #a7f3d0;
+}
+
+.vet-status .inactive {
+  background-color: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fecaca;
+}
+
+/* ================== BOTONES DE ACCIÓN PREMIUM ================== */
+.vet-actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  height: 100%;
+}
+
+.vet-details-button,
+.vet-edit-button,
+.vet-delete-button {
+  min-width: 110px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  color: white;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* Alineación para el botón "Ver detalles" */
+td > a.btn-detalles {
+  display: inline-block;
+  margin: 4px 0;
+  width: 100px;
+}
+
+.vet-details-button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.vet-edit-button {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.vet-delete-button {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.vet-delete-button.inactive-state {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.vet-details-button:hover,
+.vet-edit-button:hover,
+.vet-delete-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1200px) {
+  .vets-list-container {
+    padding: 25px;
+  }
+
+  .vets-table {
+    min-width: 850px;
+  }
+}
+
+@media (max-width: 992px) {
+  .vets-list-container {
+    padding: 20px;
+  }
+
+  .vets-list-title {
+    font-size: 1.8rem;
+  }
+
+  .vet-add-button,
+  .btn-buscar {
+    padding: 12px 24px;
+  }
+
+  .vets-table-wrapper {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .vets-list-title {
+    font-size: 1.6rem;
+  }
+
+  .buscador {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-busqueda {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-buscar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .vet-actions-cell {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .vet-details-button,
+  .vet-edit-button,
+  .vet-delete-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .vets-list-container {
+    padding: 15px;
+  }
+
+  .vets-list-title {
+    font-size: 1.4rem;
+  }
+
+  .vet-add-button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .vets-table th,
+  .vets-table td {
+    padding: 12px 8px;
+    font-size: 13px;
+  }
+
+  .vet-photo {
+    width: 50px;
+    height: 50px;
+  }
+}

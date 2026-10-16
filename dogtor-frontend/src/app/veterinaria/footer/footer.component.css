@@ -1,0 +1,146 @@
+.dt-footer {
+  background: var(--dt-brand-950);
+  color: #d6e6f2;
+  margin-top: 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 2.5rem;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  gap: 2.5rem;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  margin-bottom: 1rem;
+}
+
+.footer-logo img {
+  width: 48px;
+  height: 48px;
+}
+
+.footer-logo span {
+  font-family: var(--dt-font-head);
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+.footer-logo em {
+  font-style: normal;
+  color: var(--dt-gold-500);
+}
+
+.footer-brand p {
+  margin: 0;
+  max-width: 340px;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #a9c3d6;
+}
+
+.footer-section h3 {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dt-gold-300);
+  margin-bottom: 1rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.footer-section li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section ion-icon {
+  color: var(--dt-brand-300);
+  flex-shrink: 0;
+}
+
+.footer-section a {
+  color: #d6e6f2;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  color: var(--dt-gold-300);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+  color: #8fa9be;
+}
+
+.footer-bottom strong {
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Logo beagle (PNG con fondo blanco) sobre fondo oscuro */
+.footer-logo img {
+  background: #fff;
+  border-radius: 50%;
+  padding: 4px;
+  object-fit: contain;
+}
+
+/* Animación original: perritos que rebotan junto al copyright */
+.footer-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-copy img {
+  height: 22px;
+  width: auto;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  animation: pawBounce 2s infinite ease-in-out;
+}
+
+.footer-copy img:last-child {
+  animation-delay: -1s;
+}
+
+@keyframes pawBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}

@@ -1,0 +1,149 @@
+.urgencias-hero {
+  background: linear-gradient(180deg, #FFF4EC, #fff);
+  border-bottom: 1px solid #FBE3D2;
+}
+
+.hero-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.hero-inner h1 {
+  margin-bottom: 0.5rem;
+}
+
+.dt-eyebrow {
+  color: var(--dt-danger);
+}
+
+.llamar {
+  background: var(--dt-danger);
+  font-size: 1.05rem;
+  padding: 0.9rem 1.5rem;
+}
+
+.llamar:hover {
+  background: #9A3412;
+}
+
+.actualizado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--dt-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1.25rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16A34A;
+  animation: latido 1.8s infinite;
+}
+
+@keyframes latido {
+  0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(22, 163, 74, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.sedes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.sede header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sede h3 {
+  margin: 0;
+}
+
+.sede header p {
+  margin: 0.15rem 0 0;
+  color: var(--dt-muted);
+  font-size: 0.92rem;
+}
+
+.sede h4 {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dt-muted);
+  margin: 0 0 0.6rem;
+}
+
+.doctores {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.doctores li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.doctores img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--dt-brand-50);
+}
+
+.doctores strong,
+.doctores span,
+.doctores small {
+  display: block;
+}
+
+.doctores span {
+  color: var(--dt-muted);
+  font-size: 0.9rem;
+}
+
+.doctores small {
+  color: var(--dt-brand-700);
+  font-weight: 700;
+}
+
+.dt-alert {
+  margin-bottom: 1.5rem;
+}
+
+.consejos ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+@media (max-width: 480px) {
+  .sedes {
+    grid-template-columns: 1fr;
+  }
+
+  .llamar {
+    width: 100%;
+  }
+}

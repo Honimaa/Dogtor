@@ -1,0 +1,74 @@
+<div class="main-container">
+  <app-navegacion></app-navegacion>
+
+
+<div class="detail-container">
+    <h2 class="detail-title">Detalle de Mascota</h2>
+
+    <ng-container class="detail-content" *ngIf="mascota; else noMascotaSelected">
+      <!-- Imagen de la mascota -->
+      <div class="pet-image-container">
+        <img
+          [src]="mascota.foto || 'assets/default-pet.jpg'"
+          alt="Foto de {{mascota.nombre}}"
+          class="pet-image"
+        />
+      </div>
+
+      <!-- Datos de la mascota -->
+      <div class="pet-data">
+        <div class="data-item">
+          <span class="data-label">Nombre: </span>
+          <span class="data-value">{{ mascota.nombre }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Raza: </span>
+          <span class="data-value">{{ mascota.raza }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Edad: </span>
+          <span class="data-value">{{ mascota.edad }} años</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Peso: </span>
+          <span class="data-value">{{ mascota.peso | number:'1.1-1' }} kg</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Enfermedad: </span>
+          <span class="data-value">{{ mascota.enfermedad || 'Ninguna' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Fecha Nacimiento: </span>
+          <span class="data-value">{{ mascota.fechaNacimiento | date:'yyyy/MM/dd' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Paciente desde: </span>
+          <span class="data-value">{{ mascota.fechaIngreso | date:'yyyy/MM/dd' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Fecha de salida (baja): </span>
+          <span class="data-value">{{ mascota.fechaSalida ? (mascota.fechaSalida | date:'yyyy/MM/dd') : (mascota.estado === 1 ? 'No aplica: paciente activo' : 'Sin registrar') }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Estado: </span>
+          <span class="data-value">{{ mascota.estado === 1 ? 'Activo (paciente vigente)' : 'Inactivo (dado de baja)' }}</span>
+        </div>
+        <div class="data-item">
+          <span class="data-label">Nombre Cliente: </span>
+          <span class="data-value" (click)="mostrarCliente($event, mascota.cliente?.idCliente!)">
+            {{ mascota.cliente?.nombre }}
+          </span>
+        </div>
+        <a class="dt-btn historia-btn" [routerLink]="['/historia-clinica', mascota.idMascota]">
+          <ion-icon name="document-text-outline"></ion-icon> Ver historia clínica
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-template #noMascotaSelected>
+      <div class="no-selection-message">
+        <p>Seleccione una mascota de la tabla para ver sus detalles</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

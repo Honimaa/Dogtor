@@ -1,0 +1,70 @@
+.landing-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+  margin: 40px auto;
+}
+
+.intro-text {
+  flex: 1;
+  padding-right: 30px;
+}
+
+.intro-text h2 {
+  font-size: 40px;
+color: #2a4e68; /* Azul oscuro elegante */
+  margin-bottom: 20px;
+}
+
+.intro-text p {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  text-align: justify;
+}
+
+.intro-image {
+  flex: 1;
+  text-align: center;
+}
+
+.intro-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.btn-leer-mas {
+  width: fit-content;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(114, 192, 234, 0.4);
+  transition: all 0.3s ease;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+  position: relative;
+  overflow: hidden;
+  display: inline-block; /* Conserva esta propiedad del original */
+}
+
+/* Efecto hover mejorado */
+.btn-leer-mas:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(114, 192, 234, 0.5);
+  background: linear-gradient(135deg, #529bcb 0%, #72c0ea 100%); /* Invertimos el gradiente para el efecto */
+}
+
+/* Efecto active (al hacer clic) */
+.btn-leer-mas:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 15px rgba(114, 192, 234, 0.4);
+}

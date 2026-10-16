@@ -1,0 +1,57 @@
+<app-navegacion></app-navegacion>
+
+<div class="main">
+   
+    <div class="container-principal">
+      <h1>Listado de Mascotas Atendidas</h1>
+
+      <div class="contenedor-boton">
+        <!-- No se agrega botón nuevo -->
+      </div>
+
+      <div class="tabla-container">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Raza</th>
+              <th>Edad</th>
+              <th>Peso</th>
+              <th>Enfermedad</th>
+              <th>Foto</th>
+              <th>Nacimiento</th>
+              <th>Ingreso</th>
+              <th>Salida</th>
+              <th>Estado</th>
+              <th>Cliente</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mascota of mascotaList" (click)="mostrarMascota(mascota.idMascota)">
+              <td>{{ mascota.idMascota }}</td>
+              <td>{{ mascota.nombre }}</td>
+              <td>{{ mascota.raza }}</td>
+              <td>{{ mascota.edad }}</td>
+              <td>{{ mascota.peso | number:'1.1-1' }}</td>
+              <td>{{ mascota.enfermedad || '-' }}</td>
+              <td>
+                <img *ngIf="mascota.foto" [src]="mascota.foto" alt="Foto de {{ mascota.nombre }}" class="foto-tabla">
+                <span *ngIf="!mascota.foto">-</span>
+              </td>
+              <td>{{ mascota.fechaNacimiento ? (mascota.fechaNacimiento | date:'yyyy/MM/dd') : '-' }}</td>
+              <td>{{ mascota.fechaIngreso ? (mascota.fechaIngreso | date:'yyyy/MM/dd') : '-' }}</td>
+              <td>{{ mascota.fechaSalida ? (mascota.fechaSalida | date:'yyyy/MM/dd') : '-' }}</td>
+              <td>{{ mascota.estado === 1 ? 'Activo' : 'Inactivo' }}</td>
+              <td>{{ mascota.cliente?.nombre }}</td>
+              <td class="action-buttons">
+                <button class="btn-detalles" (click)="mostrarMascota(mascota.idMascota); $event.stopPropagation()">Ver Detalles</button>
+                <a class="btn-detalles btn-historia" [routerLink]="['/historia-clinica', mascota.idMascota]" (click)="$event.stopPropagation()">Historia clínica</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>

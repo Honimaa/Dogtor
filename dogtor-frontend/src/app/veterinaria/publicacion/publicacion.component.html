@@ -1,0 +1,103 @@
+<app-header></app-header>
+
+<div class="contenedor-principal">
+  <h2>Dogtor Encuentra</h2>
+  <p class="intro">
+    ¿Perdiste a tu mascota o encontraste una? Publícalo aquí: tu publicación queda visible para todos en la lista
+    de abajo, sin necesidad de crear una cuenta.
+  </p>
+
+  <!-- 1. Publicar -->
+  <section class="bloque">
+    <h3>1. Publica un aviso</h3>
+    <div class="selector-modo">
+      <button type="button" [class.activo]="modoPublicacion === 'PERDIDA'" (click)="cambiarModo('PERDIDA')">Perdí a mi mascota</button>
+      <button type="button" [class.activo]="modoPublicacion === 'ENCONTRADA'" (click)="cambiarModo('ENCONTRADA')">Encontré una mascota</button>
+    </div>
+
+    <form (ngSubmit)="guardarPublicacion()" class="formulario">
+      <div class="fila">
+        <input type="text" [placeholder]="modoPublicacion === 'PERDIDA' ? 'Nombre de tu mascota' : 'Nombre (si tiene placa)'"
+               [(ngModel)]="nueva.nombreMascota" name="nombre">
+        <select [(ngModel)]="nueva.especie" name="especie">
+          <option>Perro</option>
+          <option>Gato</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <textarea placeholder="Descripción: raza, color, collar, señas particulares…" [(ngModel)]="nueva.descripcion" name="descripcion"></textarea>
+      <div class="fila">
+        <input type="text" [placeholder]="modoPublicacion === 'PERDIDA' ? '¿Dónde se perdió? *' : '¿Dónde la encontraste? *'"
+               [(ngModel)]="nueva.lugar" name="lugar" required>
+        <input type="text" placeholder="Ciudad" [(ngModel)]="nueva.ciudad" name="ciudad">
+        <input type="date" [(ngModel)]="nueva.fechaSuceso" name="fecha" [attr.aria-label]="'Fecha'">
+      </div>
+      <div class="fila">
+        <input type="text" placeholder="Tu nombre *" [(ngModel)]="nueva.contactoNombre" name="contacto" required>
+        <input type="tel" placeholder="Tu teléfono / WhatsApp *" [(ngModel)]="nueva.contactoTelefono" name="telefono" required>
+      </div>
+      <label class="foto">
+        📷 Foto de la mascota
+        <input type="file" (change)="convertirImagen($event)" accept="image/*">
+      </label>
+      <img *ngIf="nueva.foto" [src]="nueva.foto" class="preview" alt="Vista previa">
+      <p class="error" *ngIf="error">{{ error }}</p>
+      <p class="exito" *ngIf="exito">✅ {{ exito }}</p>
+      <button type="submit" [disabled]="enviando">
+        📤 {{ enviando ? 'Publicando…' : (modoPublicacion === 'PERDIDA' ? 'Publicar mascota perdida' : 'Publicar mascota encontrada') }}
+      </button>
+    </form>
+  </section>
+
+  <!-- 2. Buscar -->
+  <section class="bloque" id="listado">
+    <h3>2. Revisa los avisos</h3>
+    <div class="selector-modo listado">
+      <button type="button" [class.activo]="verTipo === 'PERDIDA'" (click)="verTipo = 'PERDIDA'">
+        🔍 Mascotas perdidas ({{ contar('PERDIDA') }})
+      </button>
+      <button type="button" [class.activo]="verTipo === 'ENCONTRADA'" (click)="verTipo = 'ENCONTRADA'">
+        📢 Mascotas encontradas ({{ contar('ENCONTRADA') }})
+      </button>
+    </div>
+    <p class="ayuda" *ngIf="verTipo === 'PERDIDA'">
+      Avisos de dueños que buscan a su mascota. Si viste alguna, contacta a su dueño.
+    </p>
+    <p class="ayuda" *ngIf="verTipo === 'ENCONTRADA'">
+      ¿Buscas a tu mascota perdida? Revisa aquí: son mascotas que otras personas encontraron y quieren devolver.
+    </p>
+    <label class="check">
+      <input type="checkbox" [(ngModel)]="ocultarResueltas" name="ocultar"> Ocultar casos resueltos
+    </label>
+
+    <p class="vacio" *ngIf="cargando">Cargando avisos…</p>
+    <p class="vacio" *ngIf="!cargando && !publicacionesFiltradas.length">No hay avisos en esta categoría por ahora.</p>
+
+    <div class="tarjetas">
+      <div class="tarjeta" *ngFor="let pub of publicacionesFiltradas" [class.resuelta]="pub.resuelta">
+        <img [src]="pub.foto || 'assets/mascota-placeholder.svg'" alt="Foto de la mascota" />
+        <div class="info">
+          <span class="badge" [ngClass]="pub.tipo === 'PERDIDA' ? 'badge-busqueda' : 'badge-hallazgo'">
+            {{ pub.tipo === 'PERDIDA' ? '🔍 Se busca' : '📢 Encontrada' }}
+          </span>
+          <h4>{{ pub.nombreMascota || ((pub.especie || 'Mascota') + ' sin identificar') }}</h4>
+          <p *ngIf="pub.descripcion">{{ pub.descripcion }}</p>
+          <p><strong>{{ pub.tipo === 'PERDIDA' ? 'Se perdió en:' : 'Encontrada en:' }}</strong> {{ pub.lugar }}<ng-container *ngIf="pub.ciudad">, {{ pub.ciudad }}</ng-container></p>
+          <p *ngIf="pub.fechaSuceso"><strong>Fecha:</strong> {{ pub.fechaSuceso | date:'dd/MM/yyyy':'UTC' }}</p>
+          <p><strong>Contacto:</strong> {{ pub.contactoNombre }} · {{ pub.contactoTelefono }}</p>
+
+          <p class="estado" [ngClass]="{'encontrado': pub.resuelta, 'perdido': !pub.resuelta}">
+            {{ pub.resuelta ? '✅ Caso resuelto' : '🚨 Aún sin resolver' }}
+          </p>
+
+          <div class="acciones" *ngIf="!pub.resuelta">
+            <a class="contactar" [href]="enlaceWhatsapp(pub)" target="_blank" rel="noopener">Contactar por WhatsApp</a>
+            <button type="button" (click)="marcarResuelta(pub)">
+              {{ pub.tipo === 'PERDIDA' ? 'Ya apareció' : 'Ya volvió con su dueño' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,186 @@
+/* ================== CONTENEDOR PRINCIPAL ================== */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 270px);
+  margin-left: 270px;
+  padding: 4rem 2rem;
+  min-height: 100vh;
+  background: linear-gradient(145deg, #f0f4f8, #d9e2ec);
+  transition: all 0.4s ease;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Layout colapsado */
+.main.active + .page-container {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* ================== CONTENIDO INTERIOR ================== */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  animation: fadeIn 0.7s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* TÍTULO */
+h1 {
+  font-size: 2.5rem;
+  color: #2b2d42;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom: 3px solid #5cadf4;
+  padding-bottom: 0.5rem;
+  width: fit-content;
+}
+
+/* ================== CONTENIDO FLEX ================== */
+.content {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ================== FOTO ================== */
+.img-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #5cadf4;
+  border: 5px solid #1e88e5;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
+}
+
+.img-container:hover {
+  transform: scale(1.08);
+}
+
+.mascota-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================== DATOS ================== */
+.datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.dato {
+  background: linear-gradient(145deg, #5cadf4, #4098d7);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dato:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e0f2ff;
+}
+
+.info {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+/* ================== BOTÓN DE DETALLES ================== */
+.btn-detalles {
+  background: #205375;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-detalles:hover {
+  background: #2e86ab;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 992px) {
+  .content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .img-container {
+    width: 180px;
+    height: 180px;
+  }
+
+  .datos {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .img-container {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .img-container {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* ================== ANIMACIONES ================== */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

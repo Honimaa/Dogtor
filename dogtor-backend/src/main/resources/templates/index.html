@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dogtor</title>
+    <link rel="stylesheet" th:href="@{/css/landing.css}" />
+    <link rel="stylesheet" th:href="@{/css/header_footer.css}" />
+  </head>
+  <body>
+  <header>
+    <div class="logo">
+      <img src="https://i.postimg.cc/4yjfvPcB/logo2.png" alt="Logo" />
+      <span class="logo-text">Dogtor</span>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a th:href="@{/index}">Inicio</a></li>
+        <li><a th:href="@{/index#servicios}">Servicios</a></li>
+        <li><a th:href="@{/index#conocenos}">Conócenos</a></li>
+        <li><a th:href="@{/index#contactanos}">Contáctanos</a></li>
+    </ul>
+    </nav>
+    <div class="user-menu">
+      <!-- Sección para Cliente -->
+      <div class="user-menu" th:if="${session.rol == 'CLIENTE'}">
+          <button class="login-btn user-btn" onclick="toggleMenu()">
+              <span th:text="${session.nombreCliente}"></span>
+              <img th:src="${session.fotoCliente}" alt="Foto del Cliente" class="user-img" />
+          </button>
+          <div class="dropdown-menu" id="userDropdown">
+              <a th:href="@{/cliente/editar/{id}(id=${session.idCliente})}">Editar Usuario</a>
+              <a th:href="@{/mascota/mascotas(idCliente=${session.idCliente})}">Ver Mascotas</a>
+              <a href="/cerrar-sesion">Cerrar sesión</a>
+          </div>
+      </div>
+  
+      <!-- Sección para Veterinario -->
+      <div class="user-menu" th:if="${session.rol == 'VETERINARIO'}">
+          <button class="login-btn user-btn" onclick="toggleMenu()">
+              <span th:text="${session.nombre}"></span>
+              <img th:src="${session.foto}" alt="Foto del Veterinario" class="user-img" />
+          </button>
+          <div class="dropdown-menu" id="userDropdown">
+              <a th:href="@{/veterinario/mascotas_atendidas}">Mascotas Atendidas</a>
+              <a href="/cerrar-sesion">Cerrar sesión</a>
+          </div>
+      </div>
+  
+      <!-- Sección para Administrador -->
+      <div class="user-menu" th:if="${session.rol == 'ADMINISTRADOR'}">
+          <button class="login-btn user-btn" onclick="toggleMenu()">
+              <span>Administrador</span>
+          </button>
+          <div class="dropdown-menu" id="userDropdown">
+              <a th:href="@{/admin/dashboard}">Panel de Control</a>
+              <a href="/cerrar-sesion">Cerrar sesión</a>
+          </div>
+      </div>
+  
+      <!-- Opción de inicio de sesión si no hay usuario logueado -->
+      <div class="user-menu" th:if="${session.rol == null}">
+          <a th:href="@{/inicio_sesion}" class="login-btn user-btn">
+              <span>Iniciar sesión</span>
+              <img src="assets/avatar-placeholder.svg" alt="Icono de usuario" class="user-img" />
+          </a>
+      </div>
+  </div>
+  </header>
+
+  <section class="description-section">
+    <div class="overlay"></div>
+    <div class="description-text">
+      <h1>Bienvenido a Nuestra Plataforma</h1>
+      <p>Descubre un espacio diseñado para brindarte los mejores servicios en salud y bienestar. Con tecnología de vanguardia y profesionales altamente capacitados, estamos aquí para ti.</p>
+    </div>
+  </section>
+
+    <main>
+      <section id="servicios" class="services-section-title">
+        <h2>Servicios</h2>
+        <div class="services-section">
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Consulta General</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Realizamos chequeos completos para garantizar la salud de tu
+                  mascota.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Cirugía</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Contamos con quirófanos equipados para procedimientos seguros.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Estética y Peluquería</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Ofrecemos servicios de baño, cortes de pelo y cuidado
+                  estético.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Hospitalización</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Brindamos hospitalización para garantizar la recuperación de
+                  tu mascota.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Monitoreo</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Seguimiento continuo para supervisar el estado de salud de tu
+                  mascota.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Vacunación</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Ofrecemos una amplia gama de vacunas para mantener a tu
+                  mascota protegida y saludable.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-inner">
+              <div class="service-card-front">
+                <h3>Laboratorio Clínico</h3>
+              </div>
+              <div class="service-card-back">
+                <p>
+                  Realizamos pruebas de laboratorio para diagnosticar y prevenir
+                  enfermedades.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conocenos" class="testimonials-section">
+        <h2>Testimonios de clientes</h2>
+        <div class="testimonial-grid"></div>
+      </section>
+      <!-- Sección de Agendar Cita -->
+      <section id="contactanos" class="appointment-section">
+        <h2>Agenda tu cita</h2>
+        <div class="appointment-container">
+          <!-- Formulario -->
+          <div class="form-container">
+            <form id="appointment-form">
+              <label for="appointment-name">Tu nombre</label>
+              <input
+                type="text"
+                id="appointment-name"
+                placeholder="Ejemplo: Juan Pérez"
+                required
+              />
+
+              <label for="appointment-details">Detalles de la cita</label>
+              <textarea
+                id="appointment-details"
+                placeholder="Describe el motivo de la consulta..."
+                required
+              ></textarea>
+
+              <label for="appointment-service">Tipo de servicio</label>
+              <select id="appointment-service" required>
+                <option value="">Selecciona un servicio</option>
+                <option value="Consulta general">Consulta general</option>
+                <option value="Cirugía">Cirugía</option>
+                <option value="Estética">Estética</option>
+                <option value="Vacunación">Vacunación</option>
+                <option value="Otro">Otro</option>
+              </select>
+
+              <label for="appointment-image">Foto de tu mascota (URL)</label>
+              <input
+                type="url"
+                id="appointment-image"
+                placeholder="https://ejemplo.com/mascota.jpg"
+                required
+              />
+
+              <input type="hidden" id="selected-vet" required />
+              <button type="submit" id="appointment-btn" disabled>
+                Agendar cita
+              </button>
+            </form>
+          </div>
+
+          <!-- Mapa -->
+          <div class="map-container">
+            <h3>Ubicación</h3>
+            <div class="vet-map">
+              <div
+                class="vet-option"
+                id="vet1"
+                data-vet="Veterinaria Los Pinos"
+              >
+                <img
+                  src="https://i.postimg.cc/431p87Bz/vet1.png"
+                  alt="Veterinaria Los Pinos"
+                />
+                <span>Los Pinos</span>
+              </div>
+              <div
+                class="vet-option"
+                id="vet2"
+                data-vet="Veterinaria Patitas Felices"
+              >
+                <img
+                  src="https://i.postimg.cc/nzcBNFPN/vet2.png"
+                  alt="Veterinaria Patitas Felices"
+                />
+                <span>Patitas Felices</span>
+              </div>
+              <div class="vet-option" id="vet3" data-vet="Veterinaria Huellas">
+                <img
+                  src="https://i.postimg.cc/gJS8p99j/vet3.png"
+                  alt="Veterinaria Huellas"
+                />
+                <span>Huellas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="associated-foundations">
+        <h2>Fundaciones Asociadas</h2>
+        <div class="carousel-container">
+          <div class="carousel">
+            <div class="carousel-track">
+              <div class="foundation-card">
+                <img
+                  src="https://img.lalr.co/cms/2019/09/04155109/2016112523195825802.jpg?size=xl"
+                  alt="Fundación 1"
+                />
+                <div class="info">
+                  <h3>Fundación Animal Save</h3>
+                  <p>
+                    Rescatamos y cuidamos animales en situación de calle,
+                    dándoles una segunda oportunidad de vida.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://blog.oxfamintermon.org/wp-content/uploads/2018/06/voluntariado-con-animales-1.jpg"
+                  alt="Fundación 2"
+                />
+                <div class="info">
+                  <h3>Fundación Protectora de Animales Sucre</h3>
+                  <p>
+                    Brindamos refugio, alimentación y atención veterinaria a
+                    mascotas abandonadas hasta que encuentren un hogar.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600"
+                  alt="Fundación 3"
+                />
+                <div class="info">
+                  <h3>Patrulla Animal</h3>
+                  <p>
+                    Luchamos contra el maltrato animal y promovemos la adopción
+                    responsable de perros y gatos.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600"
+                  alt="Fundación 4"
+                />
+                <div class="info">
+                  <h3>Fundación de Ayuda a los Animales</h3>
+                  <p>
+                    Nos enfocamos en rescatar animales en peligro,
+                    rehabilitarlos y encontrarles familias amorosas.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://miredvista.co/wp-content/uploads/2022/11/liliana-morales-26.jpg"
+                  alt="Fundación 5"
+                />
+                <div class="info">
+                  <h3>Vida Animal</h3>
+                  <p>
+                    Organizamos campañas de esterilización y educación sobre el
+                    respeto y cuidado de los animales.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://stakeholders.com.pe/wp-content/uploads/2023/04/trained-dogs-2022-11-10-18-03-18-utc-scaled.jpg"
+                  alt="Fundación 6"
+                />
+                <div class="info">
+                  <h3>Peluditos en Apuros</h3>
+                  <p>
+                    Nos dedicamos a la protección de animales vulnerables y la
+                    promoción de la tenencia responsable.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://elcomercio.pe/resizer/sYS7edz0yuMj1-10gQgnZVftjrY=/1200x1200/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/UWCUD6LJS5FQXLQTAASALWYALA.jpg"
+                  alt="Fundación 7"
+                />
+                <div class="info">
+                  <h3>Ayúdame</h3>
+                  <p>
+                    Rescatamos, curamos y rehabilitamos animales que han sufrido
+                    abandono o maltrato.
+                  </p>
+                </div>
+              </div>
+              <div class="foundation-card">
+                <img
+                  src="https://estaticos-cdn.prensaiberica.es/clip/97046842-7a83-496a-b573-35c1e9b4d53e_mobile-ep-aspect-ratio_640w_0.jpg"
+                  alt="Fundación 8"
+                />
+                <div class="info">
+                  <h3>Patitas al Rescate</h3>
+                  <p>
+                    Conectamos animales sin hogar con familias responsables y
+                    brindamos apoyo veterinario a quienes lo necesitan.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <section class="footer-container">
+        <div class="footer-info">
+          <!-- Sección de Servicios -->
+          <div class="footer-section">
+            <h3>Servicios</h3>
+            <ul>
+              <li>Consulta médica</li>
+              <li>Cirugía</li>
+              <li>Hospitalización</li>
+              <li>Monitoreo</li>
+              <li>Vacunación</li>
+              <li>Laboratorio clínico</li>
+            </ul>
+          </div>
+    
+          <!-- Logo en el centro -->
+          <div class="footer-logo">
+            <img src="https://i.postimg.cc/zH1YsdSN/logo.png" alt="Logo" />
+            <div class="social-links">
+              <a href="https://meta.com/dogtor" target="_blank" title="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" alt="Meta" />
+              </a>
+              <a href="https://www.instagram.com/dogtor" target="_blank" title="Instagram">
+                <img src="https://i0.wp.com/eltallerdehector.com/wp-content/uploads/2022/06/2a008-logo-instagram-icono.png?fit=512%2C512&ssl=1" alt="Instagram" />
+              </a>
+              <a href="https://www.x.com/in/dogtor" target="_blank" title="X">
+                <img src="https://images.freeimages.com/image/large-previews/f35/x-twitter-logo-on-black-circle-5694247.png" alt="X" />
+              </a>
+            </div>
+          </div>
+    
+          <!-- Sección de Información -->
+          <div class="footer-section">
+            <h3>Información</h3>
+            <ul>
+              <li>(+57) 3194479483</li>
+              <li>Calle 12A #78 - 34</li>
+              <li>dogtor@atencion.com</li>
+              <li>www.dogtor.com</li>
+            </ul>
+          </div>
+        </div>
+    
+        <div class="footer-copyright">
+          © 2025 Dogtor. Todos los derechos reservados.
+        </div>
+      </section>
+    </footer>      
+    <script th:src="@{js/testimonials.js}"></script>
+  </body>
+</html>

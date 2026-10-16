@@ -1,0 +1,139 @@
+<app-navegacion></app-navegacion>
+
+<div class="main">
+ 
+
+  <main class="container-principal">
+    <h1>Inventario</h1>
+
+    <app-inventario-alertas #alertas (seleccionar)="abrirEntrada($event)" class="alertas-inventario"></app-inventario-alertas>
+
+
+    <!-- Buscador de medicamentos -->
+    <div class="buscador">
+      <input
+        id="input-busqueda-medicamento"
+        type="text"
+        [(ngModel)]="nombreMedicamentoBuscar"
+        placeholder="Buscar medicamento por su nombre..."
+        class="input-busqueda"
+        style="padding: 12px; font-size: 18px; border-radius: 25px; border: 1px solid #ddd; width: 80%; outline: none; transition: all 0.3s ease;"
+      />
+      <button
+        (click)="buscarMedicamento()"
+        class="btn-buscar"
+        style="background-color: #5cadf4; color: white; padding: 8px 18px; border-radius: 20px; font-size: 14px; border: none; cursor: pointer;">
+        Buscar
+      </button>
+    </div>
+<!-- Contenedor con botón e ícono a la izquierda y filtro a la derecha -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+  
+  <!-- Botón exportar -->
+  <button (click)="exportarExcel()" style="background: none; border: none; cursor: pointer;">
+    <img src="https://i.postimg.cc/1XBG3w9x/guardar-carpeta.png" alt="Exportar a Excel" title="Exportar a Excel" style="width: 32px;" />
+  </button>
+
+  <!-- Filtro de ordenamiento -->
+  <select
+    [(ngModel)]="opcionOrdenamiento"
+    (change)="ordenarMedicamentos()"
+    style="padding: 10px 20px; border-radius: 25px; font-size: 16px; border: 1px solid #ccc; cursor: pointer;">
+    <option value="id">Ordenar por ID</option>
+    <option value="precioCompraAsc">Precio Compra (Menor a Mayor)</option>
+    <option value="precioCompraDesc">Precio Compra (Mayor a Menor)</option>
+    <option value="precioVentaAsc">Precio Venta (Menor a Mayor)</option>
+    <option value="precioVentaDesc">Precio Venta (Mayor a Menor)</option>
+  </select>
+
+</div>
+
+
+    <!-- Tabla de medicamentos -->
+    <div class="tabla-container">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>ID Medicamento</th>
+            <th>Nombre</th>
+            <th>Precio Compra</th>
+            <th>Precio Venta</th>
+            <th>Unidades Disponibles</th>
+            <th>Unidades Vendidas</th>
+            <th>Categoría / Lote</th>
+            <th>Vencimiento</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let medicamento of medicamentos" class="medicamento-fila">
+            <td class="medicamento-id">{{ medicamento.idMedicamento }}</td>
+            <td class="medicamento-nombre">{{ medicamento.nombre }}</td>
+            <td class="medicamento-precio-compra">{{ medicamento.precioCompra | currency:'$' }}</td>
+            <td class="medicamento-precio-venta">{{ medicamento.precioVenta | currency:'$' }}</td>
+            <td class="medicamento-disponibles">
+              {{ medicamento.unidadesDisponibles }}
+              <span class="dt-badge dt-badge-warning" *ngIf="bajoStock(medicamento)">Bajo stock</span>
+            </td>
+            <td class="medicamento-vendidos">{{ medicamento.unidadesVendidas }}</td>
+            <td>
+              <small>{{ medicamento.categoria | titlecase }}</small>
+              <small class="block" *ngIf="medicamento.lote">Lote {{ medicamento.lote }}</small>
+            </td>
+            <td>
+              <span *ngIf="medicamento.fechaVencimiento; else sinFecha"
+                    [class.vencido]="estadoVencimiento(medicamento) === 'vencido'"
+                    [class.por-vencer]="estadoVencimiento(medicamento) === 'porVencer'">
+                {{ medicamento.fechaVencimiento | date:'dd/MM/yyyy':'UTC' }}
+              </span>
+              <ng-template #sinFecha>—</ng-template>
+            </td>
+            <td>
+              <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="abrirEntrada(medicamento)">Entrada</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- Entrada de inventario (REQ-INV-04) -->
+<div class="dt-modal-backdrop" *ngIf="entrada" (click)="entrada = null">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarEntrada()">
+    <h3>Entrada de inventario</h3>
+    <p class="dt-lead">{{ entrada.nombre }} · {{ entrada.unidadesDisponibles }} unidades disponibles</p>
+    <div class="grid-2">
+      <div class="dt-field">
+        <label for="cantidad">Unidades que ingresan</label>
+        <input id="cantidad" name="cantidad" type="number" min="0" [(ngModel)]="formEntrada.cantidad" />
+      </div>
+      <div class="dt-field">
+        <label for="lote">Lote</label>
+        <input id="lote" name="lote" [(ngModel)]="formEntrada.lote" />
+      </div>
+      <div class="dt-field">
+        <label for="vence">Fecha de vencimiento</label>
+        <input id="vence" name="vence" type="date" [(ngModel)]="formEntrada.fechaVencimiento" />
+      </div>
+      <div class="dt-field">
+        <label for="minimo">Stock mínimo</label>
+        <input id="minimo" name="minimo" type="number" min="0" [(ngModel)]="formEntrada.stockMinimo" />
+      </div>
+      <div class="dt-field">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" name="categoria" [(ngModel)]="formEntrada.categoria">
+          <option value="MEDICAMENTO">Medicamento</option>
+          <option value="ALIMENTO">Alimento</option>
+          <option value="ACCESORIO">Accesorio</option>
+          <option value="INSUMO_MEDICO">Insumo médico</option>
+        </select>
+      </div>
+    </div>
+    <p class="error" *ngIf="errorEntrada">{{ errorEntrada }}</p>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="entrada = null">Cancelar</button>
+      <button type="submit" class="dt-btn" [disabled]="guardandoEntrada">Guardar</button>
+    </div>
+  </form>
+</div>

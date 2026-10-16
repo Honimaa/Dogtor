@@ -1,0 +1,83 @@
+<app-header></app-header>
+
+<section class="urgencias-hero">
+  <div class="dt-page hero-inner">
+    <div>
+      <span class="dt-eyebrow">Atención de urgencias 24 horas</span>
+      <h1>¿Tu mascota tiene una emergencia?</h1>
+      <p class="dt-lead">
+        Estas sedes tienen un doctor de turno en este momento. Llama antes de salir para que te esperen.
+      </p>
+    </div>
+    <a href="tel:+573154467811" class="dt-btn llamar">
+      <ion-icon name="call"></ion-icon> Llamar a la línea 24/7
+    </a>
+  </div>
+</section>
+
+<div class="dt-page">
+  <p class="actualizado" *ngIf="!cargando && !error">
+    <span class="dot"></span> Actualizado a las {{ actualizado | date:'h:mm a' }} · se refresca cada minuto
+  </p>
+
+  <div class="dt-empty" *ngIf="cargando">Consultando disponibilidad…</div>
+
+  <div class="dt-alert dt-alert-danger" *ngIf="error">
+    <ion-icon name="cloud-offline-outline"></ion-icon>
+    <div>
+      <strong>No pudimos consultar la disponibilidad</strong>
+      Llama directamente a la línea 24/7: (+57) 315 446 7811.
+    </div>
+  </div>
+
+  <div class="dt-alert dt-alert-warning" *ngIf="!cargando && !error && !sedes.length">
+    <ion-icon name="time-outline"></ion-icon>
+    <div>
+      <strong>No hay sedes con urgencias disponibles ahora</strong>
+      Llama a la línea 24/7 y te orientaremos hacia la clínica aliada más cercana.
+    </div>
+  </div>
+
+  <div class="sedes">
+    <article class="sede dt-card" *ngFor="let s of sedes">
+      <header>
+        <div>
+          <h3>Sede {{ s.sede }}</h3>
+          <p>{{ direcciones[s.sede] || 'Bogotá' }}</p>
+        </div>
+        <span class="dt-badge" [ngClass]="s.disponibleAhora ? 'dt-badge-success' : 'dt-badge-muted'">
+          <span class="dot" *ngIf="s.disponibleAhora"></span>
+          {{ s.disponibleAhora ? 'Abierta ahora' : 'Sin doctor de turno' }}
+        </span>
+      </header>
+
+      <h4>Doctores de turno</h4>
+      <ul class="doctores">
+        <li *ngFor="let d of s.doctores">
+          <img [src]="d.foto" [alt]="'Foto de ' + d.nombre" />
+          <div>
+            <strong>{{ d.nombre }}</strong>
+            <span>{{ d.especialidad }}</span>
+            <small *ngIf="d.horario">{{ d.horario }}</small>
+          </div>
+        </li>
+      </ul>
+
+      <a class="dt-btn dt-btn-outline dt-btn-sm" [href]="mapa(s.sede)" target="_blank" rel="noopener">
+        <ion-icon name="navigate-outline"></ion-icon> Cómo llegar
+      </a>
+    </article>
+  </div>
+
+  <div class="consejos dt-card">
+    <h3>Mientras llegas</h3>
+    <ul>
+      <li>Mantén a tu mascota quieta y abrigada; transpórtala en un guacal o sobre una manta.</li>
+      <li>No le des medicamentos de uso humano ni alimento sin indicación del doctor.</li>
+      <li>Si ingirió algo tóxico, lleva el empaque del producto.</li>
+      <li>Ten a mano su carné de vacunas o tu usuario de Dogtor: el doctor verá su historia clínica y alergias.</li>
+    </ul>
+  </div>
+</div>
+
+<app-footer></app-footer>

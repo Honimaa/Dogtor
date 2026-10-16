@@ -1,0 +1,468 @@
+/* ==========================================================================
+   Dogtor — Guía de estilo común
+   Paleta de marca: azul (paleta original) y dorado de acento
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Poppins:wght@500;600;700&display=swap');
+
+:root {
+  /* Azul de marca (paleta original) */
+  --dt-brand-950: #12293a;
+  --dt-brand-900: #2a4e68;
+  --dt-brand-800: #186ba8;
+  --dt-brand-700: #1d95db;
+  --dt-brand-600: #23a3ed;
+  --dt-brand-500: #5cadf4;
+  --dt-brand-300: #72c0ea;
+  --dt-brand-100: #d6efff;
+  --dt-brand-50:  #e0f7ff;
+
+  /* Dorado de acento */
+  --dt-gold-700: #8a6224;
+  --dt-gold-600: #c99a52;
+  --dt-gold-500: #e2b979;
+  --dt-gold-300: #f0d4a8;
+  --dt-gold-100: #faf0e0;
+
+  /* Neutros */
+  --dt-ink:      #2a4e68;
+  --dt-text:     #4a5568;
+  --dt-muted:    #5a667a;
+  --dt-border:   #e2e8f0;
+  --dt-surface:  #FFFFFF;
+  --dt-bg:       #f8f9fa;
+
+  /* Estados */
+  --dt-danger:   #e74c3c;
+  --dt-danger-bg:#fdecea;
+  --dt-warning:  #b7791f;
+  --dt-warning-bg:#fff6e5;
+  --dt-success:  #10b981;
+  --dt-success-bg:#e7f8f1;
+  --dt-info:     #1d95db;
+  --dt-info-bg:  #e0f7ff;
+
+  --dt-radius-sm: 8px;
+  --dt-radius:    14px;
+  --dt-radius-lg: 22px;
+  --dt-shadow-sm: 0 1px 2px rgba(42, 78, 104, 0.06), 0 1px 3px rgba(42, 78, 104, 0.08);
+  --dt-shadow:    0 6px 20px rgba(42, 78, 104, 0.10);
+  --dt-shadow-lg: 0 18px 40px rgba(42, 78, 104, 0.16);
+
+  --dt-font-body: 'Nunito Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --dt-font-head: 'Poppins', 'Nunito Sans', system-ui, sans-serif;
+}
+
+/* Estilos generales */
+html {
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--dt-font-body);
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  line-height: 1.6;
+  font-weight: 400;
+  font-size: 1.02rem;
+  color: var(--dt-text);
+  background: var(--dt-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Tipografías por jerarquía */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--dt-font-head);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 0;
+  line-height: 1.25;
+  color: var(--dt-ink);
+}
+
+h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.1rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--dt-gold-500);
+}
+
+h3 {
+  font-size: 1.45rem;
+  margin-bottom: 0.8rem;
+}
+
+p, li, a, span {
+  font-family: var(--dt-font-body);
+}
+
+/* Botones y elementos interactivos */
+button, .btn {
+  font-family: var(--dt-font-head);
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+a {
+  color: var(--dt-brand-700);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--dt-gold-600);
+}
+
+:focus-visible {
+  outline: 3px solid var(--dt-gold-500);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Componentes reutilizables Dogtor (prefijo dt-)
+   ========================================================================== */
+.dt-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.dt-page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.dt-page-header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.dt-eyebrow {
+  display: inline-block;
+  font-family: var(--dt-font-head);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dt-gold-600);
+  margin-bottom: 0.35rem;
+}
+
+.dt-lead {
+  color: var(--dt-muted);
+  margin: 0.4rem 0 0;
+  max-width: 640px;
+}
+
+.dt-card {
+  background: var(--dt-surface);
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius);
+  box-shadow: var(--dt-shadow-sm);
+  padding: 1.5rem;
+}
+
+.dt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: var(--dt-brand-700);
+  color: #fff;
+  font-family: var(--dt-font-head);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.dt-btn:hover {
+  background: var(--dt-brand-800);
+  color: #fff;
+  box-shadow: var(--dt-shadow);
+  transform: translateY(-1px);
+}
+
+.dt-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.dt-btn-gold {
+  background: var(--dt-gold-500);
+  color: var(--dt-brand-950);
+}
+
+.dt-btn-gold:hover {
+  background: var(--dt-gold-600);
+  color: #fff;
+}
+
+.dt-btn-outline {
+  background: transparent;
+  color: var(--dt-brand-700);
+  border-color: var(--dt-brand-700);
+}
+
+.dt-btn-outline:hover {
+  background: var(--dt-brand-50);
+  color: var(--dt-brand-800);
+}
+
+.dt-btn-sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.dt-btn-danger {
+  background: var(--dt-danger);
+}
+
+.dt-btn-danger:hover {
+  background: #c0392b;
+}
+
+.dt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: var(--dt-brand-50);
+  color: var(--dt-brand-800);
+  white-space: nowrap;
+}
+
+.dt-badge-gold    { background: var(--dt-gold-100);    color: var(--dt-gold-700); }
+.dt-badge-danger  { background: var(--dt-danger-bg);  color: var(--dt-danger); }
+.dt-badge-warning { background: var(--dt-warning-bg); color: var(--dt-warning); }
+.dt-badge-success { background: var(--dt-success-bg); color: var(--dt-success); }
+.dt-badge-muted   { background: #eef2f6;              color: var(--dt-muted); }
+
+.dt-alert {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 1rem 1.2rem;
+  border-radius: var(--dt-radius);
+  border: 1px solid transparent;
+  background: var(--dt-info-bg);
+  color: var(--dt-brand-900);
+}
+
+.dt-alert strong { display: block; }
+.dt-alert-danger  { background: var(--dt-danger-bg);  border-color: #f5c6c0; color: #922b21; }
+.dt-alert-warning { background: var(--dt-warning-bg); border-color: #f3dcae; color: #7a5214; }
+.dt-alert-success { background: var(--dt-success-bg); border-color: #b7ebd5; color: #0b6b4a; }
+
+.dt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.dt-field label {
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--dt-ink);
+}
+
+.dt-input,
+.dt-field input,
+.dt-field select,
+.dt-field textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid var(--dt-border);
+  border-radius: var(--dt-radius-sm);
+  background: #fff;
+  font: inherit;
+  color: var(--dt-ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dt-input:focus,
+.dt-field input:focus,
+.dt-field select:focus,
+.dt-field textarea:focus {
+  outline: none;
+  border-color: var(--dt-brand-600);
+  box-shadow: 0 0 0 3px rgba(35, 163, 237, 0.18);
+}
+
+.dt-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.dt-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius);
+  background: #fff;
+}
+
+.dt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+.dt-table th {
+  text-align: left;
+  font-family: var(--dt-font-head);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dt-muted);
+  background: var(--dt-brand-50);
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--dt-border);
+}
+
+.dt-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--dt-border);
+  vertical-align: middle;
+}
+
+.dt-table tr:last-child td { border-bottom: none; }
+
+.dt-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--dt-muted);
+}
+
+.dt-empty ion-icon {
+  font-size: 2.6rem;
+  color: var(--dt-brand-300);
+}
+
+.dt-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.dt-chip {
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--dt-border);
+  background: #fff;
+  color: var(--dt-text);
+  font-family: var(--dt-font-body);
+  font-weight: 700;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dt-chip:hover { border-color: var(--dt-brand-600); color: var(--dt-brand-700); }
+
+.dt-chip.active {
+  background: var(--dt-brand-700);
+  border-color: var(--dt-brand-700);
+  color: #fff;
+}
+
+/* Diálogo modal */
+.dt-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 41, 58, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 2000;
+}
+
+.dt-modal {
+  background: #fff;
+  border-radius: var(--dt-radius-lg);
+  box-shadow: var(--dt-shadow-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 1.75rem;
+}
+
+.dt-modal h3 { margin-bottom: 0.25rem; }
+
+.dt-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+/* Área de contenido para páginas con barra lateral (app-navegacion) */
+.dt-app-main {
+  margin-left: 300px;
+  min-height: 100vh;
+  transition: margin-left 0.4s ease;
+}
+
+.navigation.active ~ .dt-app-main {
+  margin-left: 80px;
+}
+
+@media (max-width: 991px) {
+  .dt-app-main { margin-left: 0; }
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.7rem; }
+  .dt-page { padding: 1.5rem 1rem 3rem; }
+  .dt-modal { padding: 1.25rem; }
+}
+
+@media print {
+  .no-print, app-navegacion, app-header, app-footer { display: none !important; }
+  .dt-app-main { margin-left: 0 !important; }
+  body { background: #fff; }
+}

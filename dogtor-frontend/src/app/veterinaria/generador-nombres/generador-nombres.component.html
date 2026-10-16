@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<section class="generador-nombres">
+  <div class="contenedor-nombres">
+    <div class="imagen-mascota" [class.analizando]="analizando">
+      <img [src]="fotoMascota || 'https://images.dog.ceo/breeds/labrador/n02099712_2473.jpg'" alt="Mascota feliz" />
+      <span class="escaner" *ngIf="analizando" aria-hidden="true"></span>
+    </div>
+
+    <div class="contenido-nombres">
+      <h2>¿Aún no tienes nombre para tu mascota?</h2>
+      <p>¡Te ayudamos a elegir uno especial! Sube una foto de tu peludito, dinos si es macho o hembra y genera su nombre.</p>
+
+      <div class="subir-foto">
+        <label class="boton-foto">
+          <input type="file" accept="image/*" (change)="subirFoto($event)" hidden />
+          📷 {{ fotoMascota ? 'Cambiar foto' : 'Subir foto de mi mascota' }}
+        </label>
+        <button *ngIf="fotoMascota" type="button" class="quitar-foto" (click)="quitarFoto()">Quitar foto</button>
+      </div>
+
+      <div class="generador-form">
+        <label>
+          <input type="radio" name="genero" [(ngModel)]="generoMascota" value="macho" /> Macho
+        </label>
+        <label>
+          <input type="radio" name="genero" [(ngModel)]="generoMascota" value="hembra" /> Hembra
+        </label>
+        <button (click)="generarNombre()" [disabled]="analizando">
+          {{ analizando ? 'Analizando…' : 'Generar nombre' }}
+        </button>
+      </div>
+
+      <p class="paso-analisis" *ngIf="analizando">🔎 {{ pasoAnalisis }}</p>
+
+      <div *ngIf="nombreGenerado" class="resultado-nombre">
+        <p>✨ Nombre sugerido{{ fotoMascota ? ' según su foto' : '' }}: <strong>{{ nombreGenerado }}</strong></p>
+      </div>
+    </div>
+  </div>
+</section>

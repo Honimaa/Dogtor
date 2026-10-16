@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Mascotas</title>
+    <link rel="stylesheet" th:href="@{/css/tabla.css}" />
+    <link rel="stylesheet" th:href="@{/css/botones.css}" />
+    <link rel="stylesheet" th:href="@{/css/header_footer.css(v=${#dates.createNow().getTime()})}" />
+  </head>
+
+  <header>
+    <div class="logo">
+      <img th:src="@{/images/logo2.png}" alt="Logo" />
+      <span class="logo-text">Dogtor</span>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a th:href="@{/index}">Inicio</a></li>
+        <li><a th:href="@{/index#servicios}">Servicios</a></li>
+        <li><a th:href="@{/index#conocenos}">Conócenos</a></li>
+        <li><a th:href="@{/index#contactanos}">Contáctanos</a></li>
+      </ul>
+    </nav>
+
+    <!--
+    <div class="user-info" th:if="${session.nombre}">
+      <img th:src="${session.foto}" alt="Foto de perfil" class="profile-pic" />
+      <div class="dropdown">
+        <span class="username" th:text="${session.nombre}"></span>
+        <div class="dropdown-menu">
+          <a href="/cerrar-sesion">Cerrar sesión</a>
+        </div>
+      </div>
+    </div>-->
+  </header>
+
+  <body>
+    <div class="container-principal">
+      <h1>Lista de Mascotas</h1>
+      <div class="button-container">
+        <a th:href="@{/mascota/crear}" class="btn-agregar">Agregar Mascota</a>
+      </div>
+      <div class="tabla-container">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Raza</th>
+              <th>Edad</th>
+              <th>Peso</th>
+              <th>Enfermedad</th>
+              <th>Foto</th>
+              <th>Estado</th>
+              <th>Dueño</th>
+              <th>Detalles</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="mascota : ${mascotas}">
+              <td th:text="${mascota.nombre}"></td>
+              <td th:text="${mascota.raza}"></td>
+              <td th:text="${mascota.edad}"></td>
+              <td th:text="${mascota.peso}"></td>
+              <td th:text="${mascota.enfermedad}"></td>
+              <td>
+                <img
+                  th:src="${mascota.foto}"
+                  alt="Foto de mascota"
+                  class="foto-tabla"
+                  th:classappend="${mascota.estado == 0} ? 'imagen-inactiva' : ''"
+                />
+              </td>
+              <td th:text="${mascota.estado == 1 ? 'Activa' : 'Inactiva'}"></td>
+              <td th:text="${mascota.cliente.nombre}"></td>
+              <!-- Columna Dueño -->
+              <td>
+                <a
+                  th:href="@{/mascota/{id}(id=${mascota.idMascota})}"
+                  class="btn-detalles">
+                  Ver detalles</a>
+              </td>
+              <td>
+                <a
+                  th:href="@{/mascota/editar/{id}(id=${mascota.idMascota})}"
+                  class="btn-editar"
+                  >Editar</a
+                >
+                <form
+                  th:action="@{/mascota/eliminar/{id}(id=${mascota.idMascota})}"
+                  method="post"
+                  onsubmit="return confirm('¿Estás seguro de desactivar esta mascota?');"
+                >
+                  <button type="submit" class="btn-eliminar">Desactivar</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <footer>
+      <section class="footer-container">
+        <div class="footer-info">
+          <!-- Sección de Servicios -->
+          <div class="footer-section">
+            <h3>Servicios</h3>
+            <ul>
+              <li>Consulta médica</li>
+              <li>Cirugía</li>
+              <li>Hospitalización</li>
+              <li>Monitoreo</li>
+              <li>Vacunación</li>
+              <li>Laboratorio clínico</li>
+            </ul>
+          </div>
+    
+          <!-- Logo en el centro -->
+          <div class="footer-logo">
+            <img src="https://i.postimg.cc/zH1YsdSN/logo.png" alt="Logo" />
+            <div class="social-links">
+              <a href="https://meta.com/dogtor" target="_blank" title="Meta">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" alt="Meta" />
+              </a>
+              <a href="https://www.instagram.com/dogtor" target="_blank" title="Instagram">
+                <img src="https://i0.wp.com/eltallerdehector.com/wp-content/uploads/2022/06/2a008-logo-instagram-icono.png?fit=512%2C512&ssl=1" alt="Instagram" />
+              </a>
+              <a href="https://www.x.com/in/dogtor" target="_blank" title="X">
+                <img src="https://images.freeimages.com/image/large-previews/f35/x-twitter-logo-on-black-circle-5694247.png" alt="X" />
+              </a>
+            </div>
+          </div>
+    
+          <!-- Sección de Información -->
+          <div class="footer-section">
+            <h3>Información</h3>
+            <ul>
+              <li>(+57) 3194479483</li>
+              <li>Calle 12A #78 - 34</li>
+              <li>dogtor@atencion.com</li>
+              <li>www.dogtor.com</li>
+            </ul>
+          </div>
+        </div>
+    
+        <div class="footer-copyright">
+          © 2025 Dogtor. Todos los derechos reservados.
+        </div>
+      </section>
+    </footer>    
+  </body>
+</html>

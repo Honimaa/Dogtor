@@ -1,0 +1,279 @@
+/* ================== CONTENEDOR PRINCIPAL ================== */
+.container-principal {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ================== TÍTULOS MEJORADOS ================== */
+h1, h2 {
+  font-size: 2rem;
+  color: #1d95db;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+h1::after, h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  border-radius: 3px;
+}
+
+/* ================== BOTÓN AGREGAR PREMIUM ================== */
+.btn-agregar {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  padding: 12px 35px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-agregar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* ================== TABLA PREMIUM ================== */
+.tabla-container {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+  margin-top: 30px;
+  overflow-x: auto;
+  border: 1px solid #e0e7ff;
+}
+
+.tabla {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.tabla thead {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tabla th {
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.tabla td {
+  padding: 14px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+  background: white;
+  position: relative;
+}
+
+/* EFECTO DE TARJETA PARA FILAS */
+.tabla tbody tr {
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.1),
+    0 4px 6px rgba(0,0,0,0.05),
+    0 5px 15px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tabla tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.12),
+    0 8px 15px rgba(0,0,0,0.1),
+    0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* BORDES REDONDEADOS */
+.tabla th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.tabla th:last-child {
+  border-top-right-radius: 14px;
+}
+
+.tabla td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.tabla td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* FOTO DE PERFIL MEJORADA */
+.tabla td img.foto-tabla {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.tabla tr:hover img.foto-tabla {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* ================== BOTONES DE ACCIÓN PREMIUM ================== */
+.acciones-cliente {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-detalles,
+.btn-editar,
+.btn-eliminar {
+  padding: 10px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  color: white;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+}
+
+.btn-detalles {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.btn-editar {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.btn-eliminar {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.btn-detalles:hover,
+.btn-editar:hover,
+.btn-eliminar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1200px) {
+  .container-principal {
+    padding: 25px;
+  }
+
+  h1, h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .tabla {
+    min-width: 700px;
+  }
+
+  .btn-agregar {
+    padding: 12px 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-principal {
+    padding: 20px;
+  }
+
+  h1, h2 {
+    font-size: 1.5rem;
+  }
+
+  .tabla-container {
+    padding: 15px;
+  }
+
+  .acciones-cliente {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-detalles,
+  .btn-editar,
+  .btn-eliminar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  h1, h2 {
+    font-size: 1.3rem;
+  }
+
+  .tabla th, .tabla td {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  .tabla td img.foto-tabla {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-principal {
+    padding: 15px;
+  }
+
+  .tabla {
+    min-width: 600px;
+  }
+
+  .btn-agregar {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}

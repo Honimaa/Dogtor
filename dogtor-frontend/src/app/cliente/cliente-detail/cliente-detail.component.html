@@ -1,0 +1,56 @@
+<app-navegacion></app-navegacion>
+
+<div class="page-container" *ngIf="cliente">
+    <div class="container">
+      <h1>Detalle del cliente</h1>
+      <div class="content">
+        <div class="img-container">
+          <img
+            [src]="cliente.foto"
+            alt="Foto del cliente"
+            class="mascota-img"
+          />
+        </div>
+  
+        <div class="datos">
+          <div class="dato">
+            <span class="label">Nombre:</span>
+            <span class="info">{{ cliente.nombre }}</span>
+          </div>
+          <div class="dato">
+            <span class="label">Cédula:</span>
+            <span class="info">{{ cliente.cedula }}</span>
+          </div>
+          <div class="dato">
+            <span class="label">Correo:</span>
+            <span class="info">{{ cliente.correo }}</span>
+          </div>
+          <div class="dato">
+            <span class="label">Celular:</span>
+            <span class="info">{{ cliente.celular }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dogtor: resumen de mascotas y procesos del propietario -->
+      <div class="resumen-dogtor">
+        <h2>Mascotas registradas ({{ mascotas.length }})</h2>
+        <div class="mascotas-resumen" *ngIf="mascotas.length; else sinMascotas">
+          <a class="mascota-chip" *ngFor="let m of mascotas" [routerLink]="['/historia-clinica', m.idMascota]">
+            <img [src]="m.foto" [alt]="'Foto de ' + m.nombre" />
+            <span>
+              <strong>{{ m.nombre }}</strong>
+              <small>{{ m.raza }} · {{ m.estado === 1 ? 'Activo' : 'Inactivo' }}</small>
+            </span>
+          </a>
+        </div>
+        <ng-template #sinMascotas><p class="vacio">Aún no hay mascotas registradas.</p></ng-template>
+        <div class="accesos">
+          <a [routerLink]="['/citas', cliente.idCliente]" class="dt-btn dt-btn-sm">Citas</a>
+          <a [routerLink]="['/mascotas-tratamiento', cliente.idCliente]" class="dt-btn dt-btn-sm">Tratamientos</a>
+          <a [routerLink]="['/facturas/cliente', cliente.idCliente]" class="dt-btn dt-btn-sm">Facturas</a>
+          <a *ngIf="esPropietario" routerLink="/registrar-mascota" class="dt-btn dt-btn-sm dt-btn-gold">Registrar mascota</a>
+        </div>
+      </div>
+    </div>
+  </div>

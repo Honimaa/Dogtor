@@ -1,0 +1,49 @@
+<section class="alertas dt-card">
+  <header>
+    <h3><ion-icon name="cube-outline"></ion-icon> Alertas de inventario</h3>
+    <span class="dt-badge" [ngClass]="total ? 'dt-badge-warning' : 'dt-badge-success'">
+      {{ total ? total + ' por atender' : 'Sin alertas' }}
+    </span>
+  </header>
+
+  <div class="dt-tabs">
+    <button type="button" class="dt-chip" [class.active]="pestana === 'bajoStock'" (click)="pestana = 'bajoStock'">
+      Bajo stock ({{ alertas.bajoStock.length }})
+    </button>
+    <button type="button" class="dt-chip" [class.active]="pestana === 'porVencer'" (click)="pestana = 'porVencer'">
+      Por vencer ({{ alertas.porVencer.length }})
+    </button>
+    <button type="button" class="dt-chip" [class.active]="pestana === 'vencidos'" (click)="pestana = 'vencidos'">
+      Vencidos ({{ alertas.vencidos.length }})
+    </button>
+  </div>
+
+  <p class="vacio" *ngIf="cargando">Revisando inventario…</p>
+  <p class="vacio" *ngIf="!cargando && !lista.length">
+    <ion-icon name="checkmark-done-outline"></ion-icon> Nada pendiente en esta categoría.
+  </p>
+
+  <ul *ngIf="!cargando && lista.length">
+    <li *ngFor="let m of lista" (click)="seleccionar.emit(m)" [class.clicable]="seleccionar.observed">
+      <div>
+        <strong>{{ m.nombre }}</strong>
+        <small>{{ m.categoria | titlecase }}<ng-container *ngIf="m.lote"> · Lote {{ m.lote }}</ng-container></small>
+      </div>
+      <ng-container [ngSwitch]="pestana">
+        <span *ngSwitchCase="'bajoStock'" class="dt-badge dt-badge-warning">
+          {{ m.unidadesDisponibles }} / mín. {{ m.stockMinimo }}
+        </span>
+        <span *ngSwitchCase="'porVencer'" class="dt-badge dt-badge-gold">
+          Vence en {{ diasPara(m.fechaVencimiento) }} días
+        </span>
+        <span *ngSwitchCase="'vencidos'" class="dt-badge dt-badge-danger">
+          Venció {{ m.fechaVencimiento | date:'dd/MM/yyyy':'UTC' }}
+        </span>
+      </ng-container>
+    </li>
+  </ul>
+
+  <a *ngIf="compacto && alertas[pestana].length > 5" routerLink="/medicamentos" class="mas">
+    Ver las {{ alertas[pestana].length }} en inventario
+  </a>
+</section>

@@ -1,0 +1,158 @@
+.contenedor {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.rueda-wrap {
+  position: relative;
+  width: 300px;
+  max-width: 100%;
+  margin: auto;
+  padding-top: 14px;
+}
+
+/* Flecha que indica el premio ganador */
+.indicador {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 28px solid #e74c3c;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+  z-index: 2;
+}
+
+.ruleta {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(42, 78, 104, 0.25);
+  transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 1);
+}
+
+.etiqueta {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  fill: #12293a;
+}
+
+.centro {
+  font-size: 16px;
+}
+
+.boton-girar {
+  margin-top: 20px;
+  padding: 10px 22px;
+  font-size: 1.05rem;
+  background-color: #1d95db;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.boton-girar:hover:not(:disabled) {
+  background-color: #186ba8;
+  transform: translateY(-1px);
+}
+
+.boton-girar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.leyenda {
+  list-style: none;
+  padding: 0;
+  margin: 16px auto 0;
+  max-width: 320px;
+  text-align: left;
+  font-size: 0.85rem;
+  color: #2a4e68;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+}
+
+.leyenda span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+.resultado {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #e0f7ff;
+  font-size: 1.05rem;
+  color: #2a4e68;
+  text-align: left;
+}
+
+.resultado.confirmado {
+  background: #e7f8f1;
+}
+
+.nota {
+  font-size: 0.9rem;
+  color: #5a667a;
+  margin: 6px 0 10px;
+}
+
+.envio {
+  display: grid;
+  gap: 8px;
+}
+
+.envio input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid #cfe3f2;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.envio input:focus {
+  outline: none;
+  border-color: #1d95db;
+}
+
+.cumple {
+  font-size: 0.85rem;
+  color: #5a667a;
+  display: grid;
+  gap: 4px;
+}
+
+.envio .boton-girar {
+  margin-top: 6px;
+}
+
+.error {
+  color: #e74c3c;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.enlace {
+  background: none;
+  border: none;
+  color: #1d95db;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}

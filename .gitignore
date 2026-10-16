@@ -1,0 +1,16 @@
+# Dependencias y compilados
+node_modules/
+dist/
+.angular/
+target/
+
+# Bases de datos H2 en archivo
+*.mv.db
+*.trace.db
+
+# IDEs
+.idea/
+*.iml
+
+# Configuración local de la extensión de VS Code para actualizar Java
+.github/modernize/

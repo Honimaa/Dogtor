@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-DogtorApplication<dogtor>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.veterinaria.demo.DogtorApplication",
+            "projectName": "dogtor",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

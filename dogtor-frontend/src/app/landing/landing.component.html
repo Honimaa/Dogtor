@@ -1,0 +1,124 @@
+<app-header></app-header>
+
+<!-- Sección Hero/Carrusel (animación original: fundido entre fotos y texto que sube) -->
+<section #section class="description-section">
+  <div *ngFor="let item of carouselItems; let i = index"
+       class="slide-background"
+       [class.active]="i === currentSlide"
+       [style.background-image]="'url(' + item.background + ')'">
+  </div>
+
+  <div class="overlay"></div>
+  <div class="description-text" [attr.data-slide]="currentSlide">
+    <span class="hero-eyebrow">Dogtor · Gestión veterinaria y adopción responsable</span>
+    <h1>{{ carouselItems[currentSlide].title }}</h1>
+    <p>{{ carouselItems[currentSlide].description }}</p>
+    <div class="hero-actions">
+      <a routerLink="/agendar-cita" class="dt-btn dt-btn-gold">
+        <ion-icon name="calendar-outline"></ion-icon> Agendar una cita
+      </a>
+      <a routerLink="/adopcion" class="dt-btn hero-outline">
+        <ion-icon name="heart-outline"></ion-icon> Adoptar una mascota
+      </a>
+    </div>
+    <a routerLink="/urgencias" class="hero-urgencias">
+      <span class="pulse" aria-hidden="true"></span>
+      <span *ngIf="sedesUrgencias > 0; else sinDatos">
+        <strong>{{ sedesUrgencias }} {{ sedesUrgencias === 1 ? 'sede' : 'sedes' }} con urgencias abiertas ahora.</strong> Ver dónde
+      </span>
+      <ng-template #sinDatos><span><strong>Urgencias 24 horas.</strong> Consulta qué sedes atienden ahora</span></ng-template>
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </a>
+  </div>
+
+  <!-- Indicadores del carrusel -->
+  <div class="carousel-indicators">
+    <span *ngFor="let item of carouselItems; let i = index"
+          class="indicator"
+          [class.active]="i === currentSlide"
+          (click)="goToSlide(i)"
+          [attr.aria-current]="i === currentSlide ? 'true' : null">
+    </span>
+  </div>
+</section>
+
+<main>
+  <!-- Módulos de la plataforma Dogtor -->
+  <section #section id="plataforma" class="modulos">
+    <div class="section-inner">
+      <span class="dt-eyebrow center">Una sola plataforma</span>
+      <h2>Todo lo que tu clínica necesita</h2>
+      <p class="section-lead">
+        Siete módulos integrados que reemplazan las agendas en papel, las hojas de cálculo y los mensajes sueltos.
+      </p>
+      <div class="modulos-grid">
+        <article class="modulo" *ngFor="let m of modulos; let i = index" [style.animation-delay]="(i * 0.08) + 's'">
+          <div class="modulo-icon"><ion-icon [name]="m.icono"></ion-icon></div>
+          <h3>{{ m.titulo }}</h3>
+          <p>{{ m.descripcion }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección de Quiénes Somos -->
+  <section #section id="conocenos">
+    <app-quienes-somos></app-quienes-somos>
+  </section>
+
+  <!-- Sección de Ayuda -->
+  <section #section id="ayuda">
+    <app-ayuda-section></app-ayuda-section>
+  </section>
+
+  <!-- Sección de Servicios -->
+  <section #section id="servicios">
+    <app-servicios></app-servicios>
+  </section>
+
+  <!-- Sección de Ofertas (con el perrito corriendo) -->
+  <section #section id="ofertas">
+    <app-ofertas></app-ofertas>
+    <img
+      src="https://media1.giphy.com/media/VSTPSY8NeIY2SNNHnH/giphy.gif?cid=6c09b952d61erpnfhq1l6bxp41cqphbjvpyqcqa9b4azqtp4&ep=v1_stickers_search&rid=giphy.gif&ct=s"
+      alt="Perro corriendo"
+      class="perrito"
+    />
+  </section>
+
+  <!-- Sección de Preguntas Frecuentes -->
+  <section #section id="preguntas">
+    <app-preguntas></app-preguntas>
+  </section>
+
+  <!-- Sección de testimonios -->
+  <app-testimonios></app-testimonios>
+
+  <!-- Adopción (reemplaza a BeagleMatch) -->
+  <section #section id="adopcion">
+    <app-adopcion-destacada></app-adopcion-destacada>
+  </section>
+
+  <app-fundaciones></app-fundaciones>
+
+  <!-- Sección de Contáctanos -->
+  <section #section id="contactanos" class="contact-section">
+    <app-contactanos></app-contactanos>
+  </section>
+</main>
+
+<!-- Botón flotante de WhatsApp (con su pulso original) -->
+<a
+  href="https://wa.me/573154467811?text=Hola%20Dogtor%2C%20quiero%20agendar%20una%20cita"
+  class="whatsapp-float"
+  target="_blank"
+  rel="noopener"
+  aria-label="Chat en WhatsApp"
+>
+  <img
+    src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+    alt="WhatsApp"
+  />
+  <span class="whatsapp-tooltip">¡Agenda tu cita!</span>
+</a>
+<app-footer></app-footer>

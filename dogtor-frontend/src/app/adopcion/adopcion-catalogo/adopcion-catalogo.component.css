@@ -1,0 +1,259 @@
+.adopcion-hero {
+  background:
+    radial-gradient(900px 400px at 90% 0%, rgba(226, 185, 121, 0.22), transparent 60%),
+    linear-gradient(180deg, var(--dt-brand-50), #fff);
+}
+
+.hero-content {
+  padding-bottom: 1rem;
+}
+
+.hero-content h1 {
+  margin-bottom: 0.5rem;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.especie-tabs {
+  margin: 0;
+}
+
+.filtros-campos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.filtros-campos .dt-input {
+  width: auto;
+  min-width: 160px;
+}
+
+.resultados-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 28px;
+  margin-bottom: 1rem;
+  color: var(--dt-muted);
+  font-weight: 700;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--dt-brand-700);
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--dt-font-body);
+}
+
+.mascota-card {
+  background: #fff;
+  border: 1px solid var(--dt-border);
+  border-radius: var(--dt-radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mascota-card:hover,
+.mascota-card:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: var(--dt-shadow-lg);
+}
+
+.foto {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--dt-brand-50);
+}
+
+.foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.foto .estado {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.info {
+  padding: 1rem 1.15rem 1.2rem;
+}
+
+.titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titulo h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.titulo ion-icon {
+  font-size: 1.3rem;
+  color: var(--dt-gold-600);
+}
+
+.raza {
+  color: var(--dt-muted);
+  margin: 0.15rem 0 0.7rem;
+  font-size: 0.93rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.refugio {
+  margin: 0.8rem 0 0;
+  font-size: 0.85rem;
+  color: var(--dt-brand-700);
+  font-weight: 700;
+}
+
+/* Detalle */
+.detalle {
+  position: relative;
+  max-width: 600px;
+}
+
+.cerrar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 1.4rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--dt-shadow-sm);
+  z-index: 1;
+}
+
+.detalle-foto {
+  width: calc(100% + 3.5rem);
+  margin: -1.75rem -1.75rem 1.25rem;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.detalle h3 {
+  font-size: 1.6rem;
+}
+
+.salud,
+.refugio-box {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.8rem 1rem;
+  border-radius: var(--dt-radius);
+  background: var(--dt-brand-50);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.salud ion-icon {
+  color: var(--dt-brand-700);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.refugio-box {
+  flex-direction: column;
+  gap: 0.1rem;
+  background: var(--dt-gold-100);
+}
+
+.refugio-box span {
+  color: var(--dt-muted);
+}
+
+.dt-alert {
+  margin-bottom: 1rem;
+}
+
+.full {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.solicitud {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--dt-border);
+}
+
+.solicitud h4 {
+  margin-bottom: 0.75rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 0.85rem;
+}
+
+.error {
+  color: var(--dt-danger);
+  font-weight: 700;
+  margin: 0;
+}
+
+.legal {
+  font-size: 0.8rem;
+  color: var(--dt-muted);
+  margin: 0.25rem 0 0;
+}
+
+.exito {
+  text-align: center;
+  padding: 1.5rem 0.5rem 0.5rem;
+}
+
+.exito ion-icon {
+  font-size: 4rem;
+  color: var(--dt-success);
+}
+
+@media (max-width: 640px) {
+  .filtros-campos,
+  .filtros-campos .dt-input,
+  .filtros-campos .dt-btn {
+    width: 100%;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-foto {
+    width: calc(100% + 2.5rem);
+    margin: -1.25rem -1.25rem 1rem;
+    height: 220px;
+  }
+}

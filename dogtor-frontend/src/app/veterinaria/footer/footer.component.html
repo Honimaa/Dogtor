@@ -1,0 +1,53 @@
+<footer class="dt-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <a routerLink="/home" class="footer-logo">
+        <img src="assets/logo-beagle.png" alt="" />
+        <span>Dog<em>tor</em></span>
+      </a>
+      <p>
+        Plataforma web de gestión veterinaria y adopción de mascotas. Historias clínicas, citas,
+        doctores, inventario y adopción responsable en un solo lugar.
+      </p>
+    </div>
+
+    <div class="footer-section">
+      <h3>Plataforma</h3>
+      <ul>
+        <li><a routerLink="/agendar-cita">Agendar cita</a></li>
+        <li><a routerLink="/urgencias">Urgencias 24 horas</a></li>
+        <li><a routerLink="/adopcion">Adopta una mascota</a></li>
+        <li><a [routerLink]="['/home']" fragment="servicios">Servicios clínicos</a></li>
+        <li><a routerLink="/blog">Blog y artículos</a></li>
+        <li><a routerLink="/playlist">Playlist para tu mascota</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Sedes</h3>
+      <ul>
+        <li>Los Pinos · Bogotá</li>
+        <li>Patitas Felices · Bogotá</li>
+        <li>Huellas · Bogotá</li>
+      </ul>
+    </div>
+
+    <div class="footer-section">
+      <h3>Contacto</h3>
+      <ul>
+        <li><ion-icon name="call-outline"></ion-icon> (+57) 315 446 7811</li>
+        <li><ion-icon name="mail-outline"></ion-icon> contacto&#64;dogtor.com.co</li>
+        <li><ion-icon name="location-outline"></ion-icon> Avenida 7 #89-01, Bogotá</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTH1qBN7IBiJiIri8SVD8ZwBdmogFDQ3o1wwCYVWoHrdOWHcDtuWarxrg_0JrOkGcNInsRZ-X8WoUuHELI4ESTuugMnkvPB4HV7UtCpBOT7hgHFXcxeYbUcDxvr9OFUrRgUVuTZoSdmHc/s640/gif-animado.gif" alt="" aria-hidden="true" />
+      © {{ year }} <strong>Dogtor S.A.S.</strong> Todos los derechos reservados.
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTH1qBN7IBiJiIri8SVD8ZwBdmogFDQ3o1wwCYVWoHrdOWHcDtuWarxrg_0JrOkGcNInsRZ-X8WoUuHELI4ESTuugMnkvPB4HV7UtCpBOT7hgHFXcxeYbUcDxvr9OFUrRgUVuTZoSdmHc/s640/gif-animado.gif" alt="" aria-hidden="true" />
+    </span>
+    <span class="footer-legal">Tratamiento de datos personales conforme a la Ley 1581 de 2012.</span>
+  </div>
+</footer>

@@ -1,0 +1,124 @@
+.formularioLogin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f8fb; /* Fondo claro */
+  padding: 20px;
+}
+
+.formularioContainer {
+  background-color: white; /* Azul claro, suave y profesional */
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+}
+
+.formularioContainer h1 {
+  font-size: 24px;
+  margin-bottom: 30px;
+  color: #3c5b6f;
+  text-align: center;
+  position: relative;
+}
+
+.formularioContainer h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #f39c12; /* Naranja bonito */
+  margin: 8px auto 0 auto;
+  border-radius: 2px;
+}
+
+
+/* Estilo general para inputs */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border 0.3s;
+  color:#000000;
+  background-color: #f0f8ff;
+}
+
+input:focus {
+  border-color: #72c0ea;
+  outline: none;
+  box-shadow: 0 0 5px #72c0ea55;
+}
+
+.error-message {
+  font-size: 13px;
+  color: #e74c3c;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .formularioContainer {
+    padding: 25px 20px;
+  }
+
+  .formularioContainer h1 {
+    font-size: 20px;
+  }
+}
+
+
+/* Estilo para los botones */
+button {
+    padding: 16px;
+    background: #72c0ea;
+    color: #feffff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(29, 149, 219, 0.3);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+button:hover {
+    background:#63bbea;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(29, 149, 219, 0.4);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+.boton-container {
+  display: flex;
+  justify-content: center;
+}
+
+input.invalid {
+  border-color: #e74c3c;
+  background-color: #fff0f0;
+}

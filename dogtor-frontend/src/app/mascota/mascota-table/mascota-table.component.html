@@ -1,0 +1,80 @@
+<app-navegacion></app-navegacion>
+
+<div class="main" id="mainContent">
+  <div class="container-principal">
+    <h1>Listado de Mascotas</h1>
+
+    <div class="buscador">
+      <input
+        type="text"
+        [(ngModel)]="nombreABuscar"
+        placeholder="Buscar mascota..."
+        class="input-busqueda"
+      />
+      <button (click)="buscar()" class="btn-buscar">Buscar</button>
+    </div>
+
+    <!-- Contenedor de exportar y filtro -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+      <!-- Botón exportar -->
+      <button (click)="exportarExcel()" style="background: none; border: none; cursor: pointer;" title="Exportar a Excel">
+        <img src="https://i.postimg.cc/1XBG3w9x/guardar-carpeta.png" alt="Exportar" style="width: 32px;" />
+      </button>
+
+      <div class="button-container">
+        <button (click)="abrirFormularioMascota()" class="btn-agregar">Crear Mascota</button>
+      </div>
+    </div>
+
+    <div class="tabla-container">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Raza</th>
+            <th>Edad</th>
+            <th>Peso</th>
+            <th>Enfermedad</th>
+            <th>Foto</th>
+            <th>Nacimiento</th>
+            <th>Ingreso</th>
+            <th>Salida</th>
+            <th>Estado</th>
+            <th>Cliente</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mascota of mascotaList">
+            <td>{{ mascota.idMascota }}</td>
+            <td>{{ mascota.nombre }}</td>
+            <td>{{ mascota.raza }}</td>
+            <td>{{ mascota.edad }}</td>
+            <td>{{ mascota.peso }}</td>
+            <td>{{ mascota.enfermedad }}</td>
+            <td>
+              <img *ngIf="mascota.foto" [src]="mascota.foto" alt="Foto" class="foto-tabla">
+            </td>
+            <td>{{ mascota.fechaNacimiento | date:'yyyy/MM/dd' }}</td>
+            <td>{{ mascota.fechaIngreso | date:'yyyy/MM/dd' }}</td>
+            <td>{{ mascota.fechaSalida ? (mascota.fechaSalida | date:'yyyy/MM/dd') : '-' }}</td>
+            <td>
+              <span class="pet-status" [class.active]="mascota.estado === 1" [class.inactive]="mascota.estado === 0">
+                {{ mascota.estado === 1 ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>{{ mascota.cliente?.nombre }}</td>
+            <td>
+              <button class="btn-detalles" (click)="mostrarMascota(mascota.idMascota)">Detalles</button>
+              <button class="btn-editar" (click)="abrirFormularioMascotaEdicion(mascota.idMascota)">Editar</button>
+              <button class="btn-eliminar" (click)="eliminarMascota(mascota)">
+                {{ mascota.estado === 1 ? 'Dar de baja' : 'Reactivar' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

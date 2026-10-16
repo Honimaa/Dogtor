@@ -1,0 +1,112 @@
+.adopcion-section {
+  background: var(--dt-brand-900);
+  color: #d7e8f4;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 1.25rem;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+h2 {
+  text-align: left;
+  color: #fff;
+}
+
+h2:after {
+  left: 0;
+  transform: none;
+}
+
+.texto p {
+  color: #b4cde0;
+  margin: 0 0 1.75rem;
+  font-size: 1.05rem;
+}
+
+.dt-eyebrow {
+  color: var(--dt-gold-300);
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.tarjeta {
+  position: relative;
+  border-radius: var(--dt-radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  display: block;
+  text-decoration: none;
+  background: var(--dt-brand-800);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tarjeta:hover img {
+  transform: scale(1.05);
+}
+
+.tarjeta-info {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2rem 1rem 0.85rem;
+  background: linear-gradient(180deg, transparent, rgba(18, 41, 58, 0.85));
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta-info strong {
+  font-family: var(--dt-font-head);
+  font-size: 1.1rem;
+}
+
+.tarjeta-info span {
+  font-size: 0.85rem;
+  color: #d7e8f4;
+}
+
+.vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: var(--dt-radius-lg);
+  text-align: center;
+  padding: 2rem;
+}
+
+.vacio ion-icon {
+  font-size: 2.5rem;
+  color: var(--dt-gold-300);
+}
+
+@media (max-width: 860px) {
+  .inner {
+    grid-template-columns: 1fr;
+    padding: 3.5rem 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tarjetas {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+}

@@ -1,0 +1,80 @@
+<header class="dt-header" [class.scrolled]="isScrolled">
+  <div class="dt-header-inner">
+    <a routerLink="/home" class="logo" aria-label="Dogtor, ir al inicio">
+      <img src="assets/logo-beagle.png" alt="" />
+      <span class="logo-text">Dog<span>tor</span></span>
+    </a>
+
+    <button class="menu-toggle" type="button" (click)="toggleNav()" [attr.aria-expanded]="isNavOpen" aria-label="Abrir menú">
+      <ion-icon [name]="isNavOpen ? 'close-outline' : 'menu-outline'"></ion-icon>
+    </button>
+
+    <nav [class.open]="isNavOpen" aria-label="Navegación principal">
+      <ul class="nav-links">
+        <li><a routerLink="/home" (click)="closeNav()">Inicio</a></li>
+        <li><a [routerLink]="['/home']" fragment="servicios" (click)="closeNav()">Servicios</a></li>
+        <li><a routerLink="/adopcion" routerLinkActive="active" (click)="closeNav()">Adopción</a></li>
+        <li><a routerLink="/urgencias" routerLinkActive="active" (click)="closeNav()">Urgencias 24h</a></li>
+        <li><a [routerLink]="['/home']" fragment="conocenos" (click)="closeNav()">Conócenos</a></li>
+        <li><a [routerLink]="['/home']" fragment="contactanos" (click)="closeNav()">Contacto</a></li>
+        <li><a routerLink="/blog" routerLinkActive="active" (click)="closeNav()">Blog</a></li>
+      </ul>
+    </nav>
+
+    <div class="user-actions">
+      <a routerLink="/urgencias" class="sos-btn" title="Sedes con atención de urgencias 24 horas">
+        <span class="sos-dot" aria-hidden="true"></span>
+        <span class="sos-label">Urgencias</span>
+      </a>
+
+      <div class="user-menu" [ngSwitch]="userType">
+        <div *ngSwitchCase="'Cliente'" class="dropdown">
+          <button class="user-btn" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
+            <img [src]="userPhoto" alt="" class="user-img" />
+            <span class="user-name">{{ userName }}</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </button>
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+            <a [routerLink]="['/mascotas-cliente', userId]">Mis mascotas</a>
+            <a routerLink="/agendar-cita">Agendar cita</a>
+            <a [routerLink]="['/citas', userId]">Mis citas</a>
+            <a (click)="logout()">Cerrar sesión</a>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'Veterinario'" class="dropdown">
+          <button class="user-btn" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
+            <img [src]="userPhoto" alt="" class="user-img" />
+            <span class="user-name">{{ userName }}</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </button>
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+            <a [routerLink]="['/detalles-veterinario', userId]">Mi panel</a>
+            <a [routerLink]="['/mascotas-atendidas', userId]">Pacientes atendidos</a>
+            <a (click)="logout()">Cerrar sesión</a>
+          </div>
+        </div>
+
+        <div *ngSwitchCase="'Admin'" class="dropdown">
+          <button class="user-btn" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
+            <span class="user-initial">A</span>
+            <span class="user-name">Administrador</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </button>
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+            <a routerLink="/admin">Panel de control</a>
+            <a routerLink="/admin/adopciones">Gestión de adopciones</a>
+            <a (click)="logout()">Cerrar sesión</a>
+          </div>
+        </div>
+
+        <div *ngSwitchDefault>
+          <a routerLink="/inicio-sesion" class="login-btn">
+            <ion-icon name="person-circle-outline"></ion-icon>
+            <span>Iniciar sesión</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

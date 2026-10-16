@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Veterinario</title>
+    <link rel="stylesheet" th:href="@{/css/header_footer.css}" />
+    <link rel="stylesheet" th:href="@{/css/botones.css}" />
+    <link rel="stylesheet" th:href="@{/css/mascotas.css}" />
+    <link rel="stylesheet" th:href="@{/css/clientes.css}" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="logo">
+        <img src="https://i.postimg.cc/4yjfvPcB/logo2.png" alt="Logo" />
+        <span class="logo-text">Dogtor</span>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a th:href="@{/index}">Inicio</a></li>
+          <li><a th:href="@{/index#servicios}">Servicios</a></li>
+          <li><a th:href="@{/index#conocenos}">Conócenos</a></li>
+          <li><a th:href="@{/index#contactanos}">Contáctanos</a></li>
+        </ul>
+      </nav>
+      <!-- Mostrar imagen y nombre del veterinario si está autenticado -->
+      <div class="user-info" th:if="${session.nombre}">
+        <img
+          th:src="${session.foto}"
+          alt="Foto de perfil"
+          class="profile-pic"
+        />
+        <div class="dropdown">
+          <span class="username" th:text="${session.nombre}"></span>
+          <div class="dropdown-menu">
+            <!-- <a th:href="@{/veterinario/editar/{id}(id=${session.idVeterinario})}">Editar datos</a> -->
+            <a href="/cerrar-sesion">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="saludo">
+      <h2>Bienvenido <span th:text="${session.nombre}"></span></h2>
+    </div>
+
+    <!-- Sección para mostrar mascotas dinámicamente -->
+    <section class="mascotas">
+      <h2>Mascotas</h2>
+
+      <!-- Contenedor de mascotas atendidas -->
+      <div class="mascotas-container">
+        <!-- Botón para registrar nueva mascota -->
+        <div class="mascotas-footer">
+          <a th:href="@{/mascota/crear}" class="btn-registrar">
+            Registrar Mascota</a
+          >
+          <a th:href="@{/mascota}" class="btn-registrar">
+            Ver todas las Mascotas</a
+          >
+        </div>
+        <!-- Si hay mascotas, las muestra -->
+        <th:block th:if="${not #lists.isEmpty(session.mascotasAtendidas)}">
+          <th:block th:each="mascota : ${session.mascotasAtendidas}">
+            <div class="mascota">
+              <div class="mascota-header">
+                <div class="tooltip-container">
+                  <a th:href="@{/mascota/editar/{id}(id=${mascota.idMascota})}">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/1827/1827933.png"
+                      class="icono-editar"
+                    />
+                  </a>
+                  <span class="tooltip-text">Editar Información Mascota</span>
+                </div>
+                <div class="tooltip-container">
+                  <img
+                    src="https://cdn-icons-png.freepik.com/512/32/32223.png"
+                    class="icono-archivo"
+                    th:onclick="'verArchivo(' + ${mascota.idMascota} + ')'"
+                  />
+                  <span class="tooltip-text">Ver Historial Clínico</span>
+                </div>
+              </div>
+              <a
+                th:href="@{/mascota/{id}(id=${mascota.idMascota})}"
+                class="btn-detalles"
+              >
+                <img
+                  th:src="${mascota.foto}"
+                  alt="Foto de mascota"
+                  th:classappend="${mascota.estado == 1} ? 'img-inactiva' : ''"
+                />
+              </a>
+              <h3 th:text="${mascota.nombre}"></h3>
+              <p th:text="${mascota.raza}"></p>
+            </div>
+          </th:block>
+        </th:block>
+
+        <!-- Si no hay mascotas, muestra un mensaje -->
+        <p th:if="${#lists.isEmpty(session.mascotasAtendidas)}">
+          No hay mascotas atendidas registradas.
+        </p>
+      </div>
+    </section>
+
+    <!-- Mostrar Clientes Dinámicamente -->
+    <section class="clientes-section">
+      <h2>Clientes</h2>
+
+      <div class="mascotas-footer">
+        <a th:href="@{/cliente}" class="btn-registrar"
+          >Ver todos los Clientes</a
+        >
+      </div>
+      <!-- Verifica si la lista está vacía antes de recorrerla -->
+      <div
+        th:if="${session.clientesAtendidos == null or #lists.isEmpty(session.clientesAtendidos)}"
+      >
+        <p>⚠ No se encontraron clientes para las mascotas atendidas.</p>
+      </div>
+
+      <!-- Contenedor de tarjetas de clientes -->
+      <div
+        class="clientes-container"
+        th:if="${session.clientesAtendidos != null and not #lists.isEmpty(session.clientesAtendidos)}"
+      >
+        <div
+          class="cliente-card"
+          th:each="cliente : ${session.clientesAtendidos}"
+        >
+          <a th:href="@{/cliente/{id}(id=${cliente.idCliente})}">
+            <img
+              th:src="${cliente.foto}"
+              alt="Foto del cliente"
+              class="cliente-foto"
+            />
+          </a>
+          <h3 th:text="${cliente.nombre}"></h3>
+          <p>ID: <span th:text="${cliente.idCliente}"></span></p>
+          <p>Email: <span th:text="${cliente.correo}"></span></p>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <section class="footer-container">
+        <div class="footer-info">
+          <!-- Sección de Servicios -->
+          <div class="footer-section">
+            <h3>Servicios</h3>
+            <ul>
+              <li>Consulta médica</li>
+              <li>Cirugía</li>
+              <li>Hospitalización</li>
+              <li>Monitoreo</li>
+              <li>Vacunación</li>
+              <li>Laboratorio clínico</li>
+            </ul>
+          </div>
+
+          <!-- Logo en el centro -->
+          <div class="footer-logo">
+            <img src="https://i.postimg.cc/zH1YsdSN/logo.png" alt="Logo" />
+            <div class="social-links">
+              <a
+                href="https://meta.com/dogtor"
+                target="_blank"
+                title="Meta"
+              >
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png"
+                  alt="Meta"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/dogtor"
+                target="_blank"
+                title="Instagram"
+              >
+                <img
+                  src="https://i0.wp.com/eltallerdehector.com/wp-content/uploads/2022/06/2a008-logo-instagram-icono.png?fit=512%2C512&ssl=1"
+                  alt="Instagram"
+                />
+              </a>
+              <a
+                href="https://www.x.com/in/dogtor"
+                target="_blank"
+                title="X"
+              >
+                <img
+                  src="https://images.freeimages.com/image/large-previews/f35/x-twitter-logo-on-black-circle-5694247.png"
+                  alt="X"
+                />
+              </a>
+            </div>
+          </div>
+
+          <!-- Sección de Información -->
+          <div class="footer-section">
+            <h3>Información</h3>
+            <ul>
+              <li>(+57) 3194479483</li>
+              <li>Calle 12A #78 - 34</li>
+              <li>dogtor@atencion.com</li>
+              <li>www.dogtor.com</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-copyright">
+          © 2025 Dogtor. Todos los derechos reservados.
+        </div>
+      </section>
+    </footer>
+    <script th:src="@{/js/cerrar_sesion.js}"></script>
+  </body>
+</html>

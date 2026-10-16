@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Veterinaria</title>
+</head>
+<body>
+
+<app-navegacion></app-navegacion>
+
+<!-- ========================= Main ==================== -->
+<div class="main">
+
+    <!-- ========================= Lista de Clientes ==================== -->
+    <main class="container-principal">
+        <h1>Lista de Clientes </h1>
+
+        <div class="buscador">
+            <input
+              type="text"
+              [(ngModel)]="nombreABuscar"
+              placeholder="Buscar Cliente..."
+              class="input-busqueda"
+              style="padding: 12px; font-size: 18px; border-radius: 25px; border: 1px solid #ddd; width: 80%; outline: none; transition: all 0.3s ease;"
+            />
+            <button
+            (click)="buscarCliente()"
+            class="btn-buscar"
+              style="background-color: #5cadf4 !important; color: white !important; padding: 8px 18px !important; margin-left: 20px; border-radius: 20px !important; font-size: 14px !important; border: none !important; transition: background-color 0.3s ease, transform 0.2s ease !important; width: auto !important; cursor: pointer !important;">
+              Buscar
+            </button>
+          </div>
+
+
+              <!-- Contenedor de exportar y filtro -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px 0;">
+
+      <!-- Botón exportar -->
+      <button (click)="exportarExcel()" style="background: none; border: none; cursor: pointer;" title="Exportar a Excel">
+        <img src="https://i.postimg.cc/1XBG3w9x/guardar-carpeta.png" alt="Exportar" style="width: 32px;" />
+      </button>
+
+        <div class="button-container">
+            <a class="btn-agregar" (click)="abrirFormualarioAgregarCliente()">Nuevo Cliente</a>
+        </div>
+
+    </div>
+
+        <div class="tabla-container">
+          <div *ngIf="clienteList.length === 0" class="mensaje-sin-clientes">
+  No hay clientes registrados.
+</div>
+
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nombre</th>
+                        <th>Cédula</th>
+                        <th>Celular</th>
+                        <th>Correo</th>
+                        <th>Detalles</th>
+                        <th *ngIf="esAdmin()">Acciones</th> <!-- Mostrar solo si es Admin -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cliente of clienteList">
+                        <td>
+                            <img [src]="cliente.foto" alt="Foto de cliente" class="foto-tabla" />
+                        </td>
+                        <td class="cliente-nombre">{{ cliente.nombre }}</td>
+                        <td class="cliente-cedula">{{ cliente.cedula }}</td>
+                        <td class="cliente-celular">{{ cliente.celular }}</td>
+                        <td class="cliente-correo">{{ cliente.correo }}</td>
+                        <td>
+                            <a (click)="mostrarCliente(cliente.idCliente)" class="btn-detalles">Ver detalles</a>
+                        </td>
+                        <td class="acciones-cliente" *ngIf="esAdmin()"> <!-- Mostrar solo si es Admin -->
+                            <a class="btn-editar" (click)="abrirFormularioEditarCliente(cliente.idCliente)">Editar</a>
+                            <button (click)="eliminarCliente(cliente.idCliente)" class="btn-eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</div> <!-- End main -->
+
+</body>
+</html>

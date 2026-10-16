@@ -1,0 +1,26 @@
+<div class="tienda-container">
+  <div class="left-section">
+    <h1>Tienda Dogtor</h1>
+    <p class="subtitle">
+      Alimentos, accesorios y medicamentos de venta libre, con ventas conectadas a la historia clínica de tu mascota.
+    </p>
+    <button (click)="goToProductos()">Ver productos</button>
+    <img
+      class="store-image"
+      src="assets/tienda-beagle.png"
+      alt="Beagle de la Tienda Dogtor"
+    />
+  </div>
+
+  <div class="right-section">
+    <h2>Nuestras Sedes</h2>
+    <div class="sede-card" *ngFor="let sede of sedes">
+      <img class="sede-img" [src]="sede.image" [alt]="sede.name" />
+      <div class="sede-info">
+        <h3>{{ sede.name }}</h3>
+        <p class="description">{{ sede.description }}</p>
+        <p class="address">{{ sede.address }}</p>
+      </div>
+    </div>
+  </div>
+</div>

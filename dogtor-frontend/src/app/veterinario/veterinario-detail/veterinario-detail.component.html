@@ -1,0 +1,64 @@
+<app-navegacion></app-navegacion>
+<main>
+
+
+<div class="vet-detail-container" *ngIf="veterinario">
+  <div class="vet-detail-card">
+    <h1>Detalle del veterinario</h1>
+    <div class="vet-content">
+      <div class="vet-img-container">
+        <img [src]="veterinario.foto" alt="Foto del veterinario" class="vet-img" />
+
+      </div>
+
+      <div class="vet-data">
+        <div class="vet-field">
+          <span class="vet-label">Nombre</span>
+          <span class="vet-value">{{ veterinario.nombre }}</span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Cédula</span>
+          <span class="vet-value">{{ veterinario.cedula }}</span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Especialidad</span>
+          <span class="vet-value">{{ veterinario.especialidad }}</span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Sede</span>
+          <span class="vet-value">{{ veterinario.sede }}</span>
+        </div>
+        <div class="vet-field" *ngIf="veterinario.tarjetaProfesional">
+          <span class="vet-label">Tarjeta profesional</span>
+          <span class="vet-value">{{ veterinario.tarjetaProfesional }}</span>
+        </div>
+        <div class="vet-field" *ngIf="veterinario.horario">
+          <span class="vet-label">Turno</span>
+          <span class="vet-value">{{ veterinario.horario }}</span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Urgencias 24h</span>
+          <span class="vet-value">
+            <span class="dt-badge" [ngClass]="veterinario.urgencias24h ? 'dt-badge-danger' : 'dt-badge-muted'">
+              {{ veterinario.urgencias24h ? 'Atiende urgencias' : 'No' }}
+            </span>
+          </span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Atenciones realizadas</span>
+          <span class="vet-value">{{ veterinario.numeroAtenciones }}</span>
+        </div>
+        <div class="vet-field">
+          <span class="vet-label">Estado</span>
+          <span class="vet-value">{{
+            veterinario.estado === 1 ? "Activo" : "Inactivo"
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-recordatorios-panel *ngIf="esVeterinario" titulo="Agenda y recordatorios de la clínica (48 h)" class="vet-recordatorios"></app-recordatorios-panel>
+</div>
+
+</main>

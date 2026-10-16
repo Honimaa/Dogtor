@@ -1,0 +1,40 @@
+<app-navegacion></app-navegacion>
+
+<div class="servicios-container">
+  <div class="servicios-header">
+    <h2>Listado de Servicios</h2>
+    <div class="filtro-container">
+      <select [(ngModel)]="opcionOrdenamiento"
+              (change)="ordenarServicios()"
+              class="select-ordenamiento">
+        <option value="id">Ordenar por ID</option>
+        <option value="precioAsc">Precio (Menor a Mayor)</option>
+        <option value="precioDesc">Precio (Mayor a Menor)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="servicios-table">
+      <thead>
+        <tr>
+          <th>ID Servicio</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio Base</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let servicio of servicios" class="servicio-fila">
+          <td class="servicio-id">{{ servicio.idServicio }}</td>
+          <td class="servicio-nombre">{{ servicio.nombre }}</td>
+          <td class="servicio-descripcion">{{ servicio.descripcion }}</td>
+          <td class="servicio-precio">{{ servicio.precioBase | currency:'USD':'symbol':'1.2-2' }}</td>
+        </tr>
+        <tr *ngIf="servicios.length === 0">
+          <td colspan="4" class="no-results">No hay servicios registrados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

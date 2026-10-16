@@ -1,0 +1,169 @@
+<div class="navigation">
+  <ul>
+    <!-- Botón Toggle -->
+    <div class="toggle">
+      <ion-icon name="menu-outline"></ion-icon>
+    </div>
+
+    <!-- Logo y Nombre -->
+    <li>
+      <a routerLink="/" class="nav-link">
+        <span class="icon">
+        </span>
+        <span class="title">
+          <img src="assets/logo-beagle.png" alt="" class="nav-logo" />
+          <span class="nav-brand">Dog<em>tor</em></span>
+        </span>
+      </a>
+    </li>
+
+    <!-- Menú por tipo de usuario -->
+    <li *ngIf="userType === 'Admin'">
+      <a routerLink="/admin" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link admin-link">
+        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+        <span class="title">Dashboard</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Admin'">
+      <a routerLink="/medicamentos" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link medicamentos-link">
+        <span class="icon"><ion-icon name="medkit-outline"></ion-icon></span>
+        <span class="title">Inventario</span>
+      </a>
+    </li>
+
+  <li *ngIf="userType === 'Admin'">
+  <a routerLink="/tratamiento" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link tratamientos-link">
+    <span class="icon"><ion-icon name="bandage-outline"></ion-icon></span>
+    <span class="title">Tratamientos</span>
+  </a>
+</li>
+
+    <li *ngIf="userType === 'Admin'">
+      <a routerLink="/servicios" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link servicios-link">
+        <span class="icon"><ion-icon name="briefcase-outline"></ion-icon></span>
+        <span class="title">Servicios</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Admin' || userType === 'Veterinario'">
+      <a routerLink="/clientes" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link clientes-link">
+        <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+        <span class="title">Clientes</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Admin' || userType === 'Veterinario'">
+      <a routerLink="/mascotas" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link mascotas-link">
+        <span class="icon"><ion-icon name="paw-outline"></ion-icon></span>
+        <span class="title">Mascotas</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Admin'">
+      <a routerLink="/admin/adopciones" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
+        <span class="title">Adopciones</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Admin'">
+      <a routerLink="/veterinarios" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="medical-outline"></ion-icon></span>
+        <span class="title">Doctores</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Veterinario'">
+      <a [routerLink]="getMascotasAtendidas()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+        <span class="title">Pacientes atendidos</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Veterinario'">
+      <a [routerLink]="getTratamientosVeterinario()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link historial-link">
+        <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
+        <span class="title">Historial</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Veterinario' || userType === 'Cliente'">
+      <a [routerLink]="getCitas()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="calendar-outline"></ion-icon></span>
+        <span class="title">Citas</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente' || userType === 'Admin'">
+      <a routerLink="/agendar-cita" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="add-circle-outline"></ion-icon></span>
+        <span class="title">Agendar cita</span>
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/urgencias" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="pulse-outline"></ion-icon></span>
+        <span class="title">Urgencias 24h</span>
+      </a>
+    </li>
+
+    <li>
+      <a [routerLink]="getPerfilLink()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+        <span class="title">Perfil</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente'">
+      <a [routerLink]="getMascotasCliente()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="paw-outline"></ion-icon></span>
+        <span class="title">Mis mascotas</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente'">
+      <a routerLink="/registrar-mascota" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="add-circle-outline"></ion-icon></span>
+        <span class="title">Registrar mascota</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente'">
+      <a routerLink="/adopcion" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
+        <span class="title">Adopción</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente'">
+      <a [routerLink]="getMascotasEnTratamiento()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="medkit-outline"></ion-icon></span>
+        <span class="title">Mascotas en tratamiento</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Cliente'">
+      <a [routerLink]="getTestimonios()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="chatbubbles-outline"></ion-icon></span>
+        <span class="title">Testimonios</span>
+      </a>
+    </li>
+
+
+    <li *ngIf="userType === 'Cliente'">
+      <a [routerLink]="getFacturasCLiente()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="receipt-outline"></ion-icon></span>
+        <span class="title">Facturas</span>
+      </a>
+    </li>
+
+    <li (click)="logout()">
+      <a href="#" class="nav-link logout">
+        <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
+        <span class="title">Cerrar Sesión</span>
+      </a>
+    </li>
+  </ul>
+</div>

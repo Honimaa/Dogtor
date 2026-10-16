@@ -1,0 +1,50 @@
+<div class="contenedor">
+  <div class="rueda-wrap">
+    <div class="indicador" aria-hidden="true"></div>
+    <svg class="ruleta" viewBox="-105 -105 210 210" [style.transform]="'rotate(' + rotacion + 'deg)'"
+         role="img" aria-label="Ruleta de premios">
+      <circle r="104" fill="#1d95db"></circle>
+      <g *ngFor="let s of segmentos">
+        <path [attr.d]="s.path" [attr.fill]="s.color" stroke="#fff" stroke-width="1.5"></path>
+        <text [attr.x]="s.textoX" [attr.y]="s.textoY"
+              [attr.transform]="'rotate(' + s.textoRotacion + ' ' + s.textoX + ' ' + s.textoY + ')'"
+              text-anchor="middle" dominant-baseline="middle" class="etiqueta">{{ s.etiqueta }}</text>
+      </g>
+      <circle r="16" fill="#fff" stroke="#1d95db" stroke-width="3"></circle>
+      <text y="1" text-anchor="middle" dominant-baseline="middle" class="centro">🐾</text>
+    </svg>
+  </div>
+
+  <button (click)="girarRuleta()" [disabled]="girando || !!premioGanado" class="boton-girar">
+    {{ girando ? 'Girando...' : (premioGanado ? '¡Ya tienes tu premio!' : 'Girar ruleta 🎉') }}
+  </button>
+
+  <ul class="leyenda">
+    <li *ngFor="let p of premios"><span [style.background]="p.color"></span>{{ p.premio }}</li>
+  </ul>
+
+  <!-- Datos para el envío del premio -->
+  <div *ngIf="premioGanado && !enviado" class="resultado">
+    <p>🎁 ¡Felicidades! Ganaste: <strong>{{ premioGanado }}</strong></p>
+    <p class="nota">Déjanos tus datos y te lo enviamos a casa. No necesitas ir a ningún lugar.</p>
+    <form class="envio" (ngSubmit)="confirmarEnvio()">
+      <input name="nombre" [(ngModel)]="datos.nombre" placeholder="Nombre completo *" autocomplete="name" />
+      <input name="mascota" [(ngModel)]="datos.nombreMascota" placeholder="Nombre de tu mascota *" />
+      <input name="telefono" type="tel" [(ngModel)]="datos.telefono" placeholder="Teléfono *" autocomplete="tel" />
+      <input name="correo" type="email" [(ngModel)]="datos.correo" placeholder="Correo electrónico *" autocomplete="email" />
+      <input name="direccion" [(ngModel)]="datos.direccion" placeholder="Dirección de entrega *" autocomplete="street-address" />
+      <input name="ciudad" [(ngModel)]="datos.ciudad" placeholder="Ciudad *" autocomplete="address-level2" />
+      <label class="cumple">Cumpleaños de tu mascota
+        <input name="cumple" type="date" [(ngModel)]="datos.cumpleMascota" />
+      </label>
+      <p class="error" *ngIf="errorEnvio">{{ errorEnvio }}</p>
+      <button type="submit" class="boton-girar">Enviar mi premio</button>
+    </form>
+  </div>
+
+  <div *ngIf="enviado" class="resultado confirmado">
+    <p>✅ ¡Listo! Enviaremos <strong>{{ premioGanado }}</strong> para {{ datos.nombreMascota }} a {{ datos.direccion }}, {{ datos.ciudad }}.</p>
+    <p class="nota">Código de envío <strong>{{ codigo }}</strong>. Te contactaremos para coordinar la entrega (5 a 8 días hábiles). Descargamos tu comprobante en PDF.</p>
+    <button type="button" class="enlace" (click)="generarComprobantePDF()">Descargar comprobante otra vez</button>
+  </div>
+</div>

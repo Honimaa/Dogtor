@@ -1,0 +1,95 @@
+/* Estilos de todos los botón excepto los de landing y login. Detalle mascotas modifica el de registrar*/
+.btn-registrar {
+  background-color: #205375;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  padding: 10px 15px;
+  font-size: 16px;
+  text-decoration: none;
+  min-width: 150px;
+  text-align: center;
+}
+
+.btn-registrar:hover {
+  background-color: #112d4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón de agregar */
+.button-container {
+  margin-top: 0.5rem;
+}
+
+.btn-agregar {
+  padding: 0.8rem 1.5rem;
+  border-radius: 6px;
+  background-color: #205375;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 10px;
+}
+
+.btn-agregar:hover {
+  background-color: #112d4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones */
+.btn-editar,
+.btn-eliminar,
+.btn-detalles {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  margin: 0.2rem;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background-color: #205375;
+  color: white;
+}
+
+.btn-eliminar {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.btn-detalles {
+  background-color: #40a8c4;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #112d4e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-eliminar:hover {
+  background-color: #e60000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-detalles:hover {
+  background-color: #2e86ab;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

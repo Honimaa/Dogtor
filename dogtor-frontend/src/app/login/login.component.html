@@ -1,0 +1,56 @@
+<app-header></app-header>
+
+<section class="login-page">
+  <div class="login-brand">
+    <img src="assets/logo-beagle.png" alt="" class="brand-logo" />
+    <h1>Bienvenido a Dog<span>tor</span></h1>
+    <p>Ingresa para gestionar citas, historias clínicas, inventario y adopciones desde un solo lugar.</p>
+    <ul>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Propietarios: citas, recordatorios e historia clínica de tus mascotas.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Doctores: agenda, pacientes y registro clínico.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Clínicas: inventario, ventas y adopciones.</li>
+    </ul>
+  </div>
+
+  <div class="login-card">
+    <h2>Iniciar sesión</h2>
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="dt-field">
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Tu nombre de usuario"
+          autocomplete="username"
+          required
+        />
+      </div>
+
+      <div class="dt-field">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Tu contraseña"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <p *ngIf="errorMessage" id="errorMessage" class="error" role="alert">
+        <ion-icon name="alert-circle-outline"></ion-icon> {{ errorMessage }}
+      </p>
+
+      <button id="loginSubmit" type="submit" class="dt-btn submit">Ingresar</button>
+    </form>
+
+    <div class="login-extra">
+      <a routerLink="/adopcion"><ion-icon name="heart-outline"></ion-icon> ¿Buscas adoptar? No necesitas cuenta</a>
+      <a routerLink="/urgencias" class="urgencias"><ion-icon name="pulse-outline"></ion-icon> Urgencias 24 horas</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+<div class="associated-foundations">
+  <h2>Fundaciones Asociadas</h2>
+  <div class="carousel-container">
+    <div #carouselTrack class="carousel-track">
+      <div class="foundation-card" *ngFor="let f of fundaciones">
+        <img [src]="f.imagen" [alt]="f.nombre" />
+        <div class="info">
+          <h3>{{ f.nombre }}</h3>
+          <p>{{ f.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </div>  
+</div>

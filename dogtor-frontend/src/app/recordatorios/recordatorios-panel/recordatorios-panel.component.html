@@ -1,0 +1,29 @@
+<section class="panel dt-card">
+  <header>
+    <h3><ion-icon name="notifications-outline"></ion-icon> {{ titulo }}</h3>
+    <span class="dt-badge dt-badge-danger" *ngIf="urgentes">{{ urgentes }} {{ urgentes === 1 ? 'urgente' : 'urgentes' }}</span>
+  </header>
+
+  <p class="vacio" *ngIf="cargando">Cargando…</p>
+  <p class="vacio" *ngIf="!cargando && !recordatorios.length">
+    <ion-icon name="checkmark-done-outline"></ion-icon> Todo al día: no hay citas, vacunas ni controles próximos.
+  </p>
+
+  <ul *ngIf="!cargando && recordatorios.length">
+    <li *ngFor="let r of visibles" [class.urgente]="r.urgente" [attr.data-tipo]="r.tipo">
+      <span class="icono"><ion-icon [name]="icono(r.tipo)"></ion-icon></span>
+      <div>
+        <strong>{{ r.titulo }}</strong>
+        <p>{{ r.mensaje }}</p>
+        <small *ngIf="!idCliente && r.nombrePropietario">Propietario: {{ r.nombrePropietario }}</small>
+      </div>
+      <a [routerLink]="['/historia-clinica', r.idMascota]" class="ver" *ngIf="r.tipo !== 'CITA'" aria-label="Ver historia clínica">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </a>
+    </li>
+  </ul>
+
+  <button type="button" class="mas" *ngIf="recordatorios.length > limite" (click)="verTodos = !verTodos">
+    {{ verTodos ? 'Ver menos' : 'Ver los ' + recordatorios.length + ' recordatorios' }}
+  </button>
+</section>

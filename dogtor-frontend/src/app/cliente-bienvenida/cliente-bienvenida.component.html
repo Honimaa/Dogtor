@@ -1,0 +1,51 @@
+
+<div class="bienvenida-container">
+    <div class="bienvenida-header">
+      <h1>¡Hola, {{nombreCliente}}! 🐾</h1>
+      <p>Bienvenido a tu espacio personal en Dogtor 🏥</p>
+    </div>
+  
+    <div class="bienvenida-cards">
+      <div class="card" (click)="irAMascotas()">
+        <img src="https://static.wixstatic.com/media/aa8751_6e8508a67c0b4b7cb76300891a44a40a~mv2.jpg/v1/fill/w_696,h_464,al_c,q_80,enc_avif,quality_auto/aa8751_6e8508a67c0b4b7cb76300891a44a40a~mv2.jpg" alt="Mascotas" />
+        <h3>Ver tus Mascotas</h3>
+        <p>Consulta su información, historial y tratamientos.</p>
+      </div>
+  
+      <div class="card" (click)="irACitas()">
+        <img src="https://lobbyfix.com/wp-content/uploads/2020/12/businessman-planning-events-deadlines-agenda_74855-6274.jpg" alt="Citas" />
+        <h3>Agendar Cita</h3>
+        <p>Reserva y gestiona tus próximas citas fácilmente.</p>
+      </div>
+  
+      <div class="card" (click)="irATratamientos()">
+        <img src="https://www.clinicaraza.com/web/image/61803/Laserterapia%20en%20mascotas%20-%20Kines%20can%20" alt="Tratamiento" />
+        <h3>Mascotas en Tratamiento</h3>
+        <p>Haz seguimiento al progreso de tus peluditos 🐶</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tip-del-dia">
+    <h3>🐾 Consejo del día</h3>
+    <p>Recuerda revisar las patas de tu mascota después de cada paseo. Pueden tener espinas o piedritas escondidas.</p>
+</div>
+  
+<div class="seccion-galeria-calculadora">
+  <h2 class="titulo-seccion">Galería Dogtor</h2>
+  <p class="subtitulo-seccion">¡Conoce más de nuestras adorables mascotas y calcula la edad de tu mascota en años de humano!</p>
+  <div class="galeria-calculadora-container">
+    <!-- Galería de imágenes -->
+    <div class="galeria" (click)="toggleGaleria()">
+      <img *ngFor="let imagen of imagenes.slice(0, 4)" [src]="imagen" alt="Foto de mascota" />
+    </div>
+
+    <!-- Calculadora -->
+    <div class="calculadora-edad">
+      <h3>Calculadora de Edad Humana</h3>
+      <input type="number" [(ngModel)]="edadMascota" placeholder="Edad de la mascota" />
+      <button (click)="calcularEdadHumana()">Calcular Edad Humana</button>
+      <p *ngIf="edadHumana">La edad de tu mascota es aproximadamente {{ edadHumana }} años humanos.</p>
+    </div>
+  </div>
+</div>

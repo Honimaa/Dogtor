@@ -1,0 +1,226 @@
+<app-navegacion></app-navegacion>
+
+<div class="main panel-main">
+  <div class="dt-page">
+    <div class="dt-page-header">
+      <div>
+        <span class="dt-eyebrow">Módulo de adopción</span>
+        <h1>Gestión de adopciones</h1>
+        <p class="dt-lead">Revisa solicitudes, publica mascotas y valida los refugios aliados.</p>
+      </div>
+      <a routerLink="/adopcion" class="dt-btn dt-btn-outline dt-btn-sm" target="_blank">
+        <ion-icon name="open-outline"></ion-icon> Ver catálogo público
+      </a>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi"><span>{{ contar('PENDIENTE') }}</span>Solicitudes pendientes</div>
+      <div class="kpi"><span>{{ contar('EN_REVISION') }}</span>En revisión</div>
+      <div class="kpi"><span>{{ contarMascotas('DISPONIBLE') }}</span>Mascotas disponibles</div>
+      <div class="kpi gold"><span>{{ contarMascotas('ADOPTADA') }}</span>Adopciones logradas</div>
+    </div>
+
+    <div class="dt-alert dt-alert-success" *ngIf="mensaje" role="status">
+      <ion-icon name="checkmark-circle-outline"></ion-icon><div>{{ mensaje }}</div>
+    </div>
+    <div class="dt-alert dt-alert-danger" *ngIf="error" role="alert">
+      <ion-icon name="alert-circle-outline"></ion-icon><div>{{ error }}</div>
+    </div>
+
+    <div class="dt-tabs pestanas" role="tablist">
+      <button type="button" class="dt-chip" [class.active]="pestana === 'solicitudes'" (click)="pestana = 'solicitudes'">
+        Solicitudes ({{ solicitudes.length }})
+      </button>
+      <button type="button" class="dt-chip" [class.active]="pestana === 'mascotas'" (click)="pestana = 'mascotas'">
+        Mascotas ({{ mascotas.length }})
+      </button>
+      <button type="button" class="dt-chip" [class.active]="pestana === 'refugios'" (click)="pestana = 'refugios'">
+        Refugios ({{ refugios.length }})
+      </button>
+    </div>
+
+    <!-- Solicitudes -->
+    <section *ngIf="pestana === 'solicitudes'">
+      <div class="toolbar">
+        <select class="dt-input" [(ngModel)]="filtroSolicitudes" aria-label="Filtrar por estado">
+          <option value="">Todos los estados</option>
+          <option *ngFor="let e of estadosSolicitud" [value]="e.valor">{{ e.etiqueta }}</option>
+        </select>
+      </div>
+      <div class="dt-table-wrap">
+        <table class="dt-table">
+          <thead>
+            <tr>
+              <th>Mascota</th>
+              <th>Solicitante</th>
+              <th>Mensaje</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of solicitudesFiltradas">
+              <td>
+                <div class="mini">
+                  <img [src]="s.mascotaAdopcion?.foto" alt="" (error)="onImgError($event)" />
+                  <div>
+                    <strong>{{ s.mascotaAdopcion?.nombre }}</strong>
+                    <small>{{ s.mascotaAdopcion?.refugio?.nombre }}</small>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <strong>{{ s.nombreSolicitante }}</strong>
+                <small class="block">{{ s.correo }} · {{ s.telefono }}</small>
+                <small class="block" *ngIf="s.ciudad">{{ s.ciudad }}</small>
+              </td>
+              <td class="mensaje">{{ s.mensaje || '—' }}</td>
+              <td>{{ s.fecha | date:'dd/MM/yyyy' }}</td>
+              <td><span class="dt-badge" [ngClass]="claseSolicitud(s.estado)">{{ etiquetaSolicitud(s.estado) }}</span></td>
+              <td>
+                <div class="acciones" *ngIf="s.estado === 'PENDIENTE' || s.estado === 'EN_REVISION'">
+                  <button *ngIf="s.estado === 'PENDIENTE'" type="button" class="dt-btn dt-btn-sm dt-btn-outline"
+                          (click)="cambiarEstado(s, 'EN_REVISION')">Revisar</button>
+                  <button type="button" class="dt-btn dt-btn-sm" (click)="cambiarEstado(s, 'APROBADA')">Aprobar</button>
+                  <button type="button" class="dt-btn dt-btn-sm dt-btn-danger" (click)="cambiarEstado(s, 'RECHAZADA')">Rechazar</button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!solicitudesFiltradas.length">
+              <td colspan="6" class="dt-empty">No hay solicitudes con este estado.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Mascotas -->
+    <section *ngIf="pestana === 'mascotas'">
+      <div class="toolbar">
+        <button type="button" class="dt-btn dt-btn-sm" (click)="nuevaMascota()" [disabled]="!refugiosValidados.length">
+          <ion-icon name="add-outline"></ion-icon> Publicar mascota
+        </button>
+        <small *ngIf="!refugiosValidados.length">Necesitas al menos un refugio validado para publicar.</small>
+      </div>
+      <div class="dt-grid">
+        <article class="dt-card mascota" *ngFor="let m of mascotas">
+          <img [src]="m.foto" [alt]="m.nombre" (error)="onImgError($event)" />
+          <div class="mascota-info">
+            <div class="row">
+              <h3>{{ m.nombre }}</h3>
+              <span class="dt-badge" [ngClass]="claseMascota(m.estado)">{{ etiquetaMascota(m.estado) }}</span>
+            </div>
+            <p>{{ m.raza }} · {{ edadLegible(m.edadMeses) }} · {{ m.ciudad }}</p>
+            <small>{{ m.refugio?.nombre }}</small>
+            <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="editarMascota(m)">Editar</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Refugios -->
+    <section *ngIf="pestana === 'refugios'">
+      <div class="toolbar">
+        <button type="button" class="dt-btn dt-btn-sm" (click)="mostrarFormRefugio = true">
+          <ion-icon name="add-outline"></ion-icon> Registrar refugio
+        </button>
+      </div>
+      <div class="dt-table-wrap">
+        <table class="dt-table">
+          <thead>
+            <tr><th>Refugio</th><th>Ciudad</th><th>Contacto</th><th>Estado</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of refugios">
+              <td><strong>{{ r.nombre }}</strong><small class="block">{{ r.descripcion }}</small></td>
+              <td>{{ r.ciudad }}</td>
+              <td><small class="block">{{ r.correo }}</small><small class="block">{{ r.telefono }}</small></td>
+              <td>
+                <span class="dt-badge" [ngClass]="r.validado ? 'dt-badge-success' : 'dt-badge-warning'">
+                  {{ r.validado ? 'Validado' : 'Pendiente de validación' }}
+                </span>
+              </td>
+              <td>
+                <button type="button" class="dt-btn dt-btn-sm" [ngClass]="r.validado ? 'dt-btn-outline' : ''"
+                        (click)="cambiarValidacion(r)">
+                  {{ r.validado ? 'Retirar validación' : 'Validar' }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- Formulario de mascota -->
+<div class="dt-modal-backdrop" *ngIf="mostrarFormMascota" (click)="mostrarFormMascota = false">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarMascota()">
+    <h3>{{ editandoMascota ? 'Editar ' + editandoMascota.nombre : 'Publicar mascota en adopción' }}</h3>
+    <p class="dt-lead">Solo los refugios validados pueden publicar.</p>
+    <div class="dt-field" *ngIf="!editandoMascota">
+      <label for="refugio">Refugio</label>
+      <select id="refugio" name="refugio" [(ngModel)]="idRefugioForm" required>
+        <option *ngFor="let r of refugiosValidados" [ngValue]="r.idRefugio">{{ r.nombre }} · {{ r.ciudad }}</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <div class="dt-field"><label for="nombre">Nombre</label><input id="nombre" name="nombre" [(ngModel)]="formMascota.nombre" required /></div>
+      <div class="dt-field">
+        <label for="especie">Especie</label>
+        <select id="especie" name="especie" [(ngModel)]="formMascota.especie">
+          <option value="PERRO">Perro</option><option value="GATO">Gato</option><option value="OTRO">Otro</option>
+        </select>
+      </div>
+      <div class="dt-field"><label for="raza">Raza</label><input id="raza" name="raza" [(ngModel)]="formMascota.raza" /></div>
+      <div class="dt-field"><label for="edad">Edad (meses)</label><input id="edad" name="edad" type="number" min="0" [(ngModel)]="formMascota.edadMeses" /></div>
+      <div class="dt-field">
+        <label for="tamano">Tamaño</label>
+        <select id="tamano" name="tamano" [(ngModel)]="formMascota.tamano">
+          <option value="PEQUENO">Pequeño</option><option value="MEDIANO">Mediano</option><option value="GRANDE">Grande</option>
+        </select>
+      </div>
+      <div class="dt-field">
+        <label for="sexo">Sexo</label>
+        <select id="sexo" name="sexo" [(ngModel)]="formMascota.sexo">
+          <option>Hembra</option><option>Macho</option>
+        </select>
+      </div>
+      <div class="dt-field"><label for="ciudad">Ciudad</label><input id="ciudad" name="ciudad" [(ngModel)]="formMascota.ciudad" placeholder="La del refugio" /></div>
+      <div class="dt-field" *ngIf="editandoMascota">
+        <label for="estadoM">Estado</label>
+        <select id="estadoM" name="estadoM" [(ngModel)]="formMascota.estado">
+          <option value="DISPONIBLE">Disponible</option><option value="EN_PROCESO">En proceso</option><option value="ADOPTADA">Adoptada</option>
+        </select>
+      </div>
+    </div>
+    <div class="dt-field"><label for="foto">URL de la foto</label><input id="foto" name="foto" [(ngModel)]="formMascota.foto" required /></div>
+    <div class="dt-field"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" rows="3" [(ngModel)]="formMascota.descripcion"></textarea></div>
+    <div class="dt-field"><label for="salud">Estado de salud</label><textarea id="salud" name="salud" rows="2" [(ngModel)]="formMascota.estadoSalud"></textarea></div>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="mostrarFormMascota = false">Cancelar</button>
+      <button type="submit" class="dt-btn">{{ editandoMascota ? 'Guardar cambios' : 'Publicar' }}</button>
+    </div>
+  </form>
+</div>
+
+<!-- Formulario de refugio -->
+<div class="dt-modal-backdrop" *ngIf="mostrarFormRefugio" (click)="mostrarFormRefugio = false">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarRefugio()">
+    <h3>Registrar refugio o fundación</h3>
+    <p class="dt-lead">Quedará pendiente hasta que un administrador de Dogtor lo valide.</p>
+    <div class="grid-2">
+      <div class="dt-field"><label for="rnombre">Nombre</label><input id="rnombre" name="rnombre" [(ngModel)]="formRefugio.nombre" required /></div>
+      <div class="dt-field"><label for="rciudad">Ciudad</label><input id="rciudad" name="rciudad" [(ngModel)]="formRefugio.ciudad" required /></div>
+      <div class="dt-field"><label for="rtel">Teléfono</label><input id="rtel" name="rtel" [(ngModel)]="formRefugio.telefono" /></div>
+      <div class="dt-field"><label for="rcorreo">Correo</label><input id="rcorreo" name="rcorreo" type="email" [(ngModel)]="formRefugio.correo" /></div>
+    </div>
+    <div class="dt-field"><label for="rdesc">Descripción</label><textarea id="rdesc" name="rdesc" rows="3" [(ngModel)]="formRefugio.descripcion"></textarea></div>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="mostrarFormRefugio = false">Cancelar</button>
+      <button type="submit" class="dt-btn">Registrar</button>
+    </div>
+  </form>
+</div>

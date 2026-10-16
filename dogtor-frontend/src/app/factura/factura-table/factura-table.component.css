@@ -1,0 +1,330 @@
+/* ================== CONTENEDOR PRINCIPAL ================== */
+.facturas-container {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  margin-top: 0px;
+  max-width: 1200px;
+  margin-left: 310px;
+}
+
+/* ================== CABECERA MEJORADA ================== */
+.facturas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.facturas-header h2 {
+  font-size: 1.8rem;
+  color: #1d95db;
+  font-weight: 700;
+  position: relative;
+  padding-bottom: 8px;
+  margin: 0;
+  display: inline-block; /* Añadido para que el ancho sea solo del texto */
+}
+
+.facturas-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%; /* Centramos desde el 50% */
+  transform: translateX(-50%); /* Corregimos la posición exacta */
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  border-radius: 3px;
+}
+
+/* ================== BOTONES PREMIUM ================== */
+.acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.acciones button {
+  margin: 0;
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acciones button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+}
+
+/* ================== TABLA PREMIUM ================== */
+.facturas-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.facturas-table thead {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.facturas-table th {
+  padding: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.facturas-table td {
+  padding: 14px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #475569;
+  font-weight: 500;
+  background: white;
+  position: relative;
+}
+
+/* EFECTO DE TARJETA PARA FILAS */
+.facturas-table tbody tr {
+  box-shadow:
+    0 1px 3px rgba(0,0,0,0.1),
+    0 4px 6px rgba(0,0,0,0.05),
+    0 5px 15px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.facturas-table tbody tr:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.12),
+    0 8px 15px rgba(0,0,0,0.1),
+    0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* BORDES REDONDEADOS */
+.facturas-table th:first-child {
+  border-top-left-radius: 14px;
+}
+
+.facturas-table th:last-child {
+  border-top-right-radius: 14px;
+}
+
+.facturas-table td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.facturas-table td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* ESTADO MEJORADO */
+.badge {
+  padding: 8px 14px;
+  border-radius: 16px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* CHECKBOX PREMIUM */
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkbox-container .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #f1f5f9;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background: linear-gradient(135deg, #72c0ea 0%, #529bcb 100%);
+  border-color: transparent;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* FILAS DESHABILITADAS */
+.facturas-table tr.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(50%);
+}
+
+/* ================== FOOTER MEJORADO ================== */
+.facturas-footer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.facturas-footer .btn-success {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.facturas-footer .btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* ================== ALERTAS MEJORADAS ================== */
+.alert {
+  margin-top: 25px;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.alert-success {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alert-danger {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 768px) {
+  .facturas-container {
+    padding: 20px;
+    margin-left: 0;
+    margin: 20px 15px;
+  }
+
+  .facturas-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .acciones {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .acciones button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .facturas-table {
+    min-width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .facturas-footer .btn-success {
+    width: 100%;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .facturas-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .facturas-table th,
+  .facturas-table td {
+    padding: 12px 8px;
+    font-size: 0.8rem;
+  }
+
+  .badge {
+    padding: 6px 10px;
+    font-size: 0.7rem;
+  }
+}
+

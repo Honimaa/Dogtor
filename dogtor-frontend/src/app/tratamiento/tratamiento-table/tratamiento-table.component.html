@@ -1,0 +1,57 @@
+<app-navegacion></app-navegacion>
+
+<div class="tratamientos-container">
+  <div class="tratamientos-header">
+    <h2>Listado de Tratamientos</h2>
+  </div>
+
+  <div class="table-responsive">
+    <table class="tratamientos-table">
+      <thead>
+        <tr>
+          <th *ngIf="userType === 'Cliente'" width="50px">Sel.</th>
+          <th>Código</th>
+          <th>Fecha</th>
+          <th>Detalles</th>
+          <th>Estado de Factura</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tratamiento of tratamientos" class="tratamiento-fila">
+          <td *ngIf="userType === 'Cliente'">
+            <label class="checkbox-container">
+              <input type="checkbox"
+                     [value]="tratamiento.idTratamiento"
+                     (change)="onCheckboxChange($event, tratamiento)">
+              <span class="checkmark"></span>
+            </label>
+          </td>
+          <td class="tratamiento-codigo">{{ tratamiento.codigo }}</td>
+          <td class="tratamiento-fecha">{{ tratamiento.fecha | date:'dd/MM/yyyy' }}</td>
+          <td class="tratamiento-detalles">{{ tratamiento.detalles }}</td>
+          <td>
+            {{ estadoFactura(tratamiento) }}
+          </td>
+        </tr>
+        <tr *ngIf="tratamientos.length === 0">
+          <td colspan="4" class="no-results">No hay tratamientos registrados</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="tratamientosSeleccionados.length > 0" class="facturar-container">
+    <div class="metodo-pago-container">
+      <label for="metodoPago">Método de Pago:</label>
+      <select [(ngModel)]="metodoDePago" id="metodoPago" class="select-pago">
+        <option value="" disabled selected>Seleccione un método</option>
+        <option value="Efectivo">Efectivo</option>
+        <option value="Tarjeta">Tarjeta</option>
+        <option value="Transferencia">Transferencia</option>
+      </select>
+    </div>
+    <button class="btn btn-success" (click)="facturar()">
+      <i class="fas fa-file-invoice-dollar"></i> Facturar {{ tratamientosSeleccionados.length }} seleccionados
+    </button>
+  </div>
+</div>

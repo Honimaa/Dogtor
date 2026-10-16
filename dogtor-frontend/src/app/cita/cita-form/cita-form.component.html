@@ -1,0 +1,168 @@
+<app-header></app-header>
+
+<div class="dt-page cita-page">
+  <div class="dt-page-header">
+    <div>
+      <span class="dt-eyebrow">Agenda Dogtor</span>
+      <h1>{{ modoEdicion ? 'Editar cita' : 'Agendar una cita' }}</h1>
+      <p class="dt-lead" *ngIf="!modoEdicion">
+        Elige a tu mascota, el doctor y uno de sus horarios disponibles. Solo te mostramos los espacios libres.
+      </p>
+    </div>
+    <button type="button" class="dt-btn dt-btn-outline dt-btn-sm" (click)="volver()">
+      <ion-icon name="arrow-back-outline"></ion-icon> Volver
+    </button>
+  </div>
+
+  <!-- Indicador de pasos -->
+  <ol class="steps" *ngIf="!modoEdicion">
+    <li [class.active]="paso === 1" [class.done]="paso > 1"><span>1</span> Mascota y motivo</li>
+    <li [class.active]="paso === 2" [class.done]="paso > 2"><span>2</span> Doctor y horario</li>
+    <li [class.active]="paso === 3"><span>3</span> Confirmar</li>
+  </ol>
+
+  <div class="dt-alert dt-alert-danger" *ngIf="errors.length" role="alert">
+    <ion-icon name="alert-circle-outline"></ion-icon>
+    <div>
+      <strong>No pudimos guardar la cita</strong>
+      <span *ngFor="let e of errors">{{ e }}<br /></span>
+    </div>
+  </div>
+
+  <form #citaForm="ngForm" class="dt-card cita-card" (ngSubmit)="guardarCita()">
+
+    <!-- Paso 1: mascota, tipo y motivo -->
+    <section *ngIf="modoEdicion || paso === 1">
+      <h3>¿Para quién es la cita?</h3>
+
+      <div class="dt-field">
+        <label for="mascota">Mascota</label>
+        <select id="mascota" name="mascota" [(ngModel)]="Formcita.mascota.idMascota" required>
+          <option [ngValue]="0" disabled>Selecciona una mascota</option>
+          <option *ngFor="let mascota of mascotas" [ngValue]="mascota.idMascota">
+            {{ mascota.nombre }}<ng-container *ngIf="userType !== 'Cliente' && mascota.cliente?.nombre"> · {{ mascota.cliente?.nombre }}</ng-container>
+          </option>
+        </select>
+        <small class="hint" *ngIf="!mascotas.length">No encontramos mascotas registradas para esta cuenta.</small>
+      </div>
+
+      <div class="dt-field">
+        <label>Tipo de consulta</label>
+        <div class="dt-tabs">
+          <button type="button" class="dt-chip" *ngFor="let t of tiposConsulta"
+                  [class.active]="Formcita.tipoConsulta === t.valor"
+                  (click)="Formcita.tipoConsulta = t.valor">
+            {{ t.etiqueta }}
+          </button>
+        </div>
+        <a *ngIf="Formcita.tipoConsulta === 'URGENCIA'" routerLink="/urgencias" class="urgencia-link">
+          <ion-icon name="pulse-outline"></ion-icon> ¿Es una emergencia ahora? Mira las sedes con urgencias abiertas
+        </a>
+      </div>
+
+      <div class="grid-2">
+        <div class="dt-field">
+          <label for="servicio">Servicio</label>
+          <select id="servicio" name="servicio" [(ngModel)]="Formcita.servicio!.idServicio" required>
+            <option [ngValue]="0" disabled>Selecciona un servicio</option>
+            <option *ngFor="let servicio of servicios" [ngValue]="servicio.idServicio">
+              {{ servicio.nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dt-field">
+        <label for="motivo">Motivo de la consulta</label>
+        <textarea id="motivo" name="motivo" rows="3" [(ngModel)]="Formcita.motivo"
+                  placeholder="Ej.: se rasca mucho las orejas desde hace una semana"></textarea>
+      </div>
+
+      <div class="actions" *ngIf="!modoEdicion">
+        <button type="button" class="dt-btn" (click)="irAPaso(2)" [disabled]="!paso1Valido()">
+          Continuar <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </section>
+
+    <!-- Paso 2: doctor y horario -->
+    <section *ngIf="modoEdicion || paso === 2">
+      <h3>Elige doctor y horario</h3>
+
+      <div class="dt-field">
+        <label for="veterinario">Doctor</label>
+        <select id="veterinario" name="veterinario" [(ngModel)]="Formcita.veterinario!.idVeterinario"
+                (ngModelChange)="onVeterinarioChange()" [disabled]="!!veterinarioAsignado && !modoEdicion" required>
+          <option [ngValue]="0" disabled>Selecciona un doctor</option>
+          <option *ngFor="let vet of veterinariosActivos" [ngValue]="vet.idVeterinario">
+            {{ vet.nombre }} · {{ vet.especialidad }} · {{ vet.sede }}
+          </option>
+        </select>
+      </div>
+
+      <div class="dt-field">
+        <label for="fecha">Fecha</label>
+        <input type="date" id="fecha" name="fecha" [min]="hoy" [(ngModel)]="fecha" (ngModelChange)="cargarHorarios()" required />
+      </div>
+
+      <div class="dt-field" *ngIf="Formcita.veterinario?.idVeterinario && fecha">
+        <label>Horarios disponibles</label>
+        <p class="hint" *ngIf="cargandoHorarios">Consultando la agenda del doctor…</p>
+        <div class="slots" *ngIf="!cargandoHorarios && horarios.length">
+          <button type="button" class="slot" *ngFor="let h of horarios"
+                  [class.active]="hora === h" (click)="hora = h">{{ h }}</button>
+        </div>
+        <div class="dt-alert dt-alert-warning" *ngIf="!cargandoHorarios && !horarios.length">
+          <ion-icon name="time-outline"></ion-icon>
+          <div>
+            <strong>Sin horarios disponibles</strong>
+            El doctor no tiene espacios libres ese día. Prueba con otra fecha u otro doctor.
+          </div>
+        </div>
+      </div>
+
+      <div class="dt-field" *ngIf="modoEdicion">
+        <label for="estado">Estado de la cita</label>
+        <select id="estado" name="estado" [(ngModel)]="Formcita.estado" required>
+          <option *ngFor="let estado of estadosCita" [value]="estado">{{ estado }}</option>
+        </select>
+      </div>
+
+      <div class="actions" *ngIf="!modoEdicion">
+        <button type="button" class="dt-btn dt-btn-outline" (click)="irAPaso(1)">
+          <ion-icon name="arrow-back-outline"></ion-icon> Atrás
+        </button>
+        <button type="button" class="dt-btn" (click)="irAPaso(3)" [disabled]="!hora">
+          Continuar <ion-icon name="arrow-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </section>
+
+    <!-- Paso 3: confirmación -->
+    <section *ngIf="!modoEdicion && paso === 3" class="resumen">
+      <h3>Confirma tu cita</h3>
+      <dl>
+        <div><dt>Mascota</dt><dd>{{ nombreMascota() }}</dd></div>
+        <div><dt>Tipo</dt><dd>{{ etiquetaTipo() }}</dd></div>
+        <div><dt>Servicio</dt><dd>{{ nombreServicio() }}</dd></div>
+        <div><dt>Doctor</dt><dd>{{ doctorSeleccionado()?.nombre }}</dd></div>
+        <div><dt>Sede</dt><dd>{{ doctorSeleccionado()?.sede }}</dd></div>
+        <div><dt>Fecha y hora</dt><dd>{{ fechaHoraSeleccionada() | date:"EEEE d 'de' MMMM, h:mm a" }}</dd></div>
+        <div *ngIf="Formcita.motivo"><dt>Motivo</dt><dd>{{ Formcita.motivo }}</dd></div>
+      </dl>
+      <p class="hint">Te recordaremos la cita 24 horas antes.</p>
+      <div class="actions">
+        <button type="button" class="dt-btn dt-btn-outline" (click)="irAPaso(2)">
+          <ion-icon name="arrow-back-outline"></ion-icon> Atrás
+        </button>
+        <button type="submit" class="dt-btn dt-btn-gold" [disabled]="guardando">
+          <ion-icon name="checkmark-circle-outline"></ion-icon> {{ guardando ? 'Agendando…' : 'Confirmar cita' }}
+        </button>
+      </div>
+    </section>
+
+    <div class="actions" *ngIf="modoEdicion">
+      <button type="submit" class="dt-btn" [disabled]="guardando">Guardar cambios</button>
+    </div>
+  </form>
+</div>
