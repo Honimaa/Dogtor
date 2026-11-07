@@ -216,6 +216,26 @@
   color: #5A5A6E; /* Texto gris oscuro */
 }
 
+/* ================== CREAR / EDITAR ================== */
+.servicio-acciones {
+  white-space: nowrap;
+}
+
+.vista-previa {
+  display: block;
+  max-width: 100%;
+  max-height: 140px;
+  margin: 0 auto 1rem;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.error {
+  color: #d64545;
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+
 /* ================== RESPONSIVE ================== */
 @media (max-width: 1200px) {
   .servicios-container {

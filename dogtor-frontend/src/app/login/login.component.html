@@ -16,6 +16,10 @@
 
   <div class="login-card">
     <h2>Iniciar sesión</h2>
+    <p *ngIf="returnUrl" class="dt-alert aviso-retorno">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      {{ returnUrl.startsWith('/agendar-cita') ? 'Inicia sesión para agendar tu cita.' : 'Inicia sesión para continuar.' }}
+    </p>
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       <div class="dt-field">
         <label for="username">Usuario</label>

@@ -75,11 +75,6 @@ body {
   margin-bottom: 30px;
 }
 
-.navigation ul li:hover a,
-.navigation ul li.hovered a {
-  color: var(--blue);
-}
-
 .navigation ul li a .icon {
   position: relative;
   display: flex;
@@ -359,11 +354,6 @@ body {
 .navigation .nav-brand em {
   font-style: normal;
   color: #e2b979;
-}
-
-.navigation ul li:hover .nav-brand,
-.navigation ul li.hovered .nav-brand {
-  color: #186ba8;
 }
 
 .navigation .nav-logo {

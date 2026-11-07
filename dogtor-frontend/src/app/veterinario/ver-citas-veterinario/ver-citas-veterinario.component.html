@@ -10,6 +10,8 @@
       <button (click)="agendarCita()" class="btn-agregar">Agendar nueva cita</button>
     </div>
 
+    <app-recordatorios-panel *ngIf="userType === 'Veterinario'" titulo="Agenda y recordatorios de la clínica (48 h)" class="vet-recordatorios"></app-recordatorios-panel>
+
     <div class="tabla-container">
       <table class="tabla">
         <thead>

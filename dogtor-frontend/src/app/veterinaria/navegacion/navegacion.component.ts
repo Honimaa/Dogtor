@@ -40,29 +40,14 @@ export class NavegacionComponent implements AfterViewInit, OnDestroy {
       document.querySelectorAll<HTMLLIElement>('.navigation li');
     const toggle = document.querySelector<HTMLElement>('.toggle');
 
-    // Hover efecto - modificado para excluir elementos activos
-    const hoverLink = function (this: HTMLLIElement): void {
-      listItems.forEach((item) => {
-        // Solo remover hovered si no es el elemento activo
-        if (!item.classList.contains('active')) {
-          item.classList.remove('hovered');
-        }
-      });
-
-      // Solo agregar hovered si no es el elemento activo
-      if (!this.classList.contains('active')) {
-        this.classList.add('hovered');
-      }
-    };
-
-    // Click efecto (active) - se mantiene igual
+    // El resaltado al pasar el mouse lo maneja el CSS (:hover); antes se dejaba una clase
+    // "hovered" pegada que ocultaba el icono hasta pasar por otra opción.
     const activeLink = function (this: HTMLLIElement): void {
       listItems.forEach((item) => item.classList.remove('active'));
       this.classList.add('active');
     };
 
     listItems.forEach((item) => {
-      item.addEventListener('mouseover', hoverLink);
       item.addEventListener('click', activeLink);
     });
 

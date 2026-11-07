@@ -32,6 +32,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/inicio_sesion").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
                         .requestMatchers("/api/testimonios").permitAll()
+                        // Dogtor: solo el administrador crea o edita servicios
+                        .requestMatchers(HttpMethod.POST, "/api/servicios").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/servicios/*").hasAuthority("ADMIN")
                         .requestMatchers("/api/servicios").permitAll()
                         .requestMatchers("/factura/crear/medicamentos").permitAll()
                         .requestMatchers("/error").permitAll()

@@ -95,6 +95,7 @@
   text-align: center;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 0; /* deja que el texto largo se ajuste dentro de la tarjeta */
 }
 
 .dato:hover {
@@ -111,8 +112,15 @@
 }
 
 .info {
+  display: block;
   font-size: 1.3rem;
   font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* Los correos son largos: letra un poco menor para que quepan centrados */
+.info-correo {
+  font-size: 1.05rem;
 }
 
 /* ================== BOTONES ================== */

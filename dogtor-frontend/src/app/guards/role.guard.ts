@@ -14,8 +14,8 @@ export const roleGuard: CanActivateFn = (
 
   // Si no hay sesión iniciada o userRoles es null/undefined
   if (!userRoles) {
-    router.navigate(['/home']);
-    return false;
+    // Dogtor: se envía al login y, al entrar, se vuelve a la página que pidió (p. ej. agendar cita)
+    return router.createUrlTree(['/inicio-sesion'], { queryParams: { returnUrl: state.url } });
   }
 
   const hasRole = expectedRoles.some(role => userRoles.includes(role));

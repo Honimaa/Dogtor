@@ -39,6 +39,14 @@ export class ServicioService {
     return this.http.get<ServicioCL[]>(this.apiUrl);
   }
 
+  crearServicio(datos: Partial<ServicioCL>): Observable<ServicioCL> {
+    return this.http.post<ServicioCL>(this.apiUrl, datos);
+  }
+
+  actualizarServicio(id: number, datos: Partial<ServicioCL>): Observable<ServicioCL> {
+    return this.http.put<ServicioCL>(`${this.apiUrl}/${id}`, datos);
+  }
+
   getServicioPorTratamiento(id:number): Observable<ServicioCL>{
     return this.http.get<ServicioCL>(`${this.apiUrl}/por-tratamiento/${id}`);
   }

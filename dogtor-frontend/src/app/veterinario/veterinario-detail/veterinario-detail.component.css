@@ -238,16 +238,3 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* Dogtor: recordatorios en el panel del doctor */
-.vet-detail-container {
-  flex-wrap: wrap;
-  align-content: flex-start;
-}
-
-.vet-recordatorios {
-  display: block;
-  width: 100%;
-  max-width: 900px;
-  margin-top: 1.5rem;
-}

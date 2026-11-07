@@ -10,6 +10,7 @@ import java.util.List;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +72,25 @@ public class ServicioController {
         }
 
         return ResponseEntity.ok(servicio);
+    }
+
+    @PostMapping
+    public ResponseEntity<?> crearServicio(@RequestBody Servicio datos) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(servicioService.crearServicio(datos));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarServicio(@PathVariable Integer id, @RequestBody Servicio datos) {
+        try {
+            return ResponseEntity.ok(servicioService.actualizarServicio(id, datos));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -95,10 +95,14 @@ public class AuthController {
 
     @PostMapping("/inicio_sesion")
     public ResponseEntity<?> login(@RequestBody UserEntity loginRequest) {
+        // Dogtor: se ignoran los espacios al inicio y al final del usuario (los usuarios no
+        // pueden tener espacios). La contraseña se envía tal cual.
+        String usuario = loginRequest.getUsername() == null ? "" : loginRequest.getUsername().trim();
+
         // Autenticación
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
+                        usuario,
                         loginRequest.getPassword()
                 )
         );
@@ -110,7 +114,7 @@ public class AuthController {
         String token = jwtGenerator.generateToken(authentication);
 
         // Obtener usuario desde DB
-        UserEntity user = userRepository.findByUsername(loginRequest.getUsername())
+        UserEntity user = userRepository.findByUsername(usuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         // Obtener lista de roles

@@ -11,6 +11,9 @@
         <option value="precioAsc">Precio (Menor a Mayor)</option>
         <option value="precioDesc">Precio (Mayor a Menor)</option>
       </select>
+      <button type="button" class="dt-btn" (click)="abrirNuevo()">
+        <ion-icon name="add-outline"></ion-icon> Nuevo servicio
+      </button>
     </div>
   </div>
 
@@ -22,6 +25,7 @@
           <th>Nombre</th>
           <th>Descripción</th>
           <th>Precio Base</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -30,11 +34,45 @@
           <td class="servicio-nombre">{{ servicio.nombre }}</td>
           <td class="servicio-descripcion">{{ servicio.descripcion }}</td>
           <td class="servicio-precio">{{ servicio.precioBase | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+          <td class="servicio-acciones">
+            <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="abrirEditar(servicio)">
+              <ion-icon name="create-outline"></ion-icon> Editar
+            </button>
+          </td>
         </tr>
         <tr *ngIf="servicios.length === 0">
-          <td colspan="4" class="no-results">No hay servicios registrados</td>
+          <td colspan="5" class="no-results">No hay servicios registrados</td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>
+
+<!-- Dogtor: crear o editar un servicio -->
+<div class="dt-modal-backdrop" *ngIf="editando" (click)="cerrar()">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardar()">
+    <h3>{{ esNuevo ? 'Nuevo servicio' : 'Editar servicio' }}</h3>
+    <div class="dt-field">
+      <label for="nombreServicio">Nombre</label>
+      <input id="nombreServicio" name="nombreServicio" [(ngModel)]="form.nombre" required />
+    </div>
+    <div class="dt-field">
+      <label for="descripcionServicio">Descripción</label>
+      <textarea id="descripcionServicio" name="descripcionServicio" rows="3" [(ngModel)]="form.descripcion" required></textarea>
+    </div>
+    <div class="dt-field">
+      <label for="precioServicio">Precio base (COP)</label>
+      <input id="precioServicio" name="precioServicio" type="number" min="0" step="1000" [(ngModel)]="form.precioBase" required />
+    </div>
+    <div class="dt-field">
+      <label for="imagenServicio">URL de la imagen (opcional)</label>
+      <input id="imagenServicio" name="imagenServicio" type="url" placeholder="https://..." [(ngModel)]="form.imagenFrontal" />
+    </div>
+    <img *ngIf="form.imagenFrontal" class="vista-previa" [src]="form.imagenFrontal" alt="Vista previa de la imagen" />
+    <p class="error" *ngIf="errorForm">{{ errorForm }}</p>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="cerrar()">Cancelar</button>
+      <button type="submit" class="dt-btn" [disabled]="guardando">{{ guardando ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { ClienteCL } from '../model/cliente-cl';
 import { ClienteService } from '../service/cliente.service';
@@ -23,18 +23,37 @@ export class LoginComponent implements OnInit {
   veterinario!: VeterinarioCL;
   admin!: AdministradorCL;
   usuario!:UserCl
+  // Dogtor: página a la que volver después de iniciar sesión (la pone el roleGuard)
+  returnUrl: string | null = null;
+
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private clienteService: ClienteService,
     private adminService:AdminService,
     private veterinarioService:VeterinarioService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const destino = this.route.snapshot.queryParamMap.get('returnUrl');
+    // Solo rutas internas de la app, para no redirigir a otro sitio
+    this.returnUrl = destino && destino.startsWith('/') && !destino.startsWith('//') ? destino : null;
+  }
+
+  /** Va a la página que el usuario pedía antes del login o, si no hay, a su inicio. */
+  private irDespuesDelLogin(inicio: any[]): void {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+    } else {
+      this.router.navigate(inicio);
+    }
+  }
 
    onSubmit() {
     this.errorMessage = '';
+    // Los espacios al inicio o al final del usuario se ignoran; la contraseña no se modifica
+    this.username = this.username.trim();
 
     this.authService.iniciarSesion(this.username, this.password).subscribe({
       next: (response) => {
@@ -83,7 +102,7 @@ export class LoginComponent implements OnInit {
             nombre: cliente.nombre,
             foto: cliente.foto
           });
-          this.router.navigate(['/mascotas-cliente', cliente.idCliente]);
+          this.irDespuesDelLogin(['/mascotas-cliente', cliente.idCliente]);
         } else {
           this.errorMessage = 'No se encontraron datos de cliente';
         }
@@ -105,7 +124,7 @@ export class LoginComponent implements OnInit {
             nombre: admin.nombre,
             foto: admin.foto
           });
-          this.router.navigate(['/admin']);
+          this.irDespuesDelLogin(['/admin']);
         } else {
           this.errorMessage = 'No se encontraron datos de administrador';
         }
@@ -127,7 +146,7 @@ export class LoginComponent implements OnInit {
             nombre: veterinario.nombre,
             foto: veterinario.foto
           });
-          this.router.navigate(['/detalles-veterinario', veterinario.idVeterinario]);
+          this.irDespuesDelLogin(['/detalles-veterinario', veterinario.idVeterinario]);
         } else {
           this.errorMessage = 'No se encontraron datos de veterinario';
         }

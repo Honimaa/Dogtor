@@ -10,4 +10,6 @@ public interface ServicioService {
     Servicio obtenerServicioPorId(Integer id);
     BigDecimal calcularVentasTotales();
     BigDecimal calcularGananciasTotales();
+    Servicio crearServicio(Servicio datos);
+    Servicio actualizarServicio(Integer id, Servicio datos);
 }

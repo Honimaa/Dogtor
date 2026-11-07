@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class ServicioServiceImpl implements ServicioService {
 
+    private static final String IMAGEN_POR_DEFECTO = "assets/logo-beagle.png";
+
     private final ServicioRepository servicioRepository;
     private final TratamientoMedicamentoRepository tratamientoMedicamentoRepository;
     @SuppressWarnings("unused")
@@ -61,5 +63,41 @@ public class ServicioServiceImpl implements ServicioService {
         
         return (gananciaMedicamentos != null ? gananciaMedicamentos : BigDecimal.ZERO)
                 .add(gananciaServicios != null ? gananciaServicios : BigDecimal.ZERO);
+    }
+
+    // Dogtor: el administrador crea y edita servicios desde el listado
+    @Override
+    public Servicio crearServicio(Servicio datos) {
+        Servicio servicio = new Servicio();
+        copiarDatos(datos, servicio);
+        return servicioRepository.save(servicio);
+    }
+
+    @Override
+    public Servicio actualizarServicio(Integer id, Servicio datos) {
+        Servicio servicio = obtenerServicioPorId(id);
+        copiarDatos(datos, servicio);
+        return servicioRepository.save(servicio);
+    }
+
+    private void copiarDatos(Servicio origen, Servicio destino) {
+        if (origen.getNombre() == null || origen.getNombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre del servicio es obligatorio.");
+        }
+        if (origen.getDescripcion() == null || origen.getDescripcion().isBlank()) {
+            throw new IllegalArgumentException("La descripción del servicio es obligatoria.");
+        }
+        if (origen.getPrecioBase() == null || origen.getPrecioBase() < 0) {
+            throw new IllegalArgumentException("El precio base debe ser mayor o igual a 0.");
+        }
+        String imagen = origen.getImagenFrontal() == null || origen.getImagenFrontal().isBlank()
+                ? IMAGEN_POR_DEFECTO : origen.getImagenFrontal().trim();
+        String imagenTrasera = origen.getImagenTrasera() == null || origen.getImagenTrasera().isBlank()
+                ? imagen : origen.getImagenTrasera().trim();
+        destino.setNombre(origen.getNombre().trim());
+        destino.setDescripcion(origen.getDescripcion().trim());
+        destino.setPrecioBase(origen.getPrecioBase());
+        destino.setImagenFrontal(imagen);
+        destino.setImagenTrasera(imagenTrasera);
     }
 }

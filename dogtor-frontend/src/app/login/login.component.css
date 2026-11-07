@@ -158,3 +158,9 @@
   width: 100%;
   margin-top: 0.75rem;
 }
+
+/* Dogtor: aviso cuando se llega al login desde una página que pide sesión */
+.aviso-retorno {
+  margin-bottom: 1rem;
+  align-items: center;
+}
