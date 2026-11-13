@@ -73,6 +73,14 @@ JOIN mascota_adopcion ma ON ma.id_mascota_adopcion = s.id_mascota_adopcion
 WHERE s.estado IN ('PENDIENTE', 'EN_REVISION')
 ORDER BY s.fecha DESC;
 
+-- 10b. Refugios con su cuenta de acceso y cuántas mascotas tienen publicadas
+SELECT r.nombre, r.ciudad, r.validado, u.username AS usuario, COUNT(ma.id_mascota_adopcion) AS mascotas
+FROM refugio r
+LEFT JOIN users u ON u.id_user = r.user_id_user
+LEFT JOIN mascota_adopcion ma ON ma.id_refugio = r.id_refugio
+GROUP BY r.id_refugio, r.nombre, r.ciudad, r.validado, u.username
+ORDER BY r.nombre;
+
 -- 11. Avisos de Dogtor Encuentra sin resolver
 SELECT tipo, nombre_mascota, especie, lugar, ciudad, contacto_nombre, contacto_telefono, fecha_publicacion
 FROM publicacion_mascota
