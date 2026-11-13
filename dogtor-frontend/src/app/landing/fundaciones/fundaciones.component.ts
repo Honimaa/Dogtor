@@ -23,8 +23,8 @@ export class FundacionesComponent implements AfterViewInit {
     },
     {
       imagen: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600',
-      nombre: 'Patrulla Animal',
-      descripcion: 'Luchamos contra el maltrato animal y promovemos la adopción responsable de perros y gatos.'
+      nombre: 'Fundación Huellitas de Amor',
+      descripcion: 'Rescatamos perros y gatos en situación de calle en Bogotá y los preparamos para un hogar responsable.'
     },
     {
       imagen: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600',

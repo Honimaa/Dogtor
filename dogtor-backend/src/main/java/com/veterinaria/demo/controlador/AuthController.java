@@ -1,7 +1,10 @@
 package com.veterinaria.demo.controlador;
 
 import com.veterinaria.demo.entidad.Cliente;
+import com.veterinaria.demo.entidad.Refugio;
 import com.veterinaria.demo.repositorio.ClienteRepository;
+import com.veterinaria.demo.repositorio.RefugioRepository;
+import org.springframework.transaction.annotation.Transactional;
 import com.veterinaria.demo.seguridad.CustomUserDetailsService;
 
 import com.veterinaria.demo.entidad.UserEntity;
@@ -38,6 +41,9 @@ public class AuthController {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private RefugioRepository refugioRepository;
 
     /**
      * Dogtor: registro público de propietarios de mascotas.
@@ -79,6 +85,65 @@ public class AuthController {
 
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put("mensaje", "Cuenta creada");
+        respuesta.put("usuario", usuario);
+        return ResponseEntity.ok(respuesta);
+    }
+
+    /**
+     * Dogtor: registro público de refugios y fundaciones.
+     * Crea el refugio sin validar y su cuenta con rol REFUGIO. Puede iniciar sesión de inmediato,
+     * pero solo publica mascotas cuando un administrador de Dogtor lo valida.
+     */
+    @PostMapping("/registro-refugio")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> registrarRefugio(@RequestBody Map<String, String> datos) {
+        String nombre = limpio(datos.get("nombre"));
+        String ciudad = limpio(datos.get("ciudad"));
+        String correo = limpio(datos.get("correo"));
+        String telefono = limpio(datos.get("telefono"));
+        String usuario = limpio(datos.get("nombreUsuario"));
+        String contrasena = datos.get("contrasena");
+
+        if (nombre == null || ciudad == null || correo == null || telefono == null || usuario == null || contrasena == null) {
+            return error("Todos los campos marcados son obligatorios");
+        }
+        if (!usuario.matches("[a-zA-Z0-9._-]{3,30}")) {
+            return error("El usuario debe tener entre 3 y 30 caracteres, sin espacios");
+        }
+        if (contrasena.length() < 4) {
+            return error("La contraseña debe tener al menos 4 caracteres");
+        }
+        if (!correo.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            return error("Ingresa un correo electrónico válido");
+        }
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(usuario))) {
+            return error("Ese nombre de usuario ya está en uso");
+        }
+        for (String red : new String[] {"instagram", "facebook", "tiktok", "sitioWeb"}) {
+            String valor = limpio(datos.get(red));
+            if (valor != null && valor.length() > 255) {
+                return error("El enlace de la red social es demasiado largo");
+            }
+        }
+
+        UserEntity user = userRepository.save(customUserDetailsService.refugioToUser(usuario, contrasena));
+        refugioRepository.save(Refugio.builder()
+                .nombre(nombre)
+                .ciudad(ciudad)
+                .correo(correo)
+                .telefono(telefono)
+                .descripcion(limpio(datos.get("descripcion")))
+                .logo(limpio(datos.get("logo")))
+                .instagram(limpio(datos.get("instagram")))
+                .facebook(limpio(datos.get("facebook")))
+                .tiktok(limpio(datos.get("tiktok")))
+                .sitioWeb(limpio(datos.get("sitioWeb")))
+                .validado(false)
+                .user(user)
+                .build());
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Refugio registrado. Dogtor revisará tus datos antes de que puedas publicar.");
         respuesta.put("usuario", usuario);
         return ResponseEntity.ok(respuesta);
     }

@@ -61,6 +61,19 @@ Si cambias las entidades, vuelve a generar el script sin necesidad de tener MySQ
 java -jar target/dogtor-0.0.1-SNAPSHOT.jar --spring.profiles.active=ddl
 ```
 
+## Actualizar una base existente
+
+`ddl-auto=update` crea las tablas y columnas que falten, pero **no cambia el tipo** de una columna que ya existe.
+Si tu base se creó antes de que las fotos de adopción se subieran como imagen, ejecuta una vez:
+
+```sql
+ALTER TABLE mascota_adopcion MODIFY foto MEDIUMTEXT NOT NULL;
+ALTER TABLE refugio MODIFY logo MEDIUMTEXT;
+```
+
+La columna `refugio.user_id_user` (cuenta del refugio) la agrega Hibernate al arrancar, y el rol `REFUGIO`
+se crea solo cuando se registra el primer refugio.
+
 ## Empezar de cero
 
 ```sql

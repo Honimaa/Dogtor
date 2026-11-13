@@ -74,6 +74,20 @@
       </a>
     </li>
 
+    <li *ngIf="userType === 'Refugio'">
+      <a routerLink="/refugio/panel" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+        <span class="title">Mi refugio</span>
+      </a>
+    </li>
+
+    <li *ngIf="userType === 'Refugio'">
+      <a routerLink="/adopcion" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        <span class="icon"><ion-icon name="heart-outline"></ion-icon></span>
+        <span class="title">Catálogo público</span>
+      </a>
+    </li>
+
     <li *ngIf="userType === 'Veterinario'">
       <a [routerLink]="getMascotasAtendidas()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         <span class="icon"><ion-icon name="document-text-outline"></ion-icon></span>
@@ -152,15 +166,15 @@
       </a>
     </li>
 
-    <!-- Ver y editar perfil van juntos al final del menú -->
-    <li>
+    <!-- Ver y editar perfil van juntos al final del menú (el refugio edita sus datos en su panel) -->
+    <li *ngIf="userType !== 'Refugio'">
       <a [routerLink]="getPerfilLink()" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
         <span class="title">Perfil</span>
       </a>
     </li>
 
-    <li>
+    <li *ngIf="userType !== 'Refugio'">
       <a routerLink="/mi-perfil" routerLinkActive="active-route" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
         <span class="icon"><ion-icon name="create-outline"></ion-icon></span>
         <span class="title">Editar mi perfil</span>

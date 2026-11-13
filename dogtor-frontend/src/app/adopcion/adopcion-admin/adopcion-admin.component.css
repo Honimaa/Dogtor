@@ -133,3 +133,78 @@ small,
     grid-template-columns: 1fr;
   }
 }
+
+.foto-subida { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.foto-preview { width: 72px; height: 72px; object-fit: cover; border-radius: 10px; }
+
+.perfil-refugio { display: flex; flex-direction: column; gap: 0.75rem; max-width: 720px; }
+
+.redes {
+  border: 1px dashed var(--dt-border);
+  border-radius: var(--dt-radius);
+  padding: 0.6rem 0.9rem 0.2rem;
+  margin: 0;
+}
+
+.redes legend {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--dt-muted);
+  padding: 0 0.3rem;
+}
+
+.redes label ion-icon {
+  vertical-align: -2px;
+}
+
+.redes-mini {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  font-size: 1.05rem;
+}
+
+.redes-mini a {
+  color: var(--dt-brand-700);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 1rem;
+}
+
+@media (max-width: 640px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.clave-refugio {
+  margin-top: 1rem;
+}
+
+.clave-refugio h3 {
+  margin: 0;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--dt-brand-700);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.check-cuenta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0.6rem;
+  font-weight: 700;
+  cursor: pointer;
+}

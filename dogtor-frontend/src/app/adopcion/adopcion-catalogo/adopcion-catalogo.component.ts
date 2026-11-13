@@ -42,6 +42,10 @@ export class AdopcionCatalogoComponent implements OnInit {
 
   edadLegible = edadLegible;
 
+  ocultarImg(event: Event): void {
+    (event.target as HTMLImageElement).style.display = 'none';
+  }
+
   constructor(private adopcionService: AdopcionService) {}
 
   ngOnInit(): void {

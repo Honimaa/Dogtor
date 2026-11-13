@@ -48,7 +48,7 @@ public class MascotaAdopcion {
     @Column(length = 1000)
     private String estadoSalud;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000000)
     private String foto;
 
     @Column(nullable = false)

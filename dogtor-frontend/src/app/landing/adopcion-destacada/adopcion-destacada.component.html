@@ -11,6 +11,7 @@
         <ion-icon name="heart-outline"></ion-icon>
         Ver {{ total > 0 ? 'las ' + total + ' mascotas' : 'el catálogo' }}
       </a>
+      <a routerLink="/registro-refugio" class="cta-refugio">¿Eres un refugio? Publica a tus rescatados</a>
     </div>
 
     <div class="tarjetas" *ngIf="mascotas.length; else vacio">

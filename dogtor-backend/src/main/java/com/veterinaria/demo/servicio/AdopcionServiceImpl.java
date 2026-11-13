@@ -16,6 +16,10 @@ import com.veterinaria.demo.entidad.SolicitudAdopcion;
 import com.veterinaria.demo.repositorio.MascotaAdopcionRepository;
 import com.veterinaria.demo.repositorio.RefugioRepository;
 import com.veterinaria.demo.repositorio.SolicitudAdopcionRepository;
+import com.veterinaria.demo.repositorio.UserRepository;
+import com.veterinaria.demo.seguridad.CustomUserDetailsService;
+import com.veterinaria.demo.entidad.UserEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class AdopcionServiceImpl implements AdopcionService {
@@ -32,6 +36,15 @@ public class AdopcionServiceImpl implements AdopcionService {
 
     @Autowired
     private RefugioRepository refugioRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // REQ-ADO-05: filtro por especie, edad, tamaño y ciudad. Las adoptadas no se muestran (REQ-ADO-03)
     @Override
@@ -176,19 +189,32 @@ public class AdopcionServiceImpl implements AdopcionService {
 
     @Override
     public List<Refugio> obtenerTodosRefugios() {
-        return refugioRepository.findAll();
+        // Solo el administrador recibe el usuario de cada cuenta, para poder dárselo al refugio
+        List<Refugio> refugios = refugioRepository.findAll();
+        refugios.forEach(r -> r.setNombreUsuario(r.getUser() != null ? r.getUser().getUsername() : null));
+        return refugios;
     }
 
     @Override
+    @Transactional
     public Refugio registrarRefugio(Refugio refugio) {
         if (vacio(refugio.getNombre()) || vacio(refugio.getCiudad())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nombre y ciudad del refugio son obligatorios");
         }
+        // El administrador puede crearle de una vez la cuenta con la que el refugio entrará a su panel
+        String usuario = vacio(refugio.getNombreUsuario()) ? null : refugio.getNombreUsuario().trim();
+        refugio.setUser(usuario != null ? crearCuenta(usuario, refugio.getContrasena()) : null);
         refugio.setIdRefugio(null);
+        refugio.setInstagram(red(refugio.getInstagram()));
+        refugio.setFacebook(red(refugio.getFacebook()));
+        refugio.setTiktok(red(refugio.getTiktok()));
+        refugio.setSitioWeb(red(refugio.getSitioWeb()));
         if (refugio.getValidado() == null) {
             refugio.setValidado(false);
         }
-        return refugioRepository.save(refugio);
+        Refugio guardado = refugioRepository.save(refugio);
+        guardado.setNombreUsuario(usuario);
+        return guardado;
     }
 
     @Override
@@ -197,6 +223,128 @@ public class AdopcionServiceImpl implements AdopcionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Refugio no encontrado"));
         refugio.setValidado(validado);
         return refugioRepository.save(refugio);
+    }
+
+    @Override
+    @Transactional
+    public Refugio asignarCuentaRefugio(Integer idRefugio, String nombreUsuario, String contrasena) {
+        Refugio refugio = refugioRepository.findById(idRefugio)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Refugio no encontrado"));
+        if (refugio.getUser() == null) {
+            if (vacio(nombreUsuario)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Escribe el usuario de la cuenta");
+            }
+            refugio.setUser(crearCuenta(nombreUsuario.trim(), contrasena));
+        } else {
+            // Ya tiene cuenta: el administrador le asigna una contraseña nueva (p. ej. si la olvidó)
+            validarContrasena(contrasena);
+            UserEntity user = refugio.getUser();
+            user.setPassword(passwordEncoder.encode(contrasena));
+            userRepository.save(user);
+        }
+        Refugio guardado = refugioRepository.save(refugio);
+        guardado.setNombreUsuario(guardado.getUser().getUsername());
+        return guardado;
+    }
+
+    @Override
+    public void cambiarContrasenaRefugio(String nombreUsuario, String actual, String nueva) {
+        UserEntity user = userRepository.findByUsername(nombreUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        if (actual == null || !passwordEncoder.matches(actual, user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña actual no es correcta");
+        }
+        validarContrasena(nueva);
+        user.setPassword(passwordEncoder.encode(nueva));
+        userRepository.save(user);
+    }
+
+    private UserEntity crearCuenta(String usuario, String contrasena) {
+        if (!usuario.matches("[a-zA-Z0-9._-]{3,30}")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El usuario debe tener entre 3 y 30 caracteres, sin espacios");
+        }
+        validarContrasena(contrasena);
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(usuario))) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ese nombre de usuario ya está en uso");
+        }
+        return userRepository.save(customUserDetailsService.refugioToUser(usuario, contrasena));
+    }
+
+    private void validarContrasena(String contrasena) {
+        if (contrasena == null || contrasena.length() < 4) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña debe tener al menos 4 caracteres");
+        }
+    }
+
+    // ---------- Panel del refugio ----------
+
+    @Override
+    public Refugio refugioDeUsuario(String nombreUsuario) {
+        return refugioRepository.findByUser_Username(nombreUsuario)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Tu cuenta no está asociada a ningún refugio"));
+    }
+
+    @Override
+    public Refugio actualizarPerfilRefugio(Integer idRefugio, Refugio datos) {
+        if (vacio(datos.getNombre()) || vacio(datos.getCiudad())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Nombre y ciudad del refugio son obligatorios");
+        }
+        Refugio refugio = refugioRepository.findById(idRefugio)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Refugio no encontrado"));
+        // El refugio no puede validarse a sí mismo: solo cambia sus datos de contacto
+        refugio.setNombre(datos.getNombre().trim());
+        refugio.setCiudad(datos.getCiudad().trim());
+        refugio.setTelefono(datos.getTelefono());
+        refugio.setCorreo(datos.getCorreo());
+        refugio.setDescripcion(datos.getDescripcion());
+        refugio.setLogo(datos.getLogo());
+        refugio.setInstagram(red(datos.getInstagram()));
+        refugio.setFacebook(red(datos.getFacebook()));
+        refugio.setTiktok(red(datos.getTiktok()));
+        refugio.setSitioWeb(red(datos.getSitioWeb()));
+        return refugioRepository.save(refugio);
+    }
+
+    @Override
+    public List<MascotaAdopcion> mascotasDeRefugio(Integer idRefugio) {
+        return mascotaAdopcionRepository.findByRefugio_IdRefugioOrderByFechaPublicacionDesc(idRefugio);
+    }
+
+    @Override
+    public List<SolicitudAdopcion> solicitudesDeRefugio(Integer idRefugio) {
+        return solicitudAdopcionRepository.findByMascotaAdopcion_Refugio_IdRefugioOrderByFechaDesc(idRefugio);
+    }
+
+    @Override
+    public MascotaAdopcion actualizarMascotaDeRefugio(Integer idRefugio, Integer idMascota, MascotaAdopcion datos) {
+        verificarDueno(obtenerMascota(idMascota), idRefugio);
+        return actualizarMascota(idMascota, datos);
+    }
+
+    @Override
+    public SolicitudAdopcion cambiarEstadoSolicitudDeRefugio(Integer idRefugio, Integer idSolicitud, String estado) {
+        SolicitudAdopcion solicitud = solicitudAdopcionRepository.findById(idSolicitud)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Solicitud no encontrada"));
+        verificarDueno(solicitud.getMascotaAdopcion(), idRefugio);
+        return cambiarEstadoSolicitud(idSolicitud, estado);
+    }
+
+    private void verificarDueno(MascotaAdopcion mascota, Integer idRefugio) {
+        if (mascota.getRefugio() == null || !mascota.getRefugio().getIdRefugio().equals(idRefugio)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Esta mascota no pertenece a tu refugio");
+        }
+    }
+
+    /** Usuario o enlace de una red social: sin espacios sobrantes, vacío como null y como máximo 255 caracteres. */
+    private String red(String valor) {
+        if (vacio(valor)) {
+            return null;
+        }
+        String limpio = valor.trim();
+        if (limpio.length() > 255) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El enlace de la red social es demasiado largo");
+        }
+        return limpio;
     }
 
     private boolean vacio(String valor) {

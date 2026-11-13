@@ -17,4 +17,6 @@ public interface SolicitudAdopcionRepository extends JpaRepository<SolicitudAdop
     List<SolicitudAdopcion> findByMascotaAdopcion_IdMascotaAdopcionAndEstadoIn(Integer idMascotaAdopcion, List<String> estados);
 
     long countByEstado(String estado);
+
+    List<SolicitudAdopcion> findByMascotaAdopcion_Refugio_IdRefugioOrderByFechaDesc(Integer idRefugio);
 }

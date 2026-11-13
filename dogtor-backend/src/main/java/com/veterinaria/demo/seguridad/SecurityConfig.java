@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/auth/inicio_sesion").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/registro").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/registro", "/auth/registro-refugio").permitAll()
                         .requestMatchers("/api/testimonios").permitAll()
                         // Dogtor: solo el administrador crea o edita servicios
                         .requestMatchers(HttpMethod.POST, "/api/servicios").hasAuthority("ADMIN")
@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Dogtor: adopción (catálogo público, administración solo ADMIN)
                         .requestMatchers("/adopcion/admin/**").hasAuthority("ADMIN")
+                        .requestMatchers("/adopcion/refugio/**").hasAuthority("REFUGIO")
                         .requestMatchers(HttpMethod.GET, "/adopcion", "/adopcion/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/adopcion/*/solicitudes").permitAll()
                         // Dogtor: "Dogtor Encuentra" se consulta sin cuenta; publicar y resolver requiere sesión

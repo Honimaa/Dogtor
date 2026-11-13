@@ -46,3 +46,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Redes sociales del registro de refugios */
+.redes {
+  border: 1px dashed var(--dt-border);
+  border-radius: var(--dt-radius);
+  padding: 0.6rem 0.9rem 0.2rem;
+  margin: 0 0 0.9rem;
+}
+
+.redes legend {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--dt-muted);
+  padding: 0 0.3rem;
+}
+
+.redes label ion-icon {
+  vertical-align: -2px;
+}

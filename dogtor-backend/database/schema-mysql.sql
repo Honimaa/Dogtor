@@ -94,7 +94,7 @@
         ciudad varchar(255) not null,
         especie varchar(255) not null,
         estado varchar(255) not null,
-        foto varchar(255) not null,
+        foto mediumtext not null,
         nombre varchar(255) not null,
         raza varchar(255),
         sexo varchar(255),
@@ -146,9 +146,14 @@
         descripcion varchar(1000),
         ciudad varchar(255) not null,
         correo varchar(255),
-        logo varchar(255),
+        user_id_user integer,
+        logo mediumtext,
         nombre varchar(255) not null,
         telefono varchar(255),
+        instagram varchar(255),
+        facebook varchar(255),
+        tiktok varchar(255),
+        sitio_web varchar(255),
         primary key (id_refugio)
     ) engine=InnoDB;
 
@@ -337,6 +342,14 @@
        add constraint FK9gdh01e7a9o9qry61juxd25uo 
        foreign key (id_cliente) 
        references cliente (id_cliente);
+
+    alter table refugio 
+       add constraint UK_refugio_user unique (user_id_user);
+
+    alter table refugio 
+       add constraint FK_refugio_user 
+       foreign key (user_id_user) 
+       references users (id_user);
 
     alter table mascota_adopcion 
        add constraint FK94oh2uibi5i91lsnmur8xpsyj 

@@ -8,6 +8,7 @@ import { AdminService } from '../service/admin.service';
 import { VeterinarioService } from '../service/veterinario.service';
 import { VeterinarioCL } from '../model/veterinario-cl';
 import { AdministradorCL } from '../model/administrador-cl';
+import { AdopcionService } from '../service/adopcion.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private clienteService: ClienteService,
     private adminService:AdminService,
-    private veterinarioService:VeterinarioService
+    private veterinarioService:VeterinarioService,
+    private adopcionService: AdopcionService
   ) {}
 
   ngOnInit(): void {
@@ -75,6 +77,8 @@ export class LoginComponent implements OnInit {
             this.loadAdminData();
           } else if (response.roles.includes('VETERINARIO')) {
             this.loadVeterinarioData();
+          } else if (response.roles.includes('REFUGIO')) {
+            this.loadRefugioData();
           } else {
             this.errorMessage = 'Usuario sin rol válido';
           }
@@ -132,6 +136,24 @@ export class LoginComponent implements OnInit {
       error: (e) => {
         console.error('Error al obtener datos del admin:', e);
         this.errorMessage = 'Error al obtener datos del admin';
+      }
+    });
+  }
+
+  private loadRefugioData() {
+    this.adopcionService.miRefugio().subscribe({
+      next: (refugio) => {
+        this.authService.login({
+          id: refugio.idRefugio,
+          tipo: 'Refugio',
+          nombre: refugio.nombre,
+          foto: refugio.logo || 'assets/avatar-placeholder.svg'
+        });
+        this.irDespuesDelLogin(['/refugio/panel']);
+      },
+      error: (e) => {
+        console.error('Error al obtener datos del refugio:', e);
+        this.errorMessage = 'Error al obtener datos del refugio';
       }
     });
   }

@@ -30,6 +30,59 @@ export interface Refugio {
   descripcion?: string;
   logo?: string;
   validado?: boolean;
+  /** true si el refugio tiene cuenta propia para entrar a su panel */
+  conCuenta?: boolean;
+  instagram?: string;
+  facebook?: string;
+  tiktok?: string;
+  sitioWeb?: string;
+  /** Usuario de la cuenta del refugio (solo lo reciben el admin y el propio refugio) */
+  nombreUsuario?: string;
+  /** Solo al crear la cuenta desde el panel del admin */
+  contrasena?: string;
+}
+
+export interface RedSocial {
+  nombre: string;
+  icono: string;
+  url: string;
+}
+
+/**
+ * Enlaces a las redes de un refugio. Acepta lo que el refugio haya escrito: "@huellitas",
+ * "huellitas" o el enlace completo. Solo se generan enlaces http(s).
+ */
+export function redesDeRefugio(r?: Refugio | null): RedSocial[] {
+  if (!r) {
+    return [];
+  }
+  const enlace = (valor: string | undefined, base: string, prefijo = ''): string | null => {
+    const v = (valor || '').trim();
+    if (!v) {
+      return null;
+    }
+    if (/^https?:\/\//i.test(v)) {
+      return v;
+    }
+    if (/^(www\.|[\w-]+\.[a-z]{2,})/i.test(v) && v.includes('/')) {
+      return 'https://' + v;
+    }
+    return base + prefijo + encodeURIComponent(v.replace(/^@/, ''));
+  };
+  const sitio = (valor?: string): string | null => {
+    const v = (valor || '').trim();
+    if (!v) {
+      return null;
+    }
+    return /^https?:\/\//i.test(v) ? v : 'https://' + v;
+  };
+  const redes: (RedSocial | null)[] = [
+    { nombre: 'Instagram', icono: 'logo-instagram', url: enlace(r.instagram, 'https://instagram.com/') ?? '' },
+    { nombre: 'Facebook', icono: 'logo-facebook', url: enlace(r.facebook, 'https://facebook.com/') ?? '' },
+    { nombre: 'TikTok', icono: 'logo-tiktok', url: enlace(r.tiktok, 'https://www.tiktok.com/', '@') ?? '' },
+    { nombre: 'Sitio web', icono: 'globe-outline', url: sitio(r.sitioWeb) ?? '' }
+  ];
+  return redes.filter((x): x is RedSocial => !!x && !!x.url);
 }
 
 export type EstadoAdopcion = 'DISPONIBLE' | 'EN_PROCESO' | 'ADOPTADA';

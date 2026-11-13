@@ -14,6 +14,7 @@ import { MascotaDetailComponent } from './mascota/mascota-detail/mascota-detail.
 import { MascotaFormComponent } from './mascota/mascota-form/mascota-form.component';
 import { FormsModule } from '@angular/forms';
 import { EmoticonPipe } from './pipe/emoticon.pipe';
+import { RedesRefugioPipe } from './pipe/redes-refugio.pipe';
 import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 import { ErrorsPageComponent } from './errors/errors-page/errors-page.component';
 import { FooterComponent } from './veterinaria/footer/footer.component';
@@ -66,6 +67,7 @@ import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-pag
 import { HistoriaClinicaComponent } from './historia-clinica/historia-clinica/historia-clinica.component';
 import { RecordatoriosPanelComponent } from './recordatorios/recordatorios-panel/recordatorios-panel.component';
 import { RegistroComponent } from './login/registro/registro.component';
+import { RegistroRefugioComponent } from './login/registro-refugio/registro-refugio.component';
 import { MiPerfilComponent } from './perfil/mi-perfil/mi-perfil.component';
 import { NotificacionesComponent } from './veterinaria/notificaciones/notificaciones.component';
 import { InventarioAlertasComponent } from './medicamento/inventario-alertas/inventario-alertas.component';
@@ -100,6 +102,7 @@ registerLocaleData(localeEsCO, 'es-CO');
     MascotaDetailComponent,
     MascotaFormComponent,
     EmoticonPipe,
+    RedesRefugioPipe,
     AdminPageComponent,
     ErrorsPageComponent,
     FooterComponent,
@@ -155,6 +158,7 @@ registerLocaleData(localeEsCO, 'es-CO');
     NotificacionesComponent,
     MiPerfilComponent,
     RegistroComponent,
+    RegistroRefugioComponent,
     BlogComponent,
     MostrarArticuloComponent,
     PlaylistComponent,

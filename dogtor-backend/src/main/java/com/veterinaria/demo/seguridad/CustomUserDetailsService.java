@@ -60,6 +60,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user;
     }
 
+    /** Cuenta de un refugio o fundación. El rol se crea si la base de datos es anterior a este módulo. */
+    public UserEntity refugioToUser(String nombreUsuario, String contrasena) {
+        UserEntity user = new UserEntity();
+        user.setUsername(nombreUsuario);
+        user.setPassword(passwordEncoder.encode(contrasena));
+        Role role = roleRepository.findByName("REFUGIO")
+                .orElseGet(() -> roleRepository.save(new Role("REFUGIO")));
+        user.setRoles(List.of(role));
+        return user;
+    }
+
     public UserEntity andminToUser(Administrador administrador){
         UserEntity user = new UserEntity();
         user.setUsername(administrador.getNombreUsuario());

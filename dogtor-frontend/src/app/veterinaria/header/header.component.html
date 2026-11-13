@@ -72,6 +72,19 @@
           </div>
         </div>
 
+        <div *ngSwitchCase="'Refugio'" class="dropdown">
+          <button class="user-btn" type="button" (click)="toggleMenu()" [attr.aria-expanded]="isMenuOpen">
+            <img [src]="userPhoto" alt="" class="user-img" />
+            <span class="user-name">{{ userName }}</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </button>
+          <div class="dropdown-menu" *ngIf="isMenuOpen">
+            <a routerLink="/refugio/panel">Mi refugio</a>
+            <a routerLink="/adopcion">Catálogo de adopción</a>
+            <a (click)="logout()">Cerrar sesión</a>
+          </div>
+        </div>
+
         <div *ngSwitchDefault>
           <div class="acceso">
             <a routerLink="/registro" class="registro-btn">Registrarse</a>

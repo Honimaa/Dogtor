@@ -23,7 +23,7 @@ vacunas y controles, y un catálogo de adopción responsable.
 | **Inventario** | Medicamentos e insumos con stock, precio en pesos colombianos (COP) y alta/edición desde el panel de administración. |
 | **Ventas y facturación** | Compra de medicamentos y servicios, y facturas por cliente. |
 | **Recordatorios** | Avisos de vacunas, desparasitaciones y controles próximos. |
-| **Adopción** | Catálogo público de mascotas en adopción y gestión de solicitudes por parte del administrador. |
+| **Adopción** | Catálogo público de mascotas en adopción. Los refugios y fundaciones se registran, publican a sus rescatados con foto y gestionan sus solicitudes; Dogtor valida cada refugio. |
 | **Dogtor Encuentra** | Publicaciones de mascotas perdidas y encontradas (requiere sesión; solo el autor puede marcarlas como resueltas). |
 | **Blog y herramientas** | Artículos, playlist relajante para mascotas, calculadora de edad humana, calculadora de peso por raza, generador de nombres, ruleta de cumpleaños y test de salud. |
 
@@ -34,9 +34,33 @@ vacunas y controles, y un catálogo de adopción responsable.
 | **Administrador** | Panel con indicadores, veterinarios, clientes, mascotas, inventario, servicios y adopciones. |
 | **Veterinario** | Sus citas, pacientes atendidos, historias clínicas, tratamientos y facturas de sus pacientes. |
 | **Cliente** | Sus mascotas, citas, historia clínica, facturas, compras y publicaciones en Dogtor Encuentra. |
+| **Refugio** | Su panel de adopción: publicar y editar sus mascotas, responder solicitudes y editar los datos del refugio. |
 
-Cualquier persona puede crear una cuenta de cliente desde **Registrarme** en la pantalla de inicio de sesión.
-Todos los roles pueden editar sus datos y su foto en **Mi perfil**.
+Cualquier persona puede crear una cuenta de cliente desde **Registrarme** en la pantalla de inicio de sesión,
+y cualquier refugio o fundación puede registrarse en **¿Eres un refugio?** (`/registro-refugio`).
+Clientes, veterinarios y administradores editan sus datos y su foto en **Mi perfil**; el refugio lo hace
+en la pestaña **Mi refugio** de su panel.
+
+---
+
+## Adopción: cómo publica un refugio
+
+1. **Registro.** El refugio llena el formulario de `/registro-refugio` (nombre, ciudad, contacto, logo, redes sociales,
+   usuario y contraseña). Se crea su cuenta con el rol `REFUGIO` y el refugio queda **pendiente de validación**.
+2. **Validación.** Un administrador revisa el refugio en **Adopciones › Refugios** y pulsa **Validar**.
+   Mientras no esté validado, el refugio puede entrar a su panel pero no publicar.
+3. **Publicación.** Desde **Mi refugio** (`/refugio/panel`) el refugio publica cada mascota con su **foto**
+   (se sube desde el computador o el celular y se reduce automáticamente), especie, raza, edad, tamaño,
+   sexo, descripción y estado de salud. La mascota aparece al instante en el catálogo público (`/adopcion`).
+4. **Solicitudes.** Las familias envían su solicitud sin crear cuenta. El refugio ve **solo las solicitudes
+   de sus mascotas** y las marca como *En revisión*, *Aprobada* o *Rechazada*. Al aprobar una, la mascota
+   pasa a *Adoptada*, sale del catálogo y las demás solicitudes se rechazan.
+
+El administrador sigue viendo todos los refugios, mascotas y solicitudes. También puede registrar un refugio
+él mismo y, si quiere, **crearle de una vez su usuario y una contraseña inicial**; o darle acceso más tarde a un
+refugio que no tenga cuenta (**Crear acceso**) y ponerle una contraseña nueva si la olvidó. El refugio cambia su
+contraseña en **Mi refugio › Cuenta de acceso**. Los refugios sin cuenta los sigue gestionando el administrador. Si retira la validación de un refugio, sus mascotas dejan de verse en el
+catálogo. Cada refugio solo puede ver y modificar lo suyo: el backend toma el refugio de la sesión, nunca de la URL.
 
 ---
 
@@ -119,6 +143,9 @@ Abre `http://localhost:4200`.
 | Administrador | `admin` | `123` |
 | Veterinario | `vet1` | `pass1` |
 | Cliente | `carlosg` | `pass2` |
+| Refugio (Fundación Huellitas de Amor, ya validado) | `huellitas` | `pass3` |
+
+Para probar el registro de un refugio nuevo, usa `/registro-refugio` y valídalo con la cuenta de administrador.
 
 ---
 
@@ -158,6 +185,11 @@ Las tablas se crean solas la primera vez. Si prefieres crearlas manualmente, usa
 [`consultas-utiles.sql`](dogtor-backend/database/consultas-utiles.sql). Los detalles están en la
 [guía de la base de datos](dogtor-backend/database/README.md).
 
+> **¿Ya tenías la base creada antes del módulo de refugios?** Hibernate agrega solo la columna nueva
+> (`refugio.user_id_user`), pero no amplía columnas existentes. Ejecuta una vez el ajuste de
+> [Actualizar una base existente](dogtor-backend/database/README.md#actualizar-una-base-existente)
+> para que las fotos de `mascota_adopcion` y los logos de `refugio` se puedan subir.
+
 | Variable | Valor por defecto |
 | --- | --- |
 | `DB_HOST` | `localhost` |
@@ -171,5 +203,4 @@ Las tablas se crean solas la primera vez. Si prefieres crearlas manualmente, usa
 
 ## Créditos
 
-Proyecto basado en *Beagle Giggle* (frontend Angular y backend Spring Boot) y adaptado a los
-requerimientos de **Dogtor S.A.S.** Los GIFs de gatos provienen de Klipy y se usan con fines académicos.
+Proyecto desarrollado para **Dogtor S.A.S.** Los GIFs de gatos provienen de Klipy y se usan con fines académicos.

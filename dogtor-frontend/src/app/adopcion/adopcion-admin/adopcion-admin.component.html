@@ -4,13 +4,23 @@
   <div class="dt-page">
     <div class="dt-page-header">
       <div>
-        <span class="dt-eyebrow">Módulo de adopción</span>
-        <h1>Gestión de adopciones</h1>
-        <p class="dt-lead">Revisa solicitudes, publica mascotas y valida los refugios aliados.</p>
+        <span class="dt-eyebrow">{{ esRefugio ? 'Panel del refugio' : 'Módulo de adopción' }}</span>
+        <h1>{{ esRefugio ? (miRefugio?.nombre || 'Mi refugio') : 'Gestión de adopciones' }}</h1>
+        <p class="dt-lead" *ngIf="!esRefugio">Revisa solicitudes, publica mascotas y valida los refugios aliados.</p>
+        <p class="dt-lead" *ngIf="esRefugio">Publica a tus rescatados y responde a las familias que quieren adoptarlos.</p>
       </div>
       <a routerLink="/adopcion" class="dt-btn dt-btn-outline dt-btn-sm" target="_blank">
         <ion-icon name="open-outline"></ion-icon> Ver catálogo público
       </a>
+    </div>
+
+    <div class="dt-alert dt-alert-warning" *ngIf="esRefugio && miRefugio && !miRefugio.validado" role="status">
+      <ion-icon name="time-outline"></ion-icon>
+      <div>
+        <strong>Tu refugio está pendiente de validación.</strong>
+        El equipo de Dogtor revisará tus datos y te contactará. Mientras tanto puedes completar la información
+        en la pestaña «Mi refugio»; podrás publicar mascotas en cuanto quede validado.
+      </div>
     </div>
 
     <div class="kpis">
@@ -34,8 +44,11 @@
       <button type="button" class="dt-chip" [class.active]="pestana === 'mascotas'" (click)="pestana = 'mascotas'">
         Mascotas ({{ mascotas.length }})
       </button>
-      <button type="button" class="dt-chip" [class.active]="pestana === 'refugios'" (click)="pestana = 'refugios'">
+      <button *ngIf="!esRefugio" type="button" class="dt-chip" [class.active]="pestana === 'refugios'" (click)="pestana = 'refugios'">
         Refugios ({{ refugios.length }})
+      </button>
+      <button *ngIf="esRefugio" type="button" class="dt-chip" [class.active]="pestana === 'perfil'" (click)="pestana = 'perfil'">
+        Mi refugio
       </button>
     </div>
 
@@ -66,7 +79,7 @@
                   <img [src]="s.mascotaAdopcion?.foto" alt="" (error)="onImgError($event)" />
                   <div>
                     <strong>{{ s.mascotaAdopcion?.nombre }}</strong>
-                    <small>{{ s.mascotaAdopcion?.refugio?.nombre }}</small>
+                    <small *ngIf="!esRefugio">{{ s.mascotaAdopcion?.refugio?.nombre }}</small>
                   </div>
                 </div>
               </td>
@@ -101,8 +114,10 @@
         <button type="button" class="dt-btn dt-btn-sm" (click)="nuevaMascota()" [disabled]="!refugiosValidados.length">
           <ion-icon name="add-outline"></ion-icon> Publicar mascota
         </button>
-        <small *ngIf="!refugiosValidados.length">Necesitas al menos un refugio validado para publicar.</small>
+        <small *ngIf="!refugiosValidados.length && !esRefugio">Necesitas al menos un refugio validado para publicar.</small>
+        <small *ngIf="!refugiosValidados.length && esRefugio">Podrás publicar cuando Dogtor valide tu refugio.</small>
       </div>
+      <p class="dt-empty" *ngIf="!mascotas.length">Todavía no hay mascotas publicadas.</p>
       <div class="dt-grid">
         <article class="dt-card mascota" *ngFor="let m of mascotas">
           <img [src]="m.foto" [alt]="m.nombre" (error)="onImgError($event)" />
@@ -112,7 +127,7 @@
               <span class="dt-badge" [ngClass]="claseMascota(m.estado)">{{ etiquetaMascota(m.estado) }}</span>
             </div>
             <p>{{ m.raza }} · {{ edadLegible(m.edadMeses) }} · {{ m.ciudad }}</p>
-            <small>{{ m.refugio?.nombre }}</small>
+            <small *ngIf="!esRefugio">{{ m.refugio?.nombre }}</small>
             <button type="button" class="dt-btn dt-btn-sm dt-btn-outline" (click)="editarMascota(m)">Editar</button>
           </div>
         </article>
@@ -122,20 +137,36 @@
     <!-- Refugios -->
     <section *ngIf="pestana === 'refugios'">
       <div class="toolbar">
-        <button type="button" class="dt-btn dt-btn-sm" (click)="mostrarFormRefugio = true">
+        <button type="button" class="dt-btn dt-btn-sm" (click)="nuevoRefugio()">
           <ion-icon name="add-outline"></ion-icon> Registrar refugio
         </button>
       </div>
       <div class="dt-table-wrap">
         <table class="dt-table">
           <thead>
-            <tr><th>Refugio</th><th>Ciudad</th><th>Contacto</th><th>Estado</th><th></th></tr>
+            <tr><th>Refugio</th><th>Ciudad</th><th>Contacto</th><th>Cuenta</th><th>Estado</th><th></th></tr>
           </thead>
           <tbody>
             <tr *ngFor="let r of refugios">
               <td><strong>{{ r.nombre }}</strong><small class="block">{{ r.descripcion }}</small></td>
               <td>{{ r.ciudad }}</td>
-              <td><small class="block">{{ r.correo }}</small><small class="block">{{ r.telefono }}</small></td>
+              <td>
+                <small class="block">{{ r.correo }}</small><small class="block">{{ r.telefono }}</small>
+                <span class="redes-mini">
+                  <a *ngFor="let red of r | redesRefugio" [href]="red.url" target="_blank" rel="noopener noreferrer"
+                     [title]="red.nombre" [attr.aria-label]="red.nombre + ' de ' + r.nombre"><ion-icon [name]="red.icono"></ion-icon></a>
+                </span>
+              </td>
+              <td>
+                <ng-container *ngIf="r.conCuenta; else sinCuenta">
+                  <small class="block">Usuario: <strong>{{ r.nombreUsuario }}</strong></small>
+                  <button type="button" class="link-btn" (click)="abrirCuenta(r)">Poner contraseña nueva</button>
+                </ng-container>
+                <ng-template #sinCuenta>
+                  <small class="block">Sin cuenta (lo gestiona Dogtor)</small>
+                  <button type="button" class="link-btn" (click)="abrirCuenta(r)">Crear acceso</button>
+                </ng-template>
+              </td>
               <td>
                 <span class="dt-badge" [ngClass]="r.validado ? 'dt-badge-success' : 'dt-badge-warning'">
                   {{ r.validado ? 'Validado' : 'Pendiente de validación' }}
@@ -152,6 +183,75 @@
         </table>
       </div>
     </section>
+
+    <!-- Mi refugio (solo en el panel del refugio) -->
+    <section *ngIf="pestana === 'perfil' && esRefugio">
+      <form class="dt-card perfil-refugio" (ngSubmit)="guardarPerfil()">
+        <div class="foto-subida">
+          <img [src]="formPerfil.logo || 'assets/avatar-placeholder.svg'" alt="Logo del refugio" class="foto-preview" />
+          <label class="dt-btn dt-btn-outline dt-btn-sm">
+            <ion-icon name="camera-outline"></ion-icon> {{ formPerfil.logo ? 'Cambiar logo' : 'Subir logo' }}
+            <input type="file" accept="image/*" (change)="elegirLogo($event)" hidden />
+          </label>
+        </div>
+        <div class="grid-2">
+          <div class="dt-field"><label for="pnombre">Nombre</label><input id="pnombre" name="pnombre" [(ngModel)]="formPerfil.nombre" required /></div>
+          <div class="dt-field"><label for="pciudad">Ciudad</label><input id="pciudad" name="pciudad" [(ngModel)]="formPerfil.ciudad" required /></div>
+          <div class="dt-field"><label for="ptel">Teléfono</label><input id="ptel" name="ptel" type="tel" [(ngModel)]="formPerfil.telefono" /></div>
+          <div class="dt-field"><label for="pcorreo">Correo</label><input id="pcorreo" name="pcorreo" type="email" [(ngModel)]="formPerfil.correo" /></div>
+        </div>
+        <div class="dt-field"><label for="pdesc">Descripción</label><textarea id="pdesc" name="pdesc" rows="3" [(ngModel)]="formPerfil.descripcion"></textarea></div>
+      <fieldset class="redes">
+        <legend>Redes sociales (opcional)</legend>
+        <div class="grid-2">
+          <div class="dt-field">
+            <label for="pinstagram"><ion-icon name="logo-instagram"></ion-icon> Instagram</label>
+            <input id="pinstagram" name="pinstagram" [(ngModel)]="formPerfil.instagram" placeholder="@turefugio" />
+          </div>
+          <div class="dt-field">
+            <label for="pfacebook"><ion-icon name="logo-facebook"></ion-icon> Facebook</label>
+            <input id="pfacebook" name="pfacebook" [(ngModel)]="formPerfil.facebook" placeholder="turefugio o enlace" />
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="dt-field">
+            <label for="ptiktok"><ion-icon name="logo-tiktok"></ion-icon> TikTok</label>
+            <input id="ptiktok" name="ptiktok" [(ngModel)]="formPerfil.tiktok" placeholder="@turefugio" />
+          </div>
+          <div class="dt-field">
+            <label for="pweb"><ion-icon name="globe-outline"></ion-icon> Sitio web</label>
+            <input id="pweb" name="pweb" [(ngModel)]="formPerfil.sitioWeb" placeholder="www.turefugio.org" />
+          </div>
+        </div>
+      </fieldset>
+        <div class="dt-modal-actions">
+          <button type="submit" class="dt-btn">Guardar cambios</button>
+        </div>
+      </form>
+
+      <form class="dt-card perfil-refugio clave-refugio" (ngSubmit)="cambiarContrasena()">
+        <h3>Cuenta de acceso</h3>
+        <p class="dt-lead">Usuario: <strong>{{ miRefugio?.nombreUsuario }}</strong>. Si un administrador te creó la cuenta,
+          cambia aquí la contraseña que te entregó.</p>
+        <div class="grid-3">
+          <div class="dt-field">
+            <label for="cactual">Contraseña actual</label>
+            <input id="cactual" name="cactual" type="password" autocomplete="current-password" [(ngModel)]="formClave.actual" />
+          </div>
+          <div class="dt-field">
+            <label for="cnueva">Nueva contraseña</label>
+            <input id="cnueva" name="cnueva" type="password" autocomplete="new-password" [(ngModel)]="formClave.nueva" />
+          </div>
+          <div class="dt-field">
+            <label for="cconf">Confirmar nueva</label>
+            <input id="cconf" name="cconf" type="password" autocomplete="new-password" [(ngModel)]="formClave.confirmacion" />
+          </div>
+        </div>
+        <div class="dt-modal-actions">
+          <button type="submit" class="dt-btn dt-btn-outline">Cambiar contraseña</button>
+        </div>
+      </form>
+    </section>
   </div>
 </div>
 
@@ -159,8 +259,8 @@
 <div class="dt-modal-backdrop" *ngIf="mostrarFormMascota" (click)="mostrarFormMascota = false">
   <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarMascota()">
     <h3>{{ editandoMascota ? 'Editar ' + editandoMascota.nombre : 'Publicar mascota en adopción' }}</h3>
-    <p class="dt-lead">Solo los refugios validados pueden publicar.</p>
-    <div class="dt-field" *ngIf="!editandoMascota">
+    <p class="dt-lead" *ngIf="!esRefugio">Solo los refugios validados pueden publicar.</p>
+    <div class="dt-field" *ngIf="!editandoMascota && !esRefugio">
       <label for="refugio">Refugio</label>
       <select id="refugio" name="refugio" [(ngModel)]="idRefugioForm" required>
         <option *ngFor="let r of refugiosValidados" [ngValue]="r.idRefugio">{{ r.nombre }} · {{ r.ciudad }}</option>
@@ -196,7 +296,13 @@
         </select>
       </div>
     </div>
-    <div class="dt-field"><label for="foto">URL de la foto</label><input id="foto" name="foto" [(ngModel)]="formMascota.foto" required /></div>
+    <div class="dt-field">
+      <label for="foto">Foto</label>
+      <div class="foto-subida">
+        <img *ngIf="formMascota.foto" [src]="formMascota.foto" alt="Vista previa de la foto" class="foto-preview" />
+        <input id="foto" name="foto" type="file" accept="image/*" (change)="elegirFoto($event)" />
+      </div>
+    </div>
     <div class="dt-field"><label for="descripcion">Descripción</label><textarea id="descripcion" name="descripcion" rows="3" [(ngModel)]="formMascota.descripcion"></textarea></div>
     <div class="dt-field"><label for="salud">Estado de salud</label><textarea id="salud" name="salud" rows="2" [(ngModel)]="formMascota.estadoSalud"></textarea></div>
     <div class="dt-modal-actions">
@@ -218,9 +324,59 @@
       <div class="dt-field"><label for="rcorreo">Correo</label><input id="rcorreo" name="rcorreo" type="email" [(ngModel)]="formRefugio.correo" /></div>
     </div>
     <div class="dt-field"><label for="rdesc">Descripción</label><textarea id="rdesc" name="rdesc" rows="3" [(ngModel)]="formRefugio.descripcion"></textarea></div>
+    <fieldset class="redes">
+      <legend>Redes sociales (opcional)</legend>
+      <div class="grid-2">
+        <div class="dt-field"><label for="rinsta"><ion-icon name="logo-instagram"></ion-icon> Instagram</label><input id="rinsta" name="rinsta" [(ngModel)]="formRefugio.instagram" placeholder="@refugio" /></div>
+        <div class="dt-field"><label for="rface"><ion-icon name="logo-facebook"></ion-icon> Facebook</label><input id="rface" name="rface" [(ngModel)]="formRefugio.facebook" placeholder="refugio o enlace" /></div>
+        <div class="dt-field"><label for="rtiktok"><ion-icon name="logo-tiktok"></ion-icon> TikTok</label><input id="rtiktok" name="rtiktok" [(ngModel)]="formRefugio.tiktok" placeholder="@refugio" /></div>
+        <div class="dt-field"><label for="rweb"><ion-icon name="globe-outline"></ion-icon> Sitio web</label><input id="rweb" name="rweb" [(ngModel)]="formRefugio.sitioWeb" placeholder="www.refugio.org" /></div>
+      </div>
+    </fieldset>
+    <label class="check-cuenta">
+      <input type="checkbox" name="crearCuenta" [(ngModel)]="crearCuentaRefugio" />
+      Crear cuenta de acceso para que el refugio publique por su cuenta
+    </label>
+    <div *ngIf="crearCuentaRefugio">
+      <div class="dt-field">
+        <label for="rusuario">Usuario</label>
+        <input id="rusuario" name="rusuario" [(ngModel)]="formRefugio.nombreUsuario" autocomplete="off" placeholder="Sin espacios, p. ej. refugio.huellitas" />
+      </div>
+      <div class="grid-2">
+        <div class="dt-field"><label for="rclave">Contraseña inicial</label><input id="rclave" name="rclave" type="password" autocomplete="new-password" [(ngModel)]="formRefugio.contrasena" /></div>
+        <div class="dt-field"><label for="rclave2">Confirmar contraseña</label><input id="rclave2" name="rclave2" type="password" autocomplete="new-password" [(ngModel)]="confirmacionRefugio" /></div>
+      </div>
+      <small>Entrégale estos datos al refugio. Podrá cambiar la contraseña desde «Mi refugio».</small>
+    </div>
     <div class="dt-modal-actions">
       <button type="button" class="dt-btn dt-btn-outline" (click)="mostrarFormRefugio = false">Cancelar</button>
       <button type="submit" class="dt-btn">Registrar</button>
+    </div>
+  </form>
+</div>
+
+<!-- Acceso de un refugio ya registrado (solo admin) -->
+<div class="dt-modal-backdrop" *ngIf="refugioCuenta" (click)="refugioCuenta = null">
+  <form class="dt-modal" (click)="$event.stopPropagation()" (ngSubmit)="guardarCuenta()">
+    <h3>{{ refugioCuenta.conCuenta ? 'Contraseña nueva para ' : 'Crear acceso para ' }}{{ refugioCuenta.nombre }}</h3>
+    <p class="dt-lead" *ngIf="!refugioCuenta.conCuenta">
+      Con esta cuenta el refugio entra a su panel, publica sus mascotas y responde sus solicitudes.
+    </p>
+    <p class="dt-lead" *ngIf="refugioCuenta.conCuenta">
+      Úsalo si el refugio olvidó su contraseña. Su usuario seguirá siendo <strong>{{ refugioCuenta.nombreUsuario }}</strong>.
+    </p>
+    <div class="dt-field" *ngIf="!refugioCuenta.conCuenta">
+      <label for="cusuario">Usuario</label>
+      <input id="cusuario" name="cusuario" [(ngModel)]="formCuenta.nombreUsuario" autocomplete="off" placeholder="Sin espacios, p. ej. refugio.huellitas" />
+    </div>
+    <div class="grid-2">
+      <div class="dt-field"><label for="cclave">{{ refugioCuenta.conCuenta ? 'Contraseña nueva' : 'Contraseña inicial' }}</label><input id="cclave" name="cclave" type="password" autocomplete="new-password" [(ngModel)]="formCuenta.contrasena" /></div>
+      <div class="dt-field"><label for="cclave2">Confirmar contraseña</label><input id="cclave2" name="cclave2" type="password" autocomplete="new-password" [(ngModel)]="formCuenta.confirmacion" /></div>
+    </div>
+    <small>Entrégale estos datos al refugio. Podrá cambiar la contraseña desde «Mi refugio».</small>
+    <div class="dt-modal-actions">
+      <button type="button" class="dt-btn dt-btn-outline" (click)="refugioCuenta = null">Cancelar</button>
+      <button type="submit" class="dt-btn">{{ refugioCuenta.conCuenta ? 'Guardar contraseña' : 'Crear acceso' }}</button>
     </div>
   </form>
 </div>

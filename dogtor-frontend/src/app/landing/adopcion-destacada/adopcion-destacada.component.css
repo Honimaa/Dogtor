@@ -110,3 +110,12 @@ h2:after {
     gap: 0.6rem;
   }
 }
+
+.cta-refugio {
+  display: block;
+  margin-top: 0.9rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

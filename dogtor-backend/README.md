@@ -23,7 +23,8 @@ La API queda en `http://localhost:8082`. Al arrancar se cargan datos de ejemplo
 | Doctores y urgencias 24h | `/veterinario`, `/veterinario/urgencias` |
 | Inventario | `/medicamento`, `/medicamento/alertas` |
 | Recordatorios | `/recordatorios/cliente/{id}`, `/recordatorios/clinica` |
-| Adopción | `/adopcion`, `/adopcion/admin/**` |
+| Adopción | `/adopcion` (público), `/adopcion/refugio/**` (rol REFUGIO), `/adopcion/admin/**` (rol ADMIN) |
+| Registro de refugios | `POST /auth/registro-refugio` (público) |
 | Dogtor Encuentra | `/publicaciones` |
 
 ## Usuarios de prueba

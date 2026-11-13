@@ -77,6 +77,8 @@ public class DataBaseInitTest implements ApplicationRunner {
         roleRepository.save(role2);
         Role role3 = new Role("ADMIN");
         roleRepository.save(role3);
+        Role role4 = new Role("REFUGIO");
+        roleRepository.save(role4);
 
         // Creación de clientes
        Cliente cliente1 = new Cliente(null, "Juan Pérez", "juan.perez@gmail.com", "3001234567",

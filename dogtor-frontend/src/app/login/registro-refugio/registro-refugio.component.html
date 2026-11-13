@@ -1,0 +1,103 @@
+<app-header></app-header>
+
+<section class="login-page">
+  <div class="login-brand">
+    <div class="brand-title">
+      <img src="assets/logo-beagle.png" alt="" class="brand-logo" />
+      <h1>Tu refugio en Dog<span>tor</span></h1>
+    </div>
+    <p>Publica a tus rescatados y encuéntrales un hogar con familias de toda la comunidad Dogtor.</p>
+    <ul>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Publica mascotas con fotos, edad, tamaño y estado de salud.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Recibe y gestiona las solicitudes de adopción desde tu panel.</li>
+      <li><ion-icon name="checkmark-circle"></ion-icon> Dogtor valida cada refugio para que los adoptantes confíen.</li>
+    </ul>
+  </div>
+
+  <div class="login-card registro-card">
+    <h2>Registrar refugio o fundación</h2>
+    <form (ngSubmit)="registrar()">
+      <div class="foto-registro">
+        <img [src]="datos.logo || 'assets/avatar-placeholder.svg'" alt="Logo del refugio" />
+        <label class="dt-btn dt-btn-outline dt-btn-sm">
+          <ion-icon name="camera-outline"></ion-icon> {{ datos.logo ? 'Cambiar logo' : 'Subir logo (opcional)' }}
+          <input type="file" accept="image/*" (change)="elegirLogo($event)" hidden />
+        </label>
+      </div>
+
+      <div class="dt-field">
+        <label for="nombre">Nombre del refugio o fundación</label>
+        <input id="nombre" name="nombre" [(ngModel)]="datos.nombre" autocomplete="organization" required />
+      </div>
+      <div class="fila">
+        <div class="dt-field">
+          <label for="ciudad">Ciudad</label>
+          <input id="ciudad" name="ciudad" [(ngModel)]="datos.ciudad" autocomplete="address-level2" required />
+        </div>
+        <div class="dt-field">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" type="tel" [(ngModel)]="datos.telefono" autocomplete="tel" required />
+        </div>
+      </div>
+      <div class="dt-field">
+        <label for="correo">Correo de contacto</label>
+        <input id="correo" name="correo" type="email" [(ngModel)]="datos.correo" autocomplete="email" required />
+      </div>
+      <div class="dt-field">
+        <label for="descripcion">Cuéntanos sobre el refugio (opcional)</label>
+        <textarea id="descripcion" name="descripcion" rows="3" [(ngModel)]="datos.descripcion"
+                  placeholder="Qué animales rescatan, desde cuándo, cómo trabajan…"></textarea>
+      </div>
+      <fieldset class="redes">
+        <legend>Redes sociales (opcional)</legend>
+        <div class="fila">
+          <div class="dt-field">
+            <label for="instagram"><ion-icon name="logo-instagram"></ion-icon> Instagram</label>
+            <input id="instagram" name="instagram" [(ngModel)]="datos.instagram" placeholder="@turefugio" />
+          </div>
+          <div class="dt-field">
+            <label for="facebook"><ion-icon name="logo-facebook"></ion-icon> Facebook</label>
+            <input id="facebook" name="facebook" [(ngModel)]="datos.facebook" placeholder="turefugio o enlace" />
+          </div>
+        </div>
+        <div class="fila">
+          <div class="dt-field">
+            <label for="tiktok"><ion-icon name="logo-tiktok"></ion-icon> TikTok</label>
+            <input id="tiktok" name="tiktok" [(ngModel)]="datos.tiktok" placeholder="@turefugio" />
+          </div>
+          <div class="dt-field">
+            <label for="web"><ion-icon name="globe-outline"></ion-icon> Sitio web</label>
+            <input id="web" name="web" [(ngModel)]="datos.sitioWeb" placeholder="www.turefugio.org" />
+          </div>
+        </div>
+      </fieldset>
+      <div class="dt-field">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="usuario" [(ngModel)]="datos.nombreUsuario" autocomplete="username" placeholder="Sin espacios, p. ej. refugio.huellitas" required />
+      </div>
+      <div class="fila">
+        <div class="dt-field">
+          <label for="contrasena">Contraseña</label>
+          <input id="contrasena" name="contrasena" type="password" [(ngModel)]="datos.contrasena" autocomplete="new-password" required />
+        </div>
+        <div class="dt-field">
+          <label for="confirmacion">Confirmar contraseña</label>
+          <input id="confirmacion" name="confirmacion" type="password" [(ngModel)]="confirmacion" autocomplete="new-password" required />
+        </div>
+      </div>
+
+      <label class="acepto">
+        <input type="checkbox" name="acepta" [(ngModel)]="aceptaDatos" />
+        Acepto el tratamiento de los datos personales conforme a la Ley 1581 de 2012.
+      </label>
+
+      <p *ngIf="error" class="error" role="alert"><ion-icon name="alert-circle-outline"></ion-icon> {{ error }}</p>
+
+      <button type="submit" class="dt-btn submit" [disabled]="enviando">{{ enviando ? 'Registrando…' : 'Registrar refugio' }}</button>
+    </form>
+
+    <div class="login-extra">
+      <a routerLink="/inicio-sesion"><ion-icon name="log-in-outline"></ion-icon> ¿Ya tienen cuenta? Inicien sesión</a>
+    </div>
+  </div>
+</section>

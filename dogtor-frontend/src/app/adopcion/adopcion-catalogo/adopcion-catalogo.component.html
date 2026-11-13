@@ -8,6 +8,9 @@
       Todas las mascotas son publicadas por refugios y fundaciones validados por Dogtor.
       No necesitas registrarte para enviar una solicitud.
     </p>
+    <a routerLink="/registro-refugio" class="cta-refugio">
+      <ion-icon name="home-outline"></ion-icon> ¿Tienes un refugio o fundación? Publica a tus rescatados en Dogtor
+    </a>
   </div>
 </section>
 
@@ -92,8 +95,21 @@
         <span><strong>Estado de salud:</strong> {{ seleccionada.estadoSalud }}</span>
       </div>
       <div class="refugio-box" *ngIf="seleccionada.refugio as r">
-        <strong>{{ r.nombre }}</strong>
-        <span>{{ r.ciudad }}<ng-container *ngIf="r.telefono"> · {{ r.telefono }}</ng-container></span>
+        <div class="refugio-cabecera">
+          <img *ngIf="r.logo" [src]="r.logo" [alt]="'Logo de ' + r.nombre" class="refugio-logo" (error)="ocultarImg($event)" />
+          <div>
+            <small class="refugio-etiqueta">Publicado por</small>
+            <strong>{{ r.nombre }}</strong>
+            <span>{{ r.ciudad }}<ng-container *ngIf="r.telefono"> · {{ r.telefono }}</ng-container></span>
+          </div>
+        </div>
+        <p class="refugio-desc" *ngIf="r.descripcion">{{ r.descripcion }}</p>
+        <div class="redes-refugio" *ngIf="(r | redesRefugio).length">
+          <a *ngFor="let red of r | redesRefugio" [href]="red.url" target="_blank" rel="noopener noreferrer"
+             [attr.aria-label]="red.nombre + ' de ' + r.nombre">
+            <ion-icon [name]="red.icono"></ion-icon> {{ red.nombre }}
+          </a>
+        </div>
       </div>
 
       <div class="dt-alert dt-alert-warning" *ngIf="seleccionada.estado === 'EN_PROCESO'">

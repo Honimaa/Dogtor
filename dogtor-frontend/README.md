@@ -23,6 +23,8 @@ El backend debe estar corriendo en `http://localhost:8082`.
 | Recordatorios de citas, vacunas y controles | Panel en "Mis mascotas", dashboard admin y panel del doctor | Autenticados |
 | Catálogo de adopción y solicitudes | `/adopcion` | Público |
 | Gestión de adopciones, solicitudes y refugios | `/admin/adopciones` | Admin |
+| Registro de refugios y fundaciones | `/registro-refugio` | Público |
+| Panel del refugio (sus mascotas, solicitudes y datos) | `/refugio/panel` | Refugio |
 
 ## Guía de estilo
 

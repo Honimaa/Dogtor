@@ -257,3 +257,72 @@
     height: 220px;
   }
 }
+
+.cta-refugio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.redes-refugio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.45rem;
+}
+
+.redes-refugio a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--dt-border);
+  color: var(--dt-brand-700);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.redes-refugio a:hover {
+  border-color: var(--dt-brand-700);
+}
+
+.refugio-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.refugio-cabecera > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.refugio-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid #fff;
+}
+
+.refugio-etiqueta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--dt-muted);
+}
+
+.refugio-desc {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--dt-ink);
+}

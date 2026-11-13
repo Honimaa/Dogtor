@@ -13,4 +13,6 @@ public interface MascotaAdopcionRepository extends JpaRepository<MascotaAdopcion
     List<MascotaAdopcion> findByEstadoInAndRefugio_ValidadoTrueOrderByFechaPublicacionDesc(List<String> estados);
 
     long countByEstado(String estado);
+
+    List<MascotaAdopcion> findByRefugio_IdRefugioOrderByFechaPublicacionDesc(Integer idRefugio);
 }

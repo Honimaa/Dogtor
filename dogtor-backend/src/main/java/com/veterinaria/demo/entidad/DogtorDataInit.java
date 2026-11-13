@@ -12,6 +12,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.veterinaria.demo.repositorio.*;
+import com.veterinaria.demo.seguridad.CustomUserDetailsService;
 
 import jakarta.transaction.Transactional;
 
@@ -42,6 +43,12 @@ public class DogtorDataInit implements ApplicationRunner {
 
     @Autowired
     private RefugioRepository refugioRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private MascotaAdopcionRepository mascotaAdopcionRepository;
@@ -185,7 +192,14 @@ public class DogtorDataInit implements ApplicationRunner {
                 .nombre("Fundación Huellitas de Amor").ciudad("Bogotá")
                 .telefono("3104567890").correo("contacto@huellitasdeamor.org")
                 .descripcion("Rescatamos perros y gatos en situación de calle en Bogotá y los preparamos para un hogar responsable.")
-                .validado(true).build());
+                .validado(true)
+                .logo("https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=300&h=300&fit=crop")
+                // Redes de ejemplo (ficticias) para ver cómo se muestran en el catálogo
+                .instagram("@huellitasdeamor").facebook("huellitasdeamor").tiktok("@huellitasdeamor")
+                .sitioWeb("www.huellitasdeamor.org")
+                // Cuenta de prueba del rol REFUGIO (usuario: huellitas, contraseña: pass3)
+                .user(userRepository.save(customUserDetailsService.refugioToUser("huellitas", "pass3")))
+                .build());
         Refugio patas = refugioRepository.save(Refugio.builder()
                 .nombre("Refugio Cuatro Patas").ciudad("Medellín")
                 .telefono("3159876543").correo("adopciones@cuatropatas.org")

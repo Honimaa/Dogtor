@@ -37,6 +37,7 @@ import { QuienesSomosComponent } from './landing/quienes-somos/quienes-somos.com
 import { ClientesDestacadosComponent } from './landing/clientes-destacados/clientes-destacados.component';
 import { AdopcionCatalogoComponent } from './adopcion/adopcion-catalogo/adopcion-catalogo.component';
 import { AdopcionAdminComponent } from './adopcion/adopcion-admin/adopcion-admin.component';
+import { RegistroRefugioComponent } from './login/registro-refugio/registro-refugio.component';
 import { UrgenciasPageComponent } from './urgencias/urgencias-page/urgencias-page.component';
 import { RegistroComponent } from './login/registro/registro.component';
 import { MiPerfilComponent } from './perfil/mi-perfil/mi-perfil.component';
@@ -104,7 +105,9 @@ const routes: Routes = [
   {path: 'clientes-destacados', component: ClientesDestacadosComponent},
   // Dogtor: adopción, urgencias 24h e historia clínica
   {path: 'adopcion', component: AdopcionCatalogoComponent},
-  {path: 'admin/adopciones', component: AdopcionAdminComponent, canActivate: [roleGuard], data: { roles: ['Admin'] }},
+  {path: 'admin/adopciones', component: AdopcionAdminComponent, canActivate: [roleGuard], data: { roles: ['Admin'], modo: 'admin' }},
+  {path: 'refugio/panel', component: AdopcionAdminComponent, canActivate: [roleGuard], data: { roles: ['Refugio'], modo: 'refugio' }},
+  {path: 'registro-refugio', component: RegistroRefugioComponent},
   {path: 'urgencias', component: UrgenciasPageComponent},
   {path: 'mi-perfil', component: MiPerfilComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},
   {path: 'historia-clinica/:id', component: HistoriaClinicaComponent, canActivate: [roleGuard], data: { roles: ['Admin', 'Veterinario', 'Cliente'] }},
