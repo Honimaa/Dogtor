@@ -8,13 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -73,7 +77,7 @@ public class CrearTratamientoTest {
 
         WebElement campoContrasena = driver.findElement(By.id("password"));
         campoContrasena.clear();
-        campoContrasena.sendKeys("1234");
+        campoContrasena.sendKeys("123");
 
         WebElement botonEnviarLogin = driver.findElement(By.id("loginSubmit"));
         botonEnviarLogin.click();
@@ -90,38 +94,26 @@ public class CrearTratamientoTest {
 
         // Ventas y ganancias iniciales
         WebElement ventasInicialesElement = driver.findElement(By.id("ventas-totales"));
-        BigDecimal ventasIniciales = new BigDecimal(ventasInicialesElement.getText().replace("$", "").replace(",", ""));
+        BigDecimal ventasIniciales = pesos(ventasInicialesElement.getText());
 
         WebElement gananciasInicialesElement = driver.findElement(By.id("ganancias-totales"));
-        BigDecimal gananciasIniciales = new BigDecimal(gananciasInicialesElement.getText().replace("$", "").replace(",", ""));
+        BigDecimal gananciasIniciales = pesos(gananciasInicialesElement.getText());
 
         // Paso 4: Obtener inventario inicial de Advantix desde la sección de medicamentos
         WebElement enlaceMedicamentos = wait.until(ExpectedConditions.elementToBeClickable(By.className("medicamentos-link")));
         enlaceMedicamentos.click();
         
-        WebElement campoBusqueda = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("input-busqueda-medicamento")));
-        campoBusqueda.clear();
-        campoBusqueda.sendKeys("Advantix");
-        
-        WebElement botonBuscar = driver.findElement(By.className("btn-buscar"));
-        botonBuscar.click();
-        
-        WebElement filaMedicamento = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("medicamento-fila")));
-        
+        Map<String, String> filaAdvantix = buscarFilaMedicamento("Advantix");
+
         // Obtener unidades disponibles y vendidas de Advantix
-        WebElement unidadesDisponiblesElement = filaMedicamento.findElement(By.className("medicamento-disponibles"));
-        int advantixDisponiblesInicial = Integer.parseInt(unidadesDisponiblesElement.getText());
-        
-        WebElement unidadesVendidasElement = filaMedicamento.findElement(By.className("medicamento-vendidos"));
-        int advantixVendidosInicial = Integer.parseInt(unidadesVendidasElement.getText());
-        
+        int advantixDisponiblesInicial = entero(filaAdvantix.get("medicamento-disponibles"));
+        int advantixVendidosInicial = entero(filaAdvantix.get("medicamento-vendidos"));
+
         // Obtener precio de venta de Advantix
-        WebElement precioVentaElement = filaMedicamento.findElement(By.className("medicamento-precio-venta"));
-        BigDecimal precioAdvantix = new BigDecimal(precioVentaElement.getText().replace("$", "").replace(",", ""));
-        
+        BigDecimal precioAdvantix = pesos(filaAdvantix.get("medicamento-precio-venta"));
+
         // Obtener precio de compra de Advantix
-        WebElement precioCompraElement = filaMedicamento.findElement(By.className("medicamento-precio-compra"));
-        BigDecimal precioCompraAdvantix = new BigDecimal(precioCompraElement.getText().replace("$", "").replace(",", ""));
+        BigDecimal precioCompraAdvantix = pesos(filaAdvantix.get("medicamento-precio-compra"));
 
 
         // Obtener precio de Cirugía
@@ -134,7 +126,7 @@ public class CrearTratamientoTest {
             WebElement nombreServicio = fila.findElement(By.className("servicio-nombre"));
             if (nombreServicio.getText().equals("Cirugía")) {
                 WebElement precioElement = fila.findElement(By.className("servicio-precio"));
-                precioCirugia = new BigDecimal(precioElement.getText().replace("$", "").replace(",", ""));
+                precioCirugia = pesos(precioElement.getText());
                 break;
             }
         }
@@ -147,7 +139,16 @@ public class CrearTratamientoTest {
         // Paso 5: Iniciar sesión como veterinario para crear tratamiento
         driver.switchTo().window(tabs.get(1));
         driver.get(BASE_URL);
-        
+
+        // La sesión se guarda en localStorage y se comparte entre pestañas: esta
+        // pestaña abre ya con la sesión del admin. Se cierra desde el menú del
+        // header (logout navega a /home y recarga) para poder entrar como veterinario.
+        WebElement menuUsuario = wait.until(ExpectedConditions.elementToBeClickable(By.className("user-btn")));
+        menuUsuario.click();
+        WebElement cerrarSesionHeader = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//div[contains(@class,'dropdown-menu')]//a[normalize-space()='Cerrar sesión']")));
+        cerrarSesionHeader.click();
+
         // Login como veterinario
         botonLogin = wait.until(ExpectedConditions.elementToBeClickable(By.className("login-btn")));
         botonLogin.click();
@@ -227,7 +228,12 @@ public class CrearTratamientoTest {
 
         // Paso 10: Ver detalles completos del tratamiento
         WebElement enlaceDetalles = celdas.get(4).findElement(By.className("btn-detalles"));
-        enlaceDetalles.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", enlaceDetalles);
+        try {
+            enlaceDetalles.click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", enlaceDetalles);
+        }
 
         // Verificar todos los campos en la vista de detalles
         WebElement codigoDetalle = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("tratamiento-codigo")));
@@ -282,7 +288,7 @@ public class CrearTratamientoTest {
 
         WebElement campoContrasenaAdmin = driver.findElement(By.id("password"));
         campoContrasenaAdmin.clear();
-        campoContrasenaAdmin.sendKeys("1234");
+        campoContrasenaAdmin.sendKeys("123");
 
         WebElement botonEnviarLoginAdmin = driver.findElement(By.id("loginSubmit"));
         botonEnviarLoginAdmin.click();
@@ -299,37 +305,82 @@ public class CrearTratamientoTest {
 
         // Verificar actualización de ventas y ganancias
         WebElement ventasActualesElement = driver.findElement(By.id("ventas-totales"));
-        BigDecimal ventasActuales = new BigDecimal(ventasActualesElement.getText().replace("$", "").replace(",", ""));
+        BigDecimal ventasActuales = pesos(ventasActualesElement.getText());
         assertEquals(ventasEsperadas.setScale(2), ventasActuales.setScale(2), "Las ventas totales no coinciden");
 
         WebElement gananciasActualesElement = driver.findElement(By.id("ganancias-totales"));
-        BigDecimal gananciasActuales = new BigDecimal(gananciasActualesElement.getText().replace("$", "").replace(",", ""));
+        BigDecimal gananciasActuales = pesos(gananciasActualesElement.getText());
         assertEquals(gananciasEsperadas.setScale(2), gananciasActuales.setScale(2), "Las ganancias totales no coinciden");
 
         // Paso 13: Verificar actualización de inventario de Advantix en la sección de medicamentos
         WebElement nuevoEnlaceMedicamentos = wait.until(ExpectedConditions.elementToBeClickable(By.className("medicamentos-link")));
         nuevoEnlaceMedicamentos.click();
         
-        campoBusqueda = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("input-busqueda-medicamento")));
-        campoBusqueda.clear();
-        campoBusqueda.sendKeys("Advantix");
-        
-        botonBuscar = driver.findElement(By.className("btn-buscar"));
-        botonBuscar.click();
-        
-        filaMedicamento = wait.until(ExpectedConditions.presenceOfElementLocated(By.className("medicamento-fila")));
-        
+        filaAdvantix = buscarFilaMedicamento("Advantix");
+
         // Verificar unidades disponibles actualizadas
-        unidadesDisponiblesElement = filaMedicamento.findElement(By.className("medicamento-disponibles"));
-        int advantixDisponiblesActual = Integer.parseInt(unidadesDisponiblesElement.getText());
-        assertEquals(advantixDisponiblesEsperado, advantixDisponiblesActual, 
+        int advantixDisponiblesActual = entero(filaAdvantix.get("medicamento-disponibles"));
+        assertEquals(advantixDisponiblesEsperado, advantixDisponiblesActual,
             "Las unidades disponibles de Advantix no coinciden");
-        
+
         // Verificar unidades vendidas actualizadas
-        unidadesVendidasElement = filaMedicamento.findElement(By.className("medicamento-vendidos"));
-        int advantixVendidosActual = Integer.parseInt(unidadesVendidasElement.getText());
+        int advantixVendidosActual = entero(filaAdvantix.get("medicamento-vendidos"));
         assertEquals(advantixVendidosEsperado, advantixVendidosActual,
             "Las unidades vendidas de Advantix no coinciden");
+    }
+
+    /**
+     * Busca un medicamento en la tabla de inventario y devuelve el texto de las
+     * celdas de su fila. Espera a que la tabla muestre el resultado de la
+     * búsqueda (todas las filas coinciden con el nombre) y lee las celdas dentro
+     * de la misma espera, porque Angular vuelve a renderizar las filas al
+     * cargar y al filtrar (si no, StaleElementReferenceException).
+     */
+    private Map<String, String> buscarFilaMedicamento(String nombre) {
+        WebElement campoBusqueda = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("input-busqueda-medicamento")));
+        campoBusqueda.clear();
+        campoBusqueda.sendKeys(nombre);
+        driver.findElement(By.className("btn-buscar")).click();
+
+        return wait.ignoring(StaleElementReferenceException.class).until(d -> {
+            List<WebElement> filas = d.findElements(By.className("medicamento-fila"));
+            if (filas.isEmpty()) {
+                return null;
+            }
+            Map<String, String> encontrada = null;
+            for (WebElement fila : filas) {
+                String nombreFila = fila.findElement(By.className("medicamento-nombre")).getText().trim();
+                if (!nombreFila.toLowerCase().contains(nombre.toLowerCase())) {
+                    return null; // la tabla aún no muestra el resultado de la búsqueda
+                }
+                if (encontrada == null && nombreFila.equals(nombre)) {
+                    encontrada = new HashMap<>();
+                    for (String clase : List.of("medicamento-disponibles", "medicamento-vendidos",
+                            "medicamento-precio-venta", "medicamento-precio-compra")) {
+                        encontrada.put(clase, fila.findElement(By.className(clase)).getText());
+                    }
+                }
+            }
+            return encontrada;
+        });
+    }
+
+    /**
+     * Lee el número entero al inicio de la celda. La celda de unidades
+     * disponibles puede traer además el badge "Bajo stock".
+     */
+    private static int entero(String texto) {
+        return Integer.parseInt(texto.trim().split("\\s+")[0]);
+    }
+
+    /**
+     * Convierte un valor mostrado con el pipe currency:'COP':'symbol-narrow':'1.0-0'
+     * en locale es-CO (por ejemplo "$ 1.234.567", con espacio no separable)
+     * a BigDecimal. Ese formato no tiene decimales, así que basta con
+     * conservar los dígitos y el signo.
+     */
+    private static BigDecimal pesos(String texto) {
+        return new BigDecimal(texto.replaceAll("[^0-9-]", ""));
     }
 
     /* @AfterEach

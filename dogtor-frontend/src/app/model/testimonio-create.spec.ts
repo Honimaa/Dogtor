@@ -1,7 +1,7 @@
-import { TestimonioCreate } from './testimonio-create';
+import { TestimonioCreateCL } from './testimonio-create';
 
-describe('TestimonioCreate', () => {
+describe('TestimonioCreateCL', () => {
   it('should create an instance', () => {
-    expect(new TestimonioCreate()).toBeTruthy();
+    expect(new TestimonioCreateCL()).toBeTruthy();
   });
 });

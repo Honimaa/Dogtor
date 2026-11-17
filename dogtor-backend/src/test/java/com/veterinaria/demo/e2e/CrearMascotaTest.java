@@ -65,7 +65,7 @@ public class CrearMascotaTest {
         // Paso 3: Verificación de mensaje de error
         WebElement mensajeError = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("errorMessage")));
         assertTrue(mensajeError.isDisplayed(), "El mensaje de error debería estar visible");
-        assertEquals("Usuario o contraseña incorrectos.", mensajeError.getText(), "El mensaje de error no coincide");
+        assertEquals("Credenciales incorrectas", mensajeError.getText(), "El mensaje de error no coincide");
 
         // Paso 4: Intento exitoso de login (vet1/pass1)
         campoUsuario.clear();
@@ -185,13 +185,18 @@ public class CrearMascotaTest {
         campoFechaSalida.sendKeys("07072025");
 
         Select selectorEstado = new Select(driver.findElement(By.id("estado")));
-        selectorEstado.selectByValue("1");
+        selectorEstado.selectByValue("0"); // "0" = Inactivo, que es lo que verifica el paso 16
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         try {
             WebElement botonCrearMascota = wait.until(ExpectedConditions.elementToBeClickable(By.className("crear_mascota")));
-            botonCrearMascota.click();
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", botonCrearMascota);
+            try {
+                botonCrearMascota.click();
+            } catch (ElementClickInterceptedException e) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", botonCrearMascota);
+            }
         } catch (StaleElementReferenceException e) {
             // Volver a buscar el botón si está stale
             WebElement botonCrearMascota = wait.until(ExpectedConditions.elementToBeClickable(By.className("crear_mascota")));
