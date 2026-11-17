@@ -1,7 +1,7 @@
-import { FacturaMedicamentoCl } from './factura-medicamento-cl';
+import { FacturaMedicamentoCL } from './factura-medicamento-cl';
 
-describe('FacturaMedicamentoCl', () => {
+describe('FacturaMedicamentoCL', () => {
   it('should create an instance', () => {
-    expect(new FacturaMedicamentoCl()).toBeTruthy();
+    expect(new FacturaMedicamentoCL()).toBeTruthy();
   });
 });
